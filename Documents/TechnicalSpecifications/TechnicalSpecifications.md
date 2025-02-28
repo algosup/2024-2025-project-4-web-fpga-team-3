@@ -42,7 +42,7 @@ The project is divided into two main parts:
 
 ## Glossary
 
-| Term | Definition                                                                                                                        | Source                                                                                        |
-| ---- | --------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| FPGA | Field-Programmable Gate Array, an integrated circuit with basic elements and preconfigured electrical signal routes between them. | [Wikipedia](https://en.wikipedia.org/wiki/Field-programmable_gate_array)                      |
-| BEL  | The hardware electrical ressources available inside the FPGA like fliflop, Look-Up-Table (LUT), Block RAM....                     | [Xilinx](https://www.rapidwright.io/docs/Xilinx_Architecture.html#bel-basic-element-of-logic) |
+| Term | Definition                                                                                                                        |
+| ---- | --------------------------------------------------------------------------------------------------------------------------------- |
+| FPGA | Field-Programmable Gate Array, an integrated circuit with basic elements and preconfigured electrical signal routes between them. |
+| BEL  | The hardware electrical ressources available inside the FPGA like fliflop, Look-Up-Table (LUT), Block RAM....                     |
