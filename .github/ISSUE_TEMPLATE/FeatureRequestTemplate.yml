@@ -1,0 +1,36 @@
+name: Feature Request
+description: Suggest a new feature or enhancement for the project
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Feature Request
+        Use this template to describe your idea for a new feature.
+
+  - type: input
+    id: title
+    attributes:
+      label: Title
+      description: Provide a concise title for the feature request.
+      placeholder: e.g., "Add dark mode support"
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Describe the feature you'd like to see and why it would be useful.
+      placeholder: e.g., "Dark mode would improve readability in low-light conditions..."
+
+  - type: textarea
+    id: potential-solutions
+    attributes:
+      label: Potential Solutions
+      description: Suggest how this feature could be implemented.
+      placeholder: e.g., "Add a toggle in settings to switch themes."
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Add any other context, screenshots, or examples related to the request.
