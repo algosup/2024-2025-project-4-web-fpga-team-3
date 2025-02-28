@@ -1,0 +1,23 @@
+name: Question
+description: Ask a question about the project
+labels: [question]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Question
+        Use this template to describe your question or ask for clarification.
+
+  - type: input
+    id: title
+    attributes:
+      label: Title
+      description: Provide a concise title for your question.
+      placeholder: e.g., "How do I deploy the project?"
+
+  - type: textarea
+    id: details
+    attributes:
+      label: Details
+      description: Describe your question in detail, including any context that might help others understand it.
+      placeholder: e.g., "I'm not sure how to configure the project for deployment. Are there any guides or resources?"
