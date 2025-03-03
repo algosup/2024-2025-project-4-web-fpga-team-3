@@ -126,9 +126,8 @@
           <td>I</td>
         </tr>
       </table>
-
       <!-- Legend -->
-      <p><strong>Legend:</strong></p>
+    <p><strong>Legend:</strong></p>
       <table border="1" cellspacing="0" cellpadding="8" style="border-collapse:collapse;">
         <tr>
           <th>Letter</th>
