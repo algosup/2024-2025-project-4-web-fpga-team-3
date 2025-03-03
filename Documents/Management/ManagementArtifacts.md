@@ -252,17 +252,7 @@
           <th>What are you proud</th>
         </tr>
         <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td></td>
+          <th>Vivien TSANGUE CHOUNGOU</th>
           <td></td>
           <td></td>
           <td></td>
@@ -272,17 +262,7 @@
           <td></td>
         </tr>
         <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td></td>
+          <th>Michel RIFF</th>
           <td></td>
           <td></td>
           <td></td>
@@ -292,17 +272,7 @@
           <td></td>
         </tr>
         <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td></td>
+          <th>Julian REINE</th>
           <td></td>
           <td></td>
           <td></td>
@@ -312,7 +282,27 @@
           <td></td>
         </tr>
         <tr>
+          <th>Camille GAYAT</th>
           <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <th>Alexis LASSELIN</th>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <th>Paul NOWAK</th>
           <td></td>
           <td></td>
           <td></td>
