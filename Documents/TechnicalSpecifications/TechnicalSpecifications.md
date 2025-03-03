@@ -33,27 +33,27 @@ The purpose of this project is to develop a web-based interface to visualize FPG
 - **Teachers** who upload their FPGA designs and use the tool to teach their students.
 - **Students** who interact with the simulator to observe and analyze FPGA behavior.
 
-The system doesnt't have any mandatory framework or library to use, but the team is free to use any of them. The only constraint is that the system must be web-based. It's the reason why the team chose to use the [React](https://reactjs.org/) library for the front-end and the [D3.js](https://d3js.org/) library for the visualization part.
+The system doesn't have any mandatory framework or library to use, but the team is free to use any of them. The only constraint is that the system must be web-based. It's the reason why the team chose to use the [React](https://reactjs.org/) library for the front end and the [D3.js](https://d3js.org/) library for the visualization part.
 
 ### Objectives
 
-The main objective of this project is to provide an interactive 2D visualization of FPGA structures and signal routing. The system should be able to simulate signal propagation in real-time with time-based animations, allowing users to see how signals travel through an FPGA design. Teachers should have the capability to upload Verilog applications and testbenches, which students can then use to run and analyze simulations. The interface should be intuitive, engaging, and informative, making it easier for students to grasp the fundamentals of FPGA design and behavior.
+The main objective of this project is to provide an interactive 2D visualization of FPGA structures and signal routing. The system should be able to simulate signal propagation in real time with time-based animations, allowing users to see how signals travel through an FPGA design. Teachers should have the capability to upload Verilog applications and test benches, which students can then use to run and analyze simulations. The interface should be intuitive, engaging, and informative, making it easier for students to grasp the fundamentals of FPGA design and behavior.
 
 ### Why this project?
 
-FPGAs are widely used in the aerospace industry for various applications, including satellite communication, image processing, and data acquisition. Understanding how FPGAs work is essential for engineers and researchers working in the aerospace sector. However, learning FPGA design can be challenging due to the complex nature of the hardware and software involved. By providing an interactive visualization tool, we aim to simplify the learning process and make it more accessible to students and teachers. This project aligns with CNES's mission to promote STEM education and foster innovation in the aerospace sector
+FPGAs are widely used in the aerospace industry for various applications, including satellite communication, image processing, and data acquisition. Understanding how FPGAs work is essential for engineers and researchers working in the aerospace sector. However, learning FPGA design can be challenging due to the complex nature of the hardware and software involved. By providing an interactive visualization tool, we aim to simplify the learning process and make it more accessible to students and teachers. This project aligns with CNES's mission to promote STEM education and foster innovation in the aerospace sector.
 
 ## Scope
 
 The project is divided into two main parts:
 
 1. **Front-end**: The web-based interface that users interact with. This includes the visualization of the FPGA structure and signal propagation, as well as the user interface for uploading and running simulations.
-2. **Back-end**: The server-side application that handles file uploads, simulation execution, and communication with the front-end.
+2. **Back-end**: The server-side application that handles file uploads, simulation execution, and communication with the front end.
 
 | Item          | In Scope                                                                                                                                                                                          | Out of Scope                                                                                                                                                                                        |
 | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Front-end** | - Visualization of FPGA structures and signal propagation. <br> - User interface for uploading Verilog applications and testbenches. <br> - Manual simulation control (start, stop, pause, step). | - Advanced features like debugging, and waveform analysis. <br> - Support for complex FPGA architectures and designs. <br> - Real-time simulation of signal propagation with time-based animations. |
-| **Back-end**  | - Handling Verilog file uploads and processing. <br> - Running FPGA simulations and sending results to the front-end. <br> - Providing a REST API for communication with the front-end.           | - Full-scale FPGA synthesis or hardware implementation. <br> - Integration with proprietary FPGA vendor tools.                                                                                      |
+| **Back-end**  | - Handling Verilog file uploads and processing. <br> - Running FPGA simulations and sending results to the front end. <br> - Providing a REST API for communication with the front end.           | - Full-scale FPGA synthesis or hardware implementation. <br> - Integration with proprietary FPGA vendor tools.                                                                                      |
 
 The project will be developed using the following technologies:
 
@@ -66,9 +66,9 @@ The project will be divided into the following tasks:
 
 - **Parsing**: Being able to transform a given `.sdf` file into a JSON object that will be used to generate the FPGA structure.
 - **FPGA Structure Generation**: Creating a 2D representation of the FPGA structure based on the JSON object generated from the `.sdf` file.
-- **Signal Propagation Simulation**: Simulating signal propagation through the FPGA structure and updating the visualization in real-time.
+- **Signal Propagation Simulation**: Simulating signal propagation through the FPGA structure and updating the visualization in real time.
 - **User Interface**: Designing an intuitive and interactive user interface for uploading Verilog applications, controlling simulations, and viewing results.
-- **Back-end Development**: Implementing the server-side application to handle file uploads, simulation execution, and communication with the front-end.
+- **Back-end Development**: Implementing the server-side application to handle file uploads, simulation execution, and communication with the front end.
 - **Integration**: Integrating the front-end and back-end components to create a seamless user experience.
 - **Testing and Debugging**: Testing the system for bugs, performance issues, and usability problems, and fixing them as needed.
 - **Documentation**: Writing technical documentation, user guides, and other relevant documentation for the project.
@@ -92,7 +92,7 @@ The tasks will be distributed among the team members as follows:
 
 By doing so, each team member will work on multiple tasks, ensuring that everyone has a well-rounded understanding of the project and can contribute effectively to its success.
 
-The team will follow an agile development approach, with regular sprints, stand-up meetings, and retrospectives to track progress, address issues, and make adjustments as needed. The team will also use version control and issue tracking tools to manage the project and collaborate effectively.
+The team will follow an agile development approach, with regular sprints, stand-up meetings, and retrospectives to track progress, address issues, and make adjustments as needed. The team will also use version control and issue-tracking tools to manage the project and collaborate effectively.
 
 ## Schedule
 
@@ -107,15 +107,15 @@ The project will be developed over a period of 6 weeks, with the following miles
 
 ## Software
 
-The software will be implemented by using React. To do so, here's the initial steps:
+The software will be implemented by using React. To do so, here are the initial steps:
 
-1. In your cmd, go to the repository and the press the following commands
+1. In your cmd, go to the repository and press the following commands
 
 ```bash
 npm create vite@latest
 ```
 
-Once you're done with it, many questions will appear
+Once you're done with it, many questions will appear.
 
 ```bash
 Need to install the following packages:
@@ -154,17 +154,17 @@ The software architecture will be based on the following components:
 - The website, a single-page application built with React, will provide the user interface for interacting with the FPGA simulator.
 - The FPGA simulator, implemented in D3.js and JavaScript, will handle the simulation of signal propagation through the FPGA structure.
 - The parser, written in JavaScript, will convert the `.sdf` file into a JSON object that can be used to generate the FPGA structure.
-- The back-end server, built with Node.js, will handle file uploads, simulation execution, and communication with the front-end.
+- The back-end server, built with Node.js, will handle file uploads, simulation execution, and communication with the front end.
 
 Here's a look at the high-level architecture of the system:
 
 ![Software Architecture](./Images/SoftwareArchitecture.png)
 
-The software architecture of this FPGA visualization web application is structured into three main components: the Frontend, the Backend, and the Parser. The Frontend, built with React and D3.js, provides an interactive user interface where users can upload an SDF file and visualize the FPGA structure. Once a file is uploaded, it is sent to the Backend via an API.
+The software architecture of this FPGA visualization web application is structured into three main components: the Frontend, the Backend, and the Parser. The front, built with React and D3.js, provides an interactive user interface where users can upload an SDF file and visualize the FPGA structure. Once a file is uploaded, it is sent to the Backend via an API.
 
-The Backend, developed with Node.js, acts as an intermediary between the Frontend and the Parser. It receives the uploaded SDF file through the File Upload API and forwards it to the Parsing Service, which is responsible for extracting relevant timing and structural data from the file.
+The Backend, developed with Node.js, acts as an intermediary between the front end and the Parser. It receives the uploaded SDF file through the File Upload API and forwards it to the Parsing Service, which is responsible for extracting relevant timing and structural data from the file.
 
-The Parser, implemented in JavaScript or Python, processes the SDF file, extracts information about timing constraints and component connections, and converts it into a JSON format that the Frontend can easily interpret. The Backend then returns this JSON data to the Frontend, which uses it to dynamically render the FPGA structure, allowing users to explore signal connections and propagation through an intuitive visualization.
+The Parser, implemented in JavaScript or Python, processes the SDF file, extracts information about timing constraints and component connections, and converts it into a JSON format that the front end can easily interpret. The Backend then returns this JSON data to the Frontend, which uses it to dynamically render the FPGA structure, allowing users to explore signal connections and propagation through an intuitive visualization.
 
 This modular architecture ensures scalability, separation of concerns, and efficient processing of FPGA-related data, making it adaptable for future extensions and improvements.
 
@@ -202,15 +202,15 @@ Web-FPGA/
 ```
 
 > [!NOTE]
-> I volontary omitted the `node_modules` folder as it's not necessary to show it here. Same goes for the documentation folder.
+> I've deliberately omitted the `node_modules` folder, as there's no need to show it here. The same applies to the documentation folder.
 
 The project will be structured into the following main directories:
 
 - **public**: Contains static assets like `favicon.ico`.
-- **src**: Contains the source code of the project.
+- **src**: Contains the project's source code.
   - **components**: Contains reusable React components like `Header`, `Sidebar`, `MainContent`, and `Footer`.
   - **pages**: Contains the main pages of the application like `MainPage`, `UploadPage`, `SimulationPage`, and `ResultsPage`.
-  - **services**: Contains utility functions and services like `api`, `parser`, and `simulator`.
+  - **Services**: Contains utility functions and services like `api`, `parser`, and `simulator`.
   - **App.js**: The main React component that renders the application.
   - **index.js**: The entry point of the application.
   - **styles.css**: Contains global styles for the application.
