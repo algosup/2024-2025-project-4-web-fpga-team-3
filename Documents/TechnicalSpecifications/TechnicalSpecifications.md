@@ -19,6 +19,8 @@
     - [File and folder structure](#file-and-folder-structure)
     - [Website](#website)
       - [Frontend](#frontend)
+      - [Backend](#backend)
+      - [Parser](#parser)
   - [Risks and mitigation strategies](#risks-and-mitigation-strategies)
   - [Testing](#testing)
     - [Testing Strategy](#testing-strategy)
@@ -231,6 +233,133 @@ Based on the mockup approved by the customer, the frontend will consist of the f
 - **Header**: The header area with the project name and a button for uploading files.
 - **Footer**: The footer area with copyright information and links to relevant resources.
 - **Upload Form**: A dedicated form for uploading `.sdf` files that will appear when the user clicks the upload button in the header or at the start of the application.
+
+The frontend will be implemented using React, D3.js, and other libraries as needed to create an engaging and interactive user experience. The team will follow best practices for web development, including responsive design, accessibility, and performance optimization, to ensure that the application is user-friendly and accessible to a wide range of users.
+
+#### Backend
+
+The backend will be responsible for handling file uploads, running simulations, and communicating with the front end. It will be implemented using Node.js and Express.js to create a RESTful API that the front end can interact with. The backend will include the following components:
+
+- **File Upload API**: An API endpoint for uploading `.sdf` files to the server.
+- **Parser Service**: A service for parsing `.sdf` files and extracting relevant data for simulation.
+- **Simulation API**: An API endpoint for running simulations and returning the results to the front end.
+- **Simulation Service**: A service for simulating signal propagation through the FPGA structure and updating the front end with the results.
+
+The most important and complex part of the backend will be the parser service, which will be responsible for parsing `.sdf` files and converting them into a format that the front end can use to generate the FPGA structure visualization. The team will pay special attention to error handling, data validation, and performance optimization to ensure that the parser service is robust, reliable, and efficient.
+
+#### Parser
+
+The parser will be implemented in JavaScript or Python, depending on the team's expertise and preferences. It will read the `.sdf` file, extract relevant information about the FPGA structure, and convert it into a JSON object that can be easily consumed by the front end. The parser will handle different types of cells, delays, and connections, ensuring that the data is accurate and consistent for visualization and simulation.
+
+> [!WARNING]
+> Important information to know is that the delay is in picoseconds. In the first lines of the `.sdf` file, you can find the time unit used in the file.
+>
+> ```sdf
+> (TIMESCALE 1ps)
+> ```
+
+Here are all the type of cells we might find in `.sdf` file:
+
+**FPGA Interconnect**
+
+```sdf
+    (CELL
+        (CELLTYPE "fpga_interconnect")
+        (INSTANCE routing_segment_D_output_0_0_to_lut_\$auto\$rtlil\.cc\:2714\:MuxGate\$175_input_0_3)
+        (DELAY
+            (ABSOLUTE
+                (IOPATH datain dataout (235.697:235.697:235.697) (235.697:235.697:235.697))
+            )
+        )
+    )
+```
+
+Those are simply linking two points and provide the delay of this interraction. In the case just above, to go from `segment_D_output_0_0` to `lut_\$auto\$rtlil\.cc\:2714\:MuxGate\$175_input_0_3`, it will take 235.697 picoseconds / ps (10⁻¹² second).
+
+The information we need to extract from this cell is the following:
+
+- The type of the cell: `fpga_interconnect`
+- The starting point: `segment_D_output_0_0`
+- The ending point: `lut_\$auto\$rtlil\.cc\:2714\:MuxGate\$175_input_0_3`
+- The delay: `235.697`
+
+**LUT_K**
+
+```sdf
+    (CELL
+        (CELLTYPE "LUT_K")
+        (INSTANCE lut_\$auto\$rtlil\.cc\:2714\:MuxGate\$139)
+        (DELAY
+            (ABSOLUTE
+                (IOPATH in[1] out (152:152:152) (152:152:152))
+                (IOPATH in[2] out (150:150:150) (150:150:150))
+                (IOPATH in[3] out (150:150:150) (150:150:150))
+            )
+        )
+    )
+```
+
+Those are the LUTs, which are the basic components of the FPGA. They are used to store the logic of the FPGA. In the case just above, the LUT is named `lut_\$auto\$rtlil\.cc\:2714\:MuxGate\$139`.
+
+The information we need to extract from this cell is the following:
+
+- The type of the cell: `LUT_K`
+- The name of the LUT: `lut_\$auto\$rtlil\.cc\:2714\:MuxGate\$139`
+- The delays for each input: `152`, `150`, `150`
+
+**DFF**
+
+```sdf
+    (CELL
+        (CELLTYPE "DFF")
+        (INSTANCE latch_Q)
+        (DELAY
+            (ABSOLUTE
+                (IOPATH (posedge clock) Q (303:303:303) (303:303:303))
+            )
+        )
+        (TIMINGCHECK
+            (SETUP D (posedge clock) (-46:-46:-46))
+        )
+    )
+```
+
+Those are the DFFs, which are used to store the state of the FPGA. In the case just above, the DFF is named `latch_Q`. The DFF is triggered by the rising edge of the clock.
+
+The information we need to extract from this cell is the following:
+
+- The type of the cell: `DFF`
+- The name of the DFF: `latch_Q`
+- The delay for the clock: `303`
+- The timing check for the setup: `-46`
+
+Here's a hypothetical example of the JSON object that the parser might generate based on the `.sdf` file:
+
+```json
+{
+  "cells": [
+    {
+      "type": "fpga_interconnect",
+      "start": "segment_D_output_0_0",
+      "end": "lut_$auto$rtlil.cc:2714:MuxGate$175_input_0_3",
+      "delay": 235.697
+    },
+    {
+      "type": "LUT_K",
+      "name": "lut_$auto$rtlil.cc:2714:MuxGate$139",
+      "delays": [152, 150, 150]
+    },
+    {
+      "type": "DFF",
+      "name": "latch_Q",
+      "delay": 303,
+      "timing_check": -46
+    }
+  ]
+}
+```
+
+The parser will be designed to handle different types of cells, delays, and connections, ensuring that the data is accurate and consistent for visualization and simulation.
 
 ## Risks and mitigation strategies
 
