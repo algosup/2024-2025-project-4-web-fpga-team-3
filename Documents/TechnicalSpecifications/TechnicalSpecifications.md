@@ -14,6 +14,7 @@
   - [Tasks split](#tasks-split)
     - [Task distribution](#task-distribution)
   - [Schedule](#schedule)
+  - [Technologies used](#technologies-used)
   - [Software](#software)
     - [Software architecture](#software-architecture)
     - [File and folder structure](#file-and-folder-structure)
@@ -21,9 +22,13 @@
       - [Frontend](#frontend)
       - [Backend](#backend)
       - [Parser](#parser)
+    - [FPGA Structure Generation](#fpga-structure-generation)
+      - [Backend processing](#backend-processing)
+      - [Generate the visualization](#generate-the-visualization)
   - [Risks and mitigation strategies](#risks-and-mitigation-strategies)
   - [Testing](#testing)
     - [Testing Strategy](#testing-strategy)
+  - [Glossary](#glossary)
 
 </details>
 
@@ -106,6 +111,14 @@ The project will be developed over a period of 6 weeks, with the following miles
 4. **Week 4**: Back-end Development and Integration
 5. **Week 5**: Testing and Debugging, Documentation
 6. **Week 6**: Final Testing, Deployment, and Delivery
+
+## Technologies used
+
+The project will be developed using the following technologies:
+
+- **Vite**: A fast-build tool that provides a modern development environment for front-end projects. (Vite 5)
+- **React**: A JavaScript library for building user interfaces. (React 19)
+- **D3.js**: A JavaScript library for creating interactive data visualizations. (D3.js 7.9)
 
 ## Software
 
@@ -234,11 +247,11 @@ Based on the mockup approved by the customer, the frontend will consist of the f
 - **Footer**: The footer area with copyright information and links to relevant resources.
 - **Upload Form**: A dedicated form for uploading `.sdf` files that will appear when the user clicks the upload button in the header or at the start of the application.
 
-The frontend will be implemented using React, D3.js, and other libraries as needed to create an engaging and interactive user experience. The team will follow best practices for web development, including responsive design, accessibility, and performance optimization, to ensure that the application is user-friendly and accessible to a wide range of users.
+The front end will be implemented using React, D3.js, and other libraries as needed to create an engaging and interactive user experience. The team will follow best practices for web development, including responsive design, accessibility, and performance optimization, to ensure that the application is user-friendly and accessible to a wide range of users.
 
 #### Backend
 
-The backend will be responsible for handling file uploads, running simulations, and communicating with the front end. It will be implemented using Node.js and Express.js to create a RESTful API that the front end can interact with. The backend will include the following components:
+The backend will be responsible for handling file uploads, running simulations, and communicating with the front end. It will be implemented using Node.js and Express.js to create a RESTful API with which the front end can interact. The backend will include the following components:
 
 - **File Upload API**: An API endpoint for uploading `.sdf` files to the server.
 - **Parser Service**: A service for parsing `.sdf` files and extracting relevant data for simulation.
@@ -258,23 +271,23 @@ The parser will be implemented in JavaScript or Python, depending on the team's 
 > (TIMESCALE 1ps)
 > ```
 
-Here are all the type of cells we might find in `.sdf` file:
+Here are all the types of cells we might find in the `.sdf` file:
 
 **FPGA Interconnect**
 
 ```sdf
-    (CELL
-        (CELLTYPE "fpga_interconnect")
-        (INSTANCE routing_segment_D_output_0_0_to_lut_\$auto\$rtlil\.cc\:2714\:MuxGate\$175_input_0_3)
-        (DELAY
-            (ABSOLUTE
-                (IOPATH datain dataout (235.697:235.697:235.697) (235.697:235.697:235.697))
-            )
-        )
-    )
+ (CELL
+ (CELLTYPE "fpga_interconnect")
+ (INSTANCE routing_segment_D_output_0_0_to_lut_\$auto\$rtlil\.cc\:2714\:MuxGate\$175_input_0_3)
+ (DELAY
+ (ABSOLUTE
+ (IOPATH datain dataout (235.697:235.697:235.697) (235.697:235.697:235.697))
+ )
+ )
+ )
 ```
 
-Those are simply linking two points and provide the delay of this interraction. In the case just above, to go from `segment_D_output_0_0` to `lut_\$auto\$rtlil\.cc\:2714\:MuxGate\$175_input_0_3`, it will take 235.697 picoseconds / ps (10⁻¹² second).
+Those are simply linking two points and provide the delay of this interaction. In the case just above, to go from `segment_D_output_0_0` to `lut_\$auto\$rtlil\.cc\:2714\:MuxGate\$175_input_0_3`, it will take 235.697 picoseconds/ps (10⁻¹² second).
 
 The information we need to extract from this cell is the following:
 
@@ -286,17 +299,17 @@ The information we need to extract from this cell is the following:
 **LUT_K**
 
 ```sdf
-    (CELL
-        (CELLTYPE "LUT_K")
-        (INSTANCE lut_\$auto\$rtlil\.cc\:2714\:MuxGate\$139)
-        (DELAY
-            (ABSOLUTE
-                (IOPATH in[1] out (152:152:152) (152:152:152))
-                (IOPATH in[2] out (150:150:150) (150:150:150))
-                (IOPATH in[3] out (150:150:150) (150:150:150))
-            )
-        )
-    )
+ (CELL
+ (CELLTYPE "LUT_K")
+ (INSTANCE lut_\$auto\$rtlil\.cc\:2714\:MuxGate\$139)
+ (DELAY
+ (ABSOLUTE
+ (IOPATH in[1] out (152:152:152) (152:152:152))
+ (IOPATH in[2] out (150:150:150) (150:150:150))
+ (IOPATH in[3] out (150:150:150) (150:150:150))
+ )
+ )
+ )
 ```
 
 Those are the LUTs, which are the basic components of the FPGA. They are used to store the logic of the FPGA. In the case just above, the LUT is named `lut_\$auto\$rtlil\.cc\:2714\:MuxGate\$139`.
@@ -310,18 +323,18 @@ The information we need to extract from this cell is the following:
 **DFF**
 
 ```sdf
-    (CELL
-        (CELLTYPE "DFF")
-        (INSTANCE latch_Q)
-        (DELAY
-            (ABSOLUTE
-                (IOPATH (posedge clock) Q (303:303:303) (303:303:303))
-            )
-        )
-        (TIMINGCHECK
-            (SETUP D (posedge clock) (-46:-46:-46))
-        )
-    )
+ (CELL
+ (CELLTYPE "DFF")
+ (INSTANCE latch_Q)
+ (DELAY
+ (ABSOLUTE
+ (IOPATH (posedge clock) Q (303:303:303) (303:303:303))
+ )
+ )
+ (TIMINGCHECK
+ (SETUP D (posedge clock) (-46:-46:-46))
+ )
+ )
 ```
 
 Those are the DFFs, which are used to store the state of the FPGA. In the case just above, the DFF is named `latch_Q`. The DFF is triggered by the rising edge of the clock.
@@ -361,6 +374,56 @@ Here's a hypothetical example of the JSON object that the parser might generate 
 
 The parser will be designed to handle different types of cells, delays, and connections, ensuring that the data is accurate and consistent for visualization and simulation.
 
+### FPGA Structure Generation
+
+This section explains how the JSON data extracted from the .sdf file is used to generate an interactive visualization of the FPGA. The goal is to correctly **place**, **connect**, and **simulate** the different components while allowing user interaction to observe and manipulate signal propagation.
+
+#### Backend processing
+
+Once the `.sdf` file is parsed and converted into JSON, the backend is responsible for extracting the relevant data and constructing a logical representation of the FPGA.
+
+The steps are the following:
+
+1. Load the JSON data from the parser service.
+2. Extract all cell instances and categorize them by type (e.g., LUTs, DFFs, interconnects).
+3. Create a graph structure where:
+   - Nodes represent an FPGA cell.
+   - Edges represent a signal connection between two cells.
+4. Optimize the graph by removing redundant connections and structuring the data for efficient front-end rendering.
+5. Send the optimized graph data to the front end for visualization.
+
+Example of a graph structure:
+
+```json
+{
+  "nodes": [
+    { "id": "DFF1", "type": "DFF", "tick": 303 },
+    { "id": "LUT1", "type": "LUT" },
+    { "id": "High1", "type": "HighConst" },
+    { "id": "Input1", "type": "Input" }
+  ],
+  "edges": [
+    { "source": "DFF1", "target": "LUT1", "delay": 152 },
+    { "source": "High1", "target": "LUT1", "delay": 150 },
+    { "source": "Input1", "target": "LUT1", "delay": 150 }
+  ]
+}
+```
+
+In the example above, we have four nodes representing a DFF, a LUT, a high constant, and an input. The edges represent signal connections between the nodes, with delays specified for each connection.
+
+The front end will use this graph data to render the FPGA structure, visualize signal propagation, and provide interactive controls for running simulations and observing results.
+
+#### Generate the visualization
+
+Now that the `.json` file has been structured, the backend must process this data to create a logical representation of the FPGA. The front end will then use this data to render an interactive visualization of the FPGA structure and signal propagation.
+
+- Nodes are dynamically placed on a grid based on their type and connections.
+- Edges are drawn between nodes to represent signal connections, with different colors and styles to indicate signal propagation.
+- Simulation can now run step-by-step.
+
+The front end will use D3.js to create the visualization, with interactive components for controlling simulations, exploring signal paths, and analyzing FPGA behavior. The visualization will be updated in real-time as the simulation progresses, allowing users to observe signal propagation and analyze the behavior of the FPGA design.
+
 ## Risks and mitigation strategies
 
 The project may face several risks during development, including technical challenges, resource constraints, and schedule delays. To mitigate these risks, the team has identified the following strategies:
@@ -376,7 +439,7 @@ By identifying potential risks and implementing mitigation strategies, the team 
 The testing of the project will be done using the following tools:
 
 - **Jest**: For unit testing of individual components and functions.
-- **React Testing Library**: For integration testing of React components and user interactions.
+- **React Testing Library**: This is for integration testing of React components and user interactions.
 - **Cypress**: For end-to-end testing of the entire application flow, including file uploads, simulations, and visualizations.
 - **Postman**: For testing the REST API endpoints and verifying data exchange between the front-end and back-end.
 - **Manual Testing**: For exploratory testing, usability testing, and edge case scenarios that may not be covered by automated tests.
@@ -390,3 +453,25 @@ The testing strategy will be based on the following principles:
 - **Test Coverage**: The team will strive to achieve high test coverage, focusing on key features, edge cases, and error scenarios to ensure the reliability and robustness of the application.
 - **Regression Testing**: Regression tests will be run regularly to detect and prevent regressions, ensuring that new changes do not introduce unintended side effects or break existing functionality.
 - **User-Centric Testing**: Usability testing, accessibility testing, and user feedback will be incorporated into the testing process to validate the user experience and address usability issues early in the development cycle.
+
+## Glossary
+
+| Term                  | Definition                                                                                                                                               |
+| --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| CNES                  | Centre National d'Études Spatiales, the French space agency.                                                                                             |
+| Cypress               | An end-to-end testing framework for web applications.                                                                                                    |
+| D3.js                 | A JavaScript library for creating interactive data visualizations.                                                                                       |
+| DFF                   | Data Flip-Flop, a sequential logic element that stores a single bit of data.                                                                             |
+| Express.js            | A web application framework for Node.js that simplifies the development of server-side applications.                                                     |
+| FPGA                  | Field-Programmable Gate Array, a type of integrated circuit that can be configured by the user after manufacturing.                                      |
+| FPGA Interconnect     | The routing structure that connects different components of an FPGA.                                                                                     |
+| Graph                 | A data structure that consists of nodes (vertices) and edges (connections) between them.                                                                 |
+| Jest                  | A JavaScript testing framework that is used to test JavaScript code.                                                                                     |
+| JSON                  | JavaScript Object Notation, a lightweight data interchange format that is easy for humans to read and write and easy for machines to parse and generate. |
+| LUT                   | Look-Up Table, a basic building block of an FPGA that stores logic functions.                                                                            |
+| Node.js               | A JavaScript runtime environment that allows developers to run JavaScript on the server side.                                                            |
+| Postman               | A collaboration platform for API development that allows users to test, develop, and document APIs.                                                      |
+| React                 | A JavaScript library for building user interfaces.                                                                                                       |
+| React Testing Library | A testing library for React that provides utilities for testing React components.                                                                        |
+| REST API              | Representational State Transfer Application Programming Interface, a set of rules for building web services that adhere to the REST architectural style. |
+| SDF                   | Standard Delay Format, a file format used to specify timing information for digital circuits.                                                            |
