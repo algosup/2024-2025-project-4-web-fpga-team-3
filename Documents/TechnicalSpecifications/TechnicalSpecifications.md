@@ -276,15 +276,15 @@ Here are all the types of cells we might find in the `.sdf` file:
 **FPGA Interconnect**
 
 ```sdf
- (CELL
- (CELLTYPE "fpga_interconnect")
- (INSTANCE routing_segment_D_output_0_0_to_lut_\$auto\$rtlil\.cc\:2714\:MuxGate\$175_input_0_3)
- (DELAY
- (ABSOLUTE
- (IOPATH datain dataout (235.697:235.697:235.697) (235.697:235.697:235.697))
- )
- )
- )
+  (CELL
+        (CELLTYPE "fpga_interconnect")
+        (INSTANCE routing_segment_D_output_0_0_to_lut_\$auto\$rtlil\.cc\:2714\:MuxGate\$175_input_0_3)
+        (DELAY
+            (ABSOLUTE
+                (IOPATH datain dataout (235.697:235.697:235.697) (235.697:235.697:235.697))
+            )
+        )
+    )
 ```
 
 Those are simply linking two points and provide the delay of this interaction. In the case just above, to go from `segment_D_output_0_0` to `lut_\$auto\$rtlil\.cc\:2714\:MuxGate\$175_input_0_3`, it will take 235.697 picoseconds/ps (10⁻¹² second).
@@ -299,17 +299,17 @@ The information we need to extract from this cell is the following:
 **LUT_K**
 
 ```sdf
- (CELL
- (CELLTYPE "LUT_K")
- (INSTANCE lut_\$auto\$rtlil\.cc\:2714\:MuxGate\$139)
- (DELAY
- (ABSOLUTE
- (IOPATH in[1] out (152:152:152) (152:152:152))
- (IOPATH in[2] out (150:150:150) (150:150:150))
- (IOPATH in[3] out (150:150:150) (150:150:150))
- )
- )
- )
+   (CELL
+     (CELLTYPE "LUT_K")
+     (INSTANCE lut_\$auto\$rtlil\.cc\:2714\:MuxGate\$139)
+     (DELAY
+       (ABSOLUTE
+         (IOPATH in[1] out (152:152:152) (152:152:152))
+         (IOPATH in[2] out (150:150:150) (150:150:150))
+         (IOPATH in[3] out (150:150:150) (150:150:150))
+       )
+     )
+   )
 ```
 
 Those are the LUTs, which are the basic components of the FPGA. They are used to store the logic of the FPGA. In the case just above, the LUT is named `lut_\$auto\$rtlil\.cc\:2714\:MuxGate\$139`.
@@ -323,18 +323,18 @@ The information we need to extract from this cell is the following:
 **DFF**
 
 ```sdf
- (CELL
- (CELLTYPE "DFF")
- (INSTANCE latch_Q)
- (DELAY
- (ABSOLUTE
- (IOPATH (posedge clock) Q (303:303:303) (303:303:303))
- )
- )
- (TIMINGCHECK
- (SETUP D (posedge clock) (-46:-46:-46))
- )
- )
+   (CELL
+     (CELLTYPE "DFF")
+     (INSTANCE latch_Q)
+       (DELAY
+         (ABSOLUTE
+           (IOPATH (posedge clock) Q (303:303:303) (303:303:303))
+         )
+     )
+     (TIMINGCHECK
+       (SETUP D (posedge clock) (-46:-46:-46))
+     )
+   )
 ```
 
 Those are the DFFs, which are used to store the state of the FPGA. In the case just above, the DFF is named `latch_Q`. The DFF is triggered by the rising edge of the clock.
