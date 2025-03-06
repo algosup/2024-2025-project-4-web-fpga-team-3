@@ -14,12 +14,12 @@
 
 <!-- TABLE OF CONTENTS (REDESIGNED) -->
 <div style="background-color: #F0F0F0; border: 1px solid #ccc; border-radius: 6px; padding: 20px; margin-bottom: 20px;">
-  <h2 style="margin-top:0;">Table of Contents</h2>
+  <h2 style="margin-top:0; margin-bottom:10px;">Table of Contents</h2>
   <ul style="list-style-type: disc; padding-left: 40px; margin: 0;">
     <li><a href="#raci-matrix">RACI Matrix</a></li>
     <li><a href="#risks--mitigations">Risks &amp; Mitigations</a></li>
     <li><a href="#key-performance-indicators">Key Performance Indicators</a></li>
-    <li><a href="#assumptions">Assumptions</a></li>
+    <li><a href="#assumptions">(Optional) Assumptions</a></li>
     <li><a href="#post-mortem">Post Mortem</a></li>
     <li><a href="#weekly-reports">Weekly Reports</a></li>
   </ul>
@@ -29,13 +29,13 @@
 <table width="100%" border="0" cellspacing="0" cellpadding="20" bgcolor="#E6F7FF" style="margin-bottom:20px; border:1px solid #ccc; border-collapse:collapse;">
   <tr>
     <td>
-      <h2 id="raci-matrix" style="margin-top:0;">📌 RACI Matrix</h2>
-      <p>
+      <h2 id="raci-matrix" style="margin-top:0; margin-bottom:10px;">📌 RACI Matrix</h2>
+      <p style="margin-top:0;">
         The table below outlines the key responsibilities for each major deliverable, 
-        based on the roles in the project. 
+        based on the roles in the project.
       </p>
       <!-- Original RACI Matrix Table -->
-      <table border="1" width="100%" cellspacing="0" cellpadding="8" style="border-collapse:collapse;">
+      <table border="1" width="100%" cellspacing="0" cellpadding="8" style="border-collapse:collapse; background-color:#ffffff;">
         <tr>
           <th>Deliverable</th>
           <th>Project Manager</th>
@@ -118,8 +118,8 @@
         </tr>
       </table>
       <!-- Legend -->
-      <p><strong>Legend:</strong></p>
-      <table border="1" cellspacing="0" cellpadding="8" style="border-collapse:collapse;">
+      <p style="margin-top:20px; margin-bottom:5px;"><strong>Legend:</strong></p>
+      <table border="1" cellspacing="0" cellpadding="8" style="border-collapse:collapse; background-color:#ffffff;">
         <tr>
           <th>Letter</th>
           <th>Full Name</th>
@@ -128,27 +128,27 @@
         <tr>
           <td>R</td>
           <td>Responsible</td>
-          <td>Work to complete the task.</td>
+          <td>Works to complete the task.</td>
         </tr>
         <tr>
           <td>A</td>
           <td>Accountable</td>
-          <td>must sign off (approve) work that responsible provides. The one to praised or blame.</td>
+          <td>Must sign off (approve) work that Responsible provides.</td>
         </tr>
         <tr>
           <td>C</td>
           <td>Consulted</td>
-          <td>Those whose opinions are sought, typically subject-matter experts, and with whom there is two-way communication.</td>
+          <td>Provides input, typically subject-matter experts.</td>
         </tr>
         <tr>
           <td>I</td>
           <td>Informed</td>
-          <td>Those who are kept up-to-date on progress, often only on completion of the task or deliverable, and with whom there is just one-way communication</td>
+          <td>Kept up-to-date on progress; one-way communication.</td>
         </tr>
         <tr>
           <td>/</td>
-          <td> - </td>
-          <td>Not involved</td>
+          <td>-</td>
+          <td>Not involved.</td>
         </tr>
       </table>
     </td>
@@ -159,12 +159,12 @@
 <table width="100%" border="0" cellspacing="0" cellpadding="20" bgcolor="#F6FFED" style="margin-bottom:20px; border:1px solid #ccc; border-collapse:collapse;">
   <tr>
     <td>
-      <h2 id="risks--mitigations" style="margin-top:0;">⚠ Risks &amp; Mitigations</h2>
-      <p>
-        Below are the potential risks identified for the "Web FPGA Simulator" project, with suggested mitigations. 
-        New risks can be appended as they surface.
+      <h2 id="risks--mitigations" style="margin-top:0; margin-bottom:10px;">⚠ Risks &amp; Mitigations</h2>
+      <p style="margin-top:0;">
+        Below are the potential risks identified for the "Web FPGA Simulator" project, 
+        along with mitigation strategies. New risks can be added as they appear.
       </p>
-      <table border="1" width="100%" cellspacing="0" cellpadding="8" style="border-collapse:collapse;">
+      <table border="1" width="100%" cellspacing="0" cellpadding="8" style="border-collapse:collapse; background-color:#ffffff;">
         <tr>
           <th>Risk</th>
           <th>Consequence</th>
@@ -179,33 +179,33 @@
         </tr>
         <tr>
           <td>Complex data parsing (netlist &amp; SDF)</td>
-          <td>Delays or errors in visualizing FPGA layout and timing</td>
+          <td>Delays or errors in visualizing FPGA layout/timing</td>
           <td>Medium</td>
-          <td>Research existing libraries (e.g., <em>python-sdf-timing</em>), run integration tests early</td>
+          <td>Research existing libraries; run integration tests early</td>
         </tr>
         <tr>
           <td>Performance constraints with large netlists</td>
           <td>Slow or unresponsive user interface</td>
           <td>High</td>
-          <td>Use efficient data structures; implement incremental or lazy loading in the UI</td>
+          <td>Implement efficient data structures; consider incremental loading</td>
         </tr>
         <tr>
           <td>Scope creep or mid-project requirement changes</td>
           <td>Extended timeline or budget overrun</td>
           <td>Medium</td>
-          <td>Maintain a clearly defined backlog; schedule periodic scope reviews with stakeholders</td>
+          <td>Maintain a defined backlog; schedule scope reviews with stakeholders</td>
         </tr>
         <tr>
-          <td>Back-end integration issues with FPGA simulator</td>
-          <td>Inaccurate or incomplete signal data, undermining the UI display</td>
+          <td>Back-end integration issues</td>
+          <td>Inaccurate or incomplete signal data; UI display suffers</td>
           <td>High</td>
-          <td>Run consistent integration tests; confirm verilog/ SDF compatibility with Modelsim</td>
+          <td>Frequent integration tests; confirm SDF compatibility with Modelsim</td>
         </tr>
         <tr>
-          <td>Insufficient/unclear teacher-provided testbenches</td>
-          <td>Difficulty demonstrating time propagation in complex circuits</td>
+          <td>Unclear teacher-provided testbenches</td>
+          <td>Difficulty demonstrating time propagation for advanced circuits</td>
           <td>Medium</td>
-          <td>Define guidelines for testbench submission; provide sample testbenches in the documentation</td>
+          <td>Provide testbench guidelines; give sample testbenches in docs</td>
         </tr>
       </table>
     </td>
@@ -216,31 +216,45 @@
 <table width="100%" border="0" cellspacing="0" cellpadding="20" bgcolor="#E8F3FC" style="margin-bottom:20px; border:1px solid #ccc; border-collapse:collapse;">
   <tr>
     <td>
-      <h2 id="key-performance-indicators" style="margin-top:0;">📊 Key Performance Indicators</h2>
-      <p>
+      <h2 id="key-performance-indicators" style="margin-top:0; margin-bottom:10px;">📊 Key Performance Indicators</h2>
+      <p style="margin-top:0;">
         KPIs help measure our progress and project health. Our primary KPIs are tracked in a 
-        <a href="" target="_blank">
-          shared spreadsheet
-        </a>(<em>coming soon</em>).
+        <a href="" target="_blank">shared spreadsheet</a> (coming soon).
       </p>
       <p>
-        Below is a brief overview. More details can be found in the spreadsheet.
+        Below is a brief overview. More details will appear in the spreadsheet.
       </p>
       <ul>
         <li><strong>Documents:</strong>
           <ul>
-            <li>Project Charter Completion 60%</li>
-            <li>Functional Specification Completion 15%</li>
-            <li>Technical Specification Completion 70%</li>
-            <li>Test Plan Completion 0%</li>
-            <li>User Manual Completion 0%</li>
+            <li>Project Charter Completion: <em>60%</em></li>
+            <li>Functional Specification Completion: <em>15%</em></li>
+            <li>Technical Specification Completion: <em>70%</em></li>
+            <li>Test Plan Completion: <em>0%</em></li>
+            <li>User Manual Completion: <em>0%</em></li>
           </ul>
         </li>
         <li><strong>Development:</strong>
           <ul>
-            <li>(<em>Additional content will be provided as the project progresses.</em>)</li>
+            <li><em>Additional content will be provided as the project progresses.</em></li>
           </ul>
         </li>
+      </ul>
+    </td>
+  </tr>
+</table>
+
+<!-- (OPTIONAL) ASSUMPTIONS SECTION 
+     If you don't need it, you can remove this block entirely. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="20" bgcolor="#FAF4E8" style="margin-bottom:20px; border:1px solid #ccc; border-collapse:collapse;">
+  <tr>
+    <td>
+      <h2 id="assumptions" style="margin-top:0; margin-bottom:10px;">🔎 Assumptions</h2>
+      <ul style="margin-top:0;">
+        <li>The netlist (Verilog) and SDF files are properly formatted for the chosen simulator.</li>
+        <li>Teachers provide at least two verified example circuits/testbenches.</li>
+        <li>Students/teachers have basic FPGA and timing simulation knowledge.</li>
+        <li>The chosen simulator tools are properly licensed and available.</li>
       </ul>
     </td>
   </tr>
@@ -250,13 +264,12 @@
 <table width="100%" border="0" cellspacing="0" cellpadding="20" bgcolor="#FFF7E6" style="margin-bottom:20px; border:1px solid #ccc; border-collapse:collapse;">
   <tr>
     <td>
-      <h2 id="post-mortem" style="margin-top:0;">📝 Post Mortem</h2>
-      <p>
-        After key milestones (or at the end of the project), each team member reflects on what they learned,
-        challenges encountered, and improvement areas. 
-        (<em>Will be updated at the end of the project</em>)
+      <h2 id="post-mortem" style="margin-top:0; margin-bottom:10px;">📝 Post Mortem</h2>
+      <p style="margin-top:0;">
+        After key milestones or at the end of the project, each team member reflects on what they learned,
+        challenges encountered, and improvement areas. (Will be updated at the end of the project)
       </p>
-      <table border="1" width="100%" cellspacing="0" cellpadding="8" style="border-collapse:collapse;">
+      <table border="1" width="100%" cellspacing="0" cellpadding="8" style="border-collapse:collapse; background-color:#ffffff;">
         <tr>
           <th>Person</th>
           <th>What You Learned</th>
@@ -336,9 +349,9 @@
 <table width="100%" border="0" cellspacing="0" cellpadding="20" bgcolor="#FCF0F3" style="border:1px solid #ccc; border-collapse:collapse;">
   <tr>
     <td>
-      <h2 id="weekly-reports" style="margin-top:0;">🗓️ Weekly Reports</h2>
-      <p>
-        Each week's progress is summarized in dedicated documents. 
+      <h2 id="weekly-reports" style="margin-top:0; margin-bottom:10px;">🗓️ Weekly Reports</h2>
+      <p style="margin-top:0;">
+        Each week's progress is documented in dedicated reports. 
         You can view them all <a href="WeeklyReports">here</a> or jump directly:
       </p>
       <ul>
@@ -350,8 +363,8 @@
         <li><a href="WeeklyReports/weeklyReport6.md">Week 6</a> (coming soon)</li>
       </ul>
       <p>
-        <strong>Note:</strong> Each weekly report typically includes a brief overview of 
-        tasks completed, challenges, and plans for the following week.
+        <strong>Note:</strong> Each weekly report typically includes an overview of 
+        tasks completed, challenges, and next week's plan.
       </p>
     </td>
   </tr>
