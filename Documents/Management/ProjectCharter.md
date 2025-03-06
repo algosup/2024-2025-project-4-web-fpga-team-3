@@ -98,7 +98,7 @@
           <td align="center">
             <img src="https://ca.slack-edge.com/T019N8PRR7W-U04JK8487BK-b37025b07600-512" width="100" alt="Program Manager Picture">
           </td>
-          <td><strong>Vivien Bistrel TSANGUE CHOUNGOU</strong></td>
+          <td><strong>Vivien Bistrel<br>TSANGUE CHOUNGOU</strong></td>
           <td>Program Manager</td>
           <td align="center">
             <a href="https://www.linkedin.com/in/bistrel-tsangue-603635261/" target="_blank" style="margin-right:5px;">
