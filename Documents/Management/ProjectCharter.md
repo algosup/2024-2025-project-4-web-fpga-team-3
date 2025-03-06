@@ -209,10 +209,6 @@
           </td>
         </tr>
       </table>
-      <p style="margin-top:20px;">
-        Additional stakeholders (e.g., instructors, students) may also provide feedback 
-        on usability and ensure the project meets educational objectives.
-      </p>
     </td>
     </tr>
 </table>
