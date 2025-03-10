@@ -439,13 +439,12 @@ To change it, the css will be modified as follows:
 
 ```css
 /* Standard color */
-.signal {
-  stroke: red;
+.signal__clock {
+  stroke: #ff0000;
 }
 
-/* Brighter color */
-.signal.on {
-  stroke: red;
+.signal__clock--on {
+  stroke: #ff0000;
   stroke-width: 2;
 }
 ```
