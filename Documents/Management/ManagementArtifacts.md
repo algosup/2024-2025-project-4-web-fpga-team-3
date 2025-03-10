@@ -334,12 +334,12 @@
         You can view them all <a href="WeeklyReports">here</a> or jump directly:
       </p>
       <ul>
-        <li><a href="WeeklyReports/weeklyReport1.md">Week 1</a></li>
-        <li><a href="WeeklyReports/weeklyReport2.md">Week 2</a></li>
-        <li><a href="WeeklyReports/weeklyReport3.md">Week 3</a> (coming soon)</li>
-        <li><a href="WeeklyReports/weeklyReport4.md">Week 4</a> (coming soon)</li>
-        <li><a href="WeeklyReports/weeklyReport5.md">Week 5</a> (coming soon)</li>
-        <li><a href="WeeklyReports/weeklyReport6.md">Week 6</a> (coming soon)</li>
+        <li><a href="WeeklyReports/WeeklyReport1.md">Week 1</a></li>
+        <li><a href="WeeklyReports/WeeklyReport2.md">Week 2</a></li>
+        <li><a href="WeeklyReports/WeeklyReport3.md">Week 3</a> (coming soon)</li>
+        <li><a href="WeeklyReports/WeeklyReport4.md">Week 4</a> (coming soon)</li>
+        <li><a href="WeeklyReports/WeeklyReport5.md">Week 5</a> (coming soon)</li>
+        <li><a href="WeeklyReports/WeeklyReport6.md">Week 6</a> (coming soon)</li>
       </ul>
       <p>
         <strong>Note:</strong> Each weekly report typically includes a brief overview of 
