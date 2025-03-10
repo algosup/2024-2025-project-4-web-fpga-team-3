@@ -25,10 +25,6 @@
     - [FPGA Structure Generation](#fpga-structure-generation)
       - [Backend processing](#backend-processing)
       - [Generate the visualization](#generate-the-visualization)
-  - [Risks and mitigation strategies](#risks-and-mitigation-strategies)
-  - [Testing](#testing)
-    - [Testing Strategy](#testing-strategy)
-  - [Glossary](#glossary)
 
 </details>
 
@@ -439,16 +435,15 @@ To change it, the css will be modified as follows:
 
 ```css
 /* Standard color */
-.signal {
-  stroke: red;
+.signal__clock {
+  stroke: #ff0000;
 }
 
-/* Brighter color */
-.signal.on {
-  stroke: red;
+.signal__clock--on {
+  stroke: #ff0000;
   stroke-width: 2;
 }
-```
+
 
 The visualization will be designed to be user-friendly, interactive, and informative, providing a clear and intuitive representation of the FPGA structure and signal propagation, as you might see in the mockup share in the [Functional Specifications](../FunctionalSpecifications/FunctionalSpecifications.md).
 
@@ -504,3 +499,4 @@ The testing strategy will be based on the following principles:
 | REST API              | Representational State Transfer Application Programming Interface, a set of rules for building web services that adhere to the REST architectural style. |
 | SDF                   | Standard Delay Format, a file format used to specify timing information for digital circuits.                                                            |
 | Vite                  | A fast-build tool that provides a modern development environment for front-end projects.                                                                 |
+```
