@@ -119,13 +119,113 @@ Teachers will use the backend interface to:
   - **Next:** Helps you to go to the next step of the simulation
     <img src="images/step2.png">
   
+#### 3.1.4 Simulation Controls
+The simulation will be control manually, there will be no automatically display of current flow in the simulation. The **next and prev** button will be use t navigate throughout the simulation.
 
-**NB:** This mockup images is the first version of our simulation representing how the interface will be display, but some slight modification shall be made during the 
-      implementation phase. Here under are keypoint to take into consideration during the implementation phase.
+#### 3.1.5 Information Display
+- **FR-5.1**: The interface shall display the current simulation time.
+- **FR-5.3**: The interface shall provide information of what is happening at each step.
+- **FR-5.4**: The interface may display a timeline of signal changes.
+  <img src="images/logs.png">
+
+### 3.2 Program Flow
+Both the flowchart and pseudo code represent the flow of the simulation process on the web interface.
+
+#### 3.2.1 Flowchart
+<img src="images/flowchart.png">
+
+#### 3.2.2 Pseudo-code
+    // Pseudo-code for FPGA Simulator with Zoom and Step Control
+
+    // Define inputs
+    Input2 = Input2
+    Input3 = Input3
+    Clock = Clock
+    
+    // Define LUT and Flip-flop
+    LUT1 = CombinationalLogic(Input2, Input3)
+    
+    Flipflop1 = DFlipFlop(Clock, LUT1)
+    Flipflop3 = DFlipFlop(Clock, Flipflop1)
+    
+    // Initialize simulation state
+    CurrentStep = 0
+    ZoomLevel = 1  // 1 represents normal view, >1 represents zoomed-in
+    
+    // Simulation steps
+    InitializeComponents()
+    
+    While (SimulationRunning) {
+      If (ButtonPressed) {
+        Log("Button pressed")
+    
+        If (Button == "ZoomIn") {
+            ZoomLevel += 1
+        } Else If (Button == "ZoomOut") {
+            If (ZoomLevel > 1) {
+                ZoomLevel -= 1
+            }
+        } Else If (Button == "Next") {
+            If (ClockEdgeDetected) {
+                Log("Clock on")
+                UpdateFlipFlops("Next")
+                CurrentStep += 1
+            }
+        } Else If (Button == "Prev") {
+            If (CurrentStep > 0) {
+                UpdateFlipFlops("Prev")
+                CurrentStep -= 1
+            }
+        }
+      }
+
+      Log("Output")
+    }
+    
+    // Function Definitions
+    Function CombinationalLogic(inputs) {
+      // Define the logic for LUTs based on inputs
+      Return logic_output
+    }
+    
+    Function DFlipFlop(Clock, Input) {
+      If (ClockEdgeDetected) {
+        Return Input
+      }
+      Return PreviousState
+    }
+    
+    Function UpdateFlipFlops(direction) {
+      If (direction == "Next") {
+        Flipflop1.Update(LUT1)
+        Flipflop3.Update(Flipflop1)
+        Log("Flipflop1 updated")
+        Log("Flipflop3 updated")
+      } Else If (direction == "Prev") {
+        // Revert flip-flop states to previous step
+        RevertFlipFlopStates(CurrentStep)
+        Log("Reverted to previous state")
+      }
+    }
+    
+    Function DisplayWithZoom(zoomLevel) {
+      // Adjust display based on zoom level
+      ApplyZoom(zoomLevel)
+    }
+    
+    Function ApplyZoom(zoomLevel) {
+      // Implement zoom functionality
+      AdjustDisplayScale(zoomLevel)
+    }
+
+
+
+**📕NB:** This mockup images is the first version of our simulation representing how the interface will be display, but some slight modification shall be made during the
+implementation phase. Here under are keypoint to take into consideration during the implementation phase.
 
 - **Improve View Clarity:**
-  - Wires between elements will be grouped horizontally and vertically to maintain a clean and organized layout. 
-  - Elements like **Enable and Reset** will be removed to improve clarity, 
+  - Wires between elements will be grouped horizontally and vertically to maintain a clean and organized layout.
+  - Elements like **Enable and Reset** will be removed to improve clarity,
 
 - **Element Identification:**
   - Row and column numbers will be placed on the borders for element identification, avoiding placement inside the elements to prevent display clutter.
@@ -135,42 +235,38 @@ Teachers will use the backend interface to:
 
 - **Distinguish Input/Output Elements:**
   - Input and output elements will be treated as distinct entities, similar to flip-flops and LUTs. They will not be mixed with names like clock, enable, or reset to maintain clear categorization.
-  
-#### 3.1.4 Simulation Controls
-The simulation will be control manually, there will be no automatically display of current flow in the simulation. The **next and prev** button will be use t navigate throughout the simulation.
 
-#### 3.1.5 Information Display
-- **FR-5.1**: The interface shall display the current simulation time.
-- **FR-5.3**: The interface shall provide information of what is happening at each step.
-- **FR-5.4**: Optional: The interface may display a timeline of signal changes.
-  <img src="images/logs.png">
+- **Comprehensive Log Information:**
+  - The log will be expanded to include all clock edges and BLEs information whether they are **on or off**, to provide a complete understanding of signal movement within the FPGA.
 
-### 3.2 Backend System (Teacher Use)
 
-#### 3.2.1 Application Upload
-- **FR-6.1**: Teachers shall be able to upload verilog application files.
-- **FR-6.2**: Teachers shall be able to upload verilog testbench files.
-- **FR-6.3**: The system shall validate uploaded files for format correctness.
+### 3.3 Backend System (Teacher Use)
 
-#### 3.2.2 Processing Pipeline
-- **FR-7.1**: The backend shall process uploaded verilog files to generate required simulation data.
-- **FR-7.2**: The backend shall generate a 2D representation of the FPGA layout from the processed data.
-- **FR-7.3**: The backend shall calculate signal propagation timing based on the Standard Delay File (SDF).
-- **FR-7.4**: The backend shall store processed data in a format accessible by the frontend.
+#### 3.3.1 Application Upload(Synthesis)
+- **FR-1.1**: Teachers shall be able to upload verilog application files.
+- **FR-1.2**: Teachers shall be able to upload an SDF file.
+- **FR-1.3**: The system shall validate uploaded files for format correctness.
+- 
+#### 3.3.2 Processing Pipeline(Place)
+- **FR-2.1**: The system shall then convert the files format into a pivot file format accessible by the frontend.
+- **FR-2.2**: The backend shall process the converted files to generate required simulation data.
+- **FR-2.3**: The backend shall calculate signal propagation timing in milliseconds.
 
-#### 3.2.3 Example Management
-- **FR-8.1**: Teachers shall be able to add new examples to the system.
-- **FR-8.2**: Teachers shall be able to edit metadata for existing examples.
-- **FR-8.3**: Teachers shall be able to remove examples from the system.
-- **FR-8.4**: Teachers shall be able to organize examples into categories.
+#### 3.3.3 Pre-Visualization(Root)
+- **FR-3.1**: The backend shall generate a 2D representation of the FPGA layout from the processed data pinpointing the different
+BLEs that will be used for the signal propagation.
 
-#### 3.2.4 Intermediary File Format
-- **FR-9.1**: The system shall define an intermediary pivot file format to bridge between backend processing and frontend visualization.
-- **FR-9.2**: The format shall include:
-  - FPGA layout information (BEL positions and types)
-  - Signal route information
+#### 3.3.3 Example Management
+- **FR-3.1**: Teachers shall be able to upload verilog and SDF files.
+- **FR-3.3**: Teachers shall be able to remove examples from the system.
+
+#### 3.3.4 Intermediary File Format
+- **FR-4.1**: The system shall define an intermediary pivot file format to bridge between backend processing and frontend visualization.
+- **FR-4.2**: The format shall include:
+  - Module Name: The name of the Verilog module
+  - Signal information, names, types of input and output, and signal values
   - Signal propagation timing data
-  - Simulation event sequence
+  - Simulation event sequence about the clock signal
 
 ### 4. Use Cases
 
@@ -269,24 +365,7 @@ The simulation will be control manually, there will be no automatically display 
 
 ### 7.3 User Data Model
 - Example metadata (name, description, category)
-- User preferences for interface settings
-
-## 8. User Interface Design
-
-### 8.1 Main Interface Layout
-The main interface will consist of the following components:
-- Example selection panel (left sidebar)
-- 2D visualization canvas (main area)
-- Navigation controls (bottom right corner)
-- Simulation controls (bottom center)
-- Information panel (right sidebar)
-
-### 8.2 Interface Wireframes
-Wireframes for key interfaces should be included:
-- Main student interface
-- Example selection interface
-- Teacher upload interface
-- BEL information display
+- User preferences for interface setting
 
 ## 9. Technical Implementation Considerations
 
@@ -305,60 +384,7 @@ Wireframes for key interfaces should be included:
 - File format conversions (verilog, SDF)
 - API endpoints for frontend-backend communication
 
-## 10. Prototype Implementation Plan
 
-### 10.1 Initial Examples
-The system shall be delivered with at least two working examples:
-1. **Flipflop Example**
-  - Demonstration of signal propagation through flipflops
-  - Simple clock-driven circuit
-
-2. **LUT4 Example**
-  - Demonstration of signal propagation through Look-Up Tables
-  - Logic implementation example
-
-### 10.2 Development Phases
-1. **Phase 1: Core Visualization**
-  - Basic 2D rendering of FPGA layout
-  - BEL and route representation
-
-2. **Phase 2: Simulation Engine**
-  - Integration of timing data
-  - Signal propagation animation
-
-3. **Phase 3: User Controls**
-  - Playback controls
-  - Navigation tools
-
-4. **Phase 4: Backend Integration**
-  - Teacher upload interface
-  - Processing pipeline
-
-## 11. Testing Strategy
-
-### 11.1 Functional Testing
-- Verification of all functional requirements
-- User acceptance testing with teachers and students
-
-### 11.2 Performance Testing
-- Load testing for concurrent users
-- Animation performance testing
-
-### 11.3 Usability Testing
-- Student interface usability testing
-- Teacher interface usability testing
-
-## 12. Deployment and Maintenance
-
-### 12.1 Deployment Options
-- Server requirements
-- Containerization possibilities
-- Cloud deployment options
-
-### 12.2 Documentation Requirements
-- Source code documentation
-- User manuals for students and teachers
-- How-To guides for adding new examples
 
 ## 13. Appendices
 
