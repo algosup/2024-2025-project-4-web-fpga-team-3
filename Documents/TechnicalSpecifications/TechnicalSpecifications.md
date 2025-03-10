@@ -424,6 +424,34 @@ Now that the `.json` file has been structured, the backend must process this dat
 
 The front-end will use D3.js to create the visualization, with interactive components for controlling simulations, exploring signal paths, and analyzing FPGA behavior. The visualization will be updated in real-time as the simulation progresses, allowing users to observe signal propagation and analyze the behavior of the FPGA design.
 
+To avoid confusion regarding cable management, the team will use a color code to differentiate the signals. The color code will be as follows
+
+- **Red**: For the clock signal.
+- **Green**: For the data signal.
+- **Blue**: For the control signal.
+- **Yellow**: For the reset signal.
+- **Black**: For the other signals.
+- **Gray**: For the signals that are not used.
+
+If a signal is off, the color will be the color as above, however, when a signal is on, the color will be brighter and the wire will be thicker.
+
+To change it, the css will be modified as follows:
+
+```css
+/* Standard color */
+.signal {
+  stroke: red;
+}
+
+/* Brighter color */
+.signal.on {
+  stroke: red;
+  stroke-width: 2;
+}
+```
+
+The visualization will be designed to be user-friendly, interactive, and informative, providing a clear and intuitive representation of the FPGA structure and signal propagation, as you might see in the mockup share in the [Functional Specifications](../FunctionalSpecifications/FunctionalSpecifications.md).
+
 ## Risks and mitigation strategies
 
 The project may face several risks during development, including technical challenges, resource constraints, and schedule delays. To mitigate these risks, the team has identified the following strategies:
@@ -475,3 +503,4 @@ The testing strategy will be based on the following principles:
 | React Testing Library | A testing library for React that provides utilities for testing React components.                                                                        |
 | REST API              | Representational State Transfer Application Programming Interface, a set of rules for building web services that adhere to the REST architectural style. |
 | SDF                   | Standard Delay Format, a file format used to specify timing information for digital circuits.                                                            |
+| Vite                  | A fast-build tool that provides a modern development environment for front-end projects.                                                                 |
