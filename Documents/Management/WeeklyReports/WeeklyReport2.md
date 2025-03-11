@@ -25,7 +25,7 @@
           <td style="padding: 0.5em; border: 1px solid #d1d5da;">100%</td>
         <tr>
           <td style="padding: 0.5em; border: 1px solid #d1d5da;">Functional Specification</td>
-          <td style="padding: 0.5em; border: 1px solid #d1d5da;">40%</td>
+          <td style="padding: 0.5em; border: 1px solid #d1d5da;">70%</td>
         </tr>
         <tr>
           <td style="padding: 0.5em; border: 1px solid #d1d5da;">Technical Specification</td>
@@ -37,7 +37,7 @@
         </tr>
         <tr>
             <td style="padding: 0.5em; border: 1px solid #d1d5da;">User Manual</td>
-            <td style="padding: 0.5em; border: 1px solid #d1d5da;">0%</td>
+            <td style="padding: 0.5em; border: 1px solid #d1d5da;">20%</td>
         </tr>
       </table>
     </td>
