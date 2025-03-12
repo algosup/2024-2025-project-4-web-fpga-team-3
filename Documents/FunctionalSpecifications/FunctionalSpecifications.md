@@ -268,9 +268,9 @@ BLEs that will be used for the signal propagation.
   - Signal propagation timing data
   - Simulation event sequence about the clock signal
 
-### 4. Use Cases
+## 4. Use Cases
 
-#### 4.1 Use Case: Running a Simulation
+### 4.1 Use Case: Running a Simulation
 | **Use Case ID** | UC-01                                                                   |
 |----------------|-------------------------------------------------------------------------|
 | **Actors** | Student                                                                 |
@@ -279,7 +279,7 @@ BLEs that will be used for the signal propagation.
 | **Postconditions** | The FPGA layout is visualized, showing signal propagation in blue color. |
 | **Alternative Flows** | Student prev/next/zoom in/out the simulation mid-run.                   |
 
-#### 4.2 Use Case: Uploading a Verilog Application
+### 4.2 Use Case: Uploading a Verilog Application
 | **Use Case ID** | UC-02                                                                                   |
 |----------------|-----------------------------------------------------------------------------------------|
 | **Actors** | Teacher                                                                                 |
@@ -288,9 +288,9 @@ BLEs that will be used for the signal propagation.
 | **Postconditions** | The application is available for students.                                              |
 | **Alternative Flows** | System rejects incompatible files and provides error messages.                          |
 
-### 5. Personas
+## 5. Personas
 
-#### 5.1 Persona: Alex (The Student)
+### 5.1 Persona: Alex (The Student)
 - **Role:** Engineering Student
 - **Experience:** Basic digital electronics knowledge
 
@@ -306,7 +306,7 @@ BLEs that will be used for the signal propagation.
   - Need for interactive learning tools
 
 
-#### 5.2 Persona: Dr. Smith (The Teacher)
+### 5.2 Persona: Dr. Smith (The Teacher)
 - **Role:** FPGA Course Instructor
 - **Experience:** 15+ years teaching digital electronics
 
@@ -383,35 +383,86 @@ BLEs that will be used for the signal propagation.
 - **Teacher**: Uploads Verilog and SDF files to the backend. The backend processes these files to generate a pivot file(JSON file format).
 - **Student**: Initiates a simulation, and views the results in the web interface.
 
+### 7.4 Data Integrity and Validation
+- Implement validation rules to ensure that uploaded files are in the correct format and contain the necessary information.
+- Ensure data integrity by maintaining consistent relationships between entities (e.g., a simulation must be associated with a valid application).
+
+### Example Data Model Diagram
+
+- **Users** (Teacher, Student)
+- **Applications** (linked to Users)
+- **Simulations** (linked to Applications)
+- **Netlists** (linked to Simulations)
+
 ## 9. Technical Implementation Considerations
 
 ### 9.1 Frontend Technologies
-- Web framework options (React, Vue.js, Angular)
-- Canvas rendering options (SVG, HTML5 Canvas, WebGL)
-- UI component libraries
+
+#### 9.1.1 HTML/CSS
+
+- **Purpose:** Structure and style the web interface.
+- **Frameworks:** Consider using CSS, no need of using any framework.
+
+#### 9.1.2 JavaScript
+
+- **Purpose:** Add interactivity to the web interface.
+- **Frameworks/Libraries:** React.js for building dynamic user interfaces.
+
+#### 9.1.3 WebGL or Canvas
+
+- **Purpose:** Render the 2D FPGA layout and signal propagation visualizations.
+- **Libraries**: D3.js for complex visualizations.
 
 ### 9.2 Backend Technologies
-- Server-side programming language options
-- Database options
-- Processing pipeline integration options
+#### 9.2.1 Programming Languages
+
+* **Node.js:** JavaScript runtime for server-side development.
+
+#### 9.2.2 Web Frameworks
+
+* **Express.js (Node.js):** For creating RESTful APIs.
 
 ### 9.3 Integration Points
-- Integration with FPGA tools (`Impulse`, `yosys`, `VPR`)
-- File format conversions (verilog, SDF)
-- API endpoints for frontend-backend communication
+#### 9.3.1 Overview
+The integration tools facilitate seamless interaction between the various components of the FPGA simulator web interface. They ensure that data flows smoothly from file uploads to simulation visualization, leveraging a pivot file format (JSON) to bridge the gap between backend processing and frontend display.
+
+#### 9.3.2 Key Integration Components
+
+1. **File Upload and Conversion**:
+   - **Verilog and SDF Files**: Teachers upload Verilog application files and corresponding SDF files via the web interface.
+   - **Conversion to JSON**: Upon upload, these files are converted into a standardized JSON format. This JSON acts as a pivot file, containing all necessary data for simulation, including netlist and timing information.
+   - **Tools**: Utilize backend services or scripts to automate the conversion process, ensuring consistency and accuracy in the JSON output.
+
+2. **Backend Processing**:
+   - **JSON Parsing**: The backend processes the JSON file to extract relevant data for simulation setup.
+   - **Simulation Engine**: The backend simulation engine uses the parsed JSON data to configure and run the simulation.
+3. **Frontend Visualization**:
+   - **Data Retrieval**: The frontend retrieves simulation data from the backend via RESTful APIs, using the JSON format for data interchange.
+   - **Visualization Tools**: Use libraries like D3.js or Three.js to render the 2D FPGA layout and signal propagation based on the JSON data.
+
+4. **API Integration**:
+   - **RESTful APIs**: Define clear and secure API endpoints for communication between the frontend and backend.
+   - **Authentication**: Implement secure authentication mechanisms to protect API access and ensure data integrity.
+
+
+#### 9.3.3 Benefits
+- **Seamless Data Flow**: Ensures smooth data transition between different system components, from file upload to simulation visualization.
+- **Scalability**: Supports the addition of new features or tools without disrupting existing workflows.
+- **Consistency**: The use of a standardized JSON format maintains data consistency across the system.
+- **Real-time Interaction**: Enhances user experience with real-time updates and interactive visualizations.
 
 
 
 ## 13. Appendices
 
 ### 13.1 Glossary of Terms
-- FPGA: Field-Programmable Gate Array, an integrated circuit with basic elements and preconfigured electrical signal routes between them. The selected FPGA is a NanoXplore NGultra (with VTR flow a basic Xilinx serie 7 model).
-- BEL: Basic Element, the hardware electrical resources available inside the FPGA like flipflop, Look-Up-Table (LUT), Block RAM.
-- Application: The function to be executed in the FPGA (developed in verilog).
-- Synthesis: Translation of the application into an electrical equivalent. It creates a netlist. The tool used will be Impulse (or yosys in VTR flow).
-- P&R: Place and Route, the packing of the netlist component in the FPGA available BEL (Place) followed by selection of routes for signals between each BEL (Route). The tool used will be Impulse (or VPR for VTR flow).
-- Simulator: Compiles verilog testbenches and applications and executes the simulation of every signal with regard to time evolution. The tool used will be Modelsim (using icarus verilog for VTR flow).
-- Software: The web application developed in the frame of this call for tender.
+- **FPGA:** Field-Programmable Gate Array, an integrated circuit with basic elements and preconfigured electrical signal routes between them. The selected FPGA is a NanoXplore NGultra (with VTR flow a basic Xilinx serie 7 model).
+- **BEL:** Basic Element, the hardware electrical resources available inside the FPGA like flipflop, Look-Up-Table (LUT), Block RAM.
+- **Application:** The function to be executed in the FPGA (developed in verilog).
+- **Synthesis:** Translation of the application into an electrical equivalent. It creates a netlist. The tool used will be Impulse (or yosys in VTR flow).
+- **P&R:** Place and Route, the packing of the netlist component in the FPGA available BEL (Place) followed by selection of routes for signals between each BEL (Route). The tool used will be Impulse (or VPR for VTR flow).
+- **Simulator:** Compiles verilog testbenches and applications and executes the simulation of every signal with regard to time evolution. The tool used will be Modelsim (using icarus verilog for VTR flow).
+- **Software:** The web application developed in the frame of this call for tender.
 
 ### 13.2 References
 - DigitalJS project: https://digitaljs.tilk.eu/
