@@ -271,30 +271,22 @@ BLEs that will be used for the signal propagation.
 ### 4. Use Cases
 
 #### 4.1 Use Case: Running a Simulation
-| **Use Case ID** | UC-01 |
-|----------------|--------|
-| **Actors** | Student |
-| **Preconditions** | The teacher has preloaded application examples. |
-| **Description** | The student selects an application and runs the simulation. |
-| **Postconditions** | The FPGA layout is visualized, showing signal propagation. |
-| **Alternative Flows** | Student pauses/resumes simulation mid-run. |
+| **Use Case ID** | UC-01                                                                   |
+|----------------|-------------------------------------------------------------------------|
+| **Actors** | Student                                                                 |
+| **Preconditions** | The teacher has preloaded an application example.                       |
+| **Description** | The student runs the simulation.              |
+| **Postconditions** | The FPGA layout is visualized, showing signal propagation in blue color. |
+| **Alternative Flows** | Student prev/next/zoom in/out the simulation mid-run.                   |
 
 #### 4.2 Use Case: Uploading a Verilog Application
-| **Use Case ID** | UC-02 |
-|----------------|--------|
-| **Actors** | Teacher |
-| **Preconditions** | The teacher has a Verilog file and testbench. |
-| **Description** | The teacher uploads the files, which are processed for visualization. |
-| **Postconditions** | The application is available for students. |
-| **Alternative Flows** | System rejects incompatible files and provides error messages. |
-
-#### 4.3 Use Case: Exporting Simulation Data
-| **Use Case ID** | UC-03 |
-|----------------|--------|
-| **Actors** | Student, Teacher |
-| **Preconditions** | A simulation has been completed. |
-| **Description** | The user exports results for offline analysis. |
-| **Postconditions** | Data is downloaded in a structured format. |
+| **Use Case ID** | UC-02                                                                                   |
+|----------------|-----------------------------------------------------------------------------------------|
+| **Actors** | Teacher                                                                                 |
+| **Preconditions** | The teacher has a Verilog file and SDF file.                                            |
+| **Description** | The teacher uploads the files, which are processed into a pivot file for visualization. |
+| **Postconditions** | The application is available for students.                                              |
+| **Alternative Flows** | System rejects incompatible files and provides error messages.                          |
 
 ### 5. Personas
 
@@ -335,37 +327,61 @@ BLEs that will be used for the signal propagation.
 - **NFR-1.1**: The web interface shall load within 5 seconds on a standard broadband connection.
 - **NFR-1.2**: The simulation animation shall run smoothly without noticeable lag.
 - **NFR-1.3**: The system shall support at least 50 concurrent users.
+- **NFR-1.4**: The simulation running time in between BLEs shall be similar to that on the SDF file
 
 ### 6.2 Usability Requirements
 - **NFR-2.1**: The interface shall be intuitive and require minimal training for students.
 - **NFR-2.2**: The interface shall be compatible with major web browsers (Chrome, Firefox, Safari, Edge).
 - **NFR-2.3**: The interface shall be responsive and usable on devices with screens of at least 1024x768 resolution.
+- **NFR-2.4**: The simulation shall run automatically.
+- **NFR-2.5**: Minimize the learning curve for new users, especially students, to quickly understand and use the system effectively.
+- **NFR-2.6**: The system ensure the web interface is accessible to users with disabilities, following relevant accessibility standards.
 
 ### 6.3 Reliability Requirements
 - **NFR-3.1**: The system shall have an uptime of at least 99%.
-- **NFR-3.2**: The system shall handle unexpected input without crashing.
+- **NFR-3.2**: The system shall handle and recover mechanisms to manage unexpected issues gracefully.
 - **NFR-3.3**: The system shall provide appropriate error messages for common issues.
+- 
 
 ### 6.4 Security Requirements
-- **NFR-4.1**: The backend shall implement authentication for teacher access.
+- **NFR-4.1**: The backend shall implement authentication for both teacher and student access.
 - **NFR-4.2**: The system shall validate all user inputs to prevent injection attacks.
 - **NFR-4.3**: The system shall implement appropriate access controls to prevent unauthorized file access.
+- **NFR-4.4**: The system shall implement a login page for both the teacher and student.
+- **NFR-4.5**: Encrypt sensitive data both in transit and at rest to prevent unauthorized access.
+
+### 6.5 Maintainability:
+
+- **NFR-5.1**: Ensure the codebase is well-documented, modular, and follows best practices for ease of maintenance and future development.
+- **NFR-5.1**: Implement a process for regular updates and patches to address bugs and security vulnerabilities.
+- **NFR-5.1**: Use monitoring tools to track system performance and identify potential issues proactively.
 
 ## 7. Data Model
 
-### 7.1 FPGA Layout Model
-- BEL representation (type, position, state)
-- Signal route representation (path, connected BELs)
-- FPGA grid coordinates system
+### 7.1 Entities and Relationships
 
-### 7.2 Simulation Model
-- Time-based events for signal changes
-- Signal propagation timing data
-- BEL state changes over time
+  - **Application:** Represents a Verilog application that can be simulated.
 
-### 7.3 User Data Model
-- Example metadata (name, description, category)
-- User preferences for interface setting
+  - **Attributes:** Application ID, Name, Description, Verilog Code, SDF Code.
+
+  - **User:** The user will just run the simulation program, no login or authentification page needed.
+
+  - **Simulation:** Represents a simulation run of an application.
+
+  - **Attributes:** Simulation ID, Application ID, Timestamp, Status (e.g., Running, Completed).
+
+  - **Netlist:**  Represents the netlist generated from an application.
+
+  - **Attributes:** Netlist ID, Application ID, Verilog Netlist, SDF File.
+
+### 7.2 Relationships
+- A **Teacher** can upload an **SDF and verilog file**.
+- A **Student** can run the **simulations** .
+- Each **Simulation** is associated with a **Netlist**.
+
+### 7.3 Data Flow
+- **Teacher**: Uploads Verilog and SDF files to the backend. The backend processes these files to generate a pivot file(JSON file format).
+- **Student**: Initiates a simulation, and views the results in the web interface.
 
 ## 9. Technical Implementation Considerations
 
