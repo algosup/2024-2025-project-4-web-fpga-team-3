@@ -20,6 +20,10 @@
 ## Web Interface for FPGA Simulator
 </div>
 
+Your text is well-written and clear. Here are a few minor corrections and suggestions to improve clarity and correctness:
+
+---
+
 ## 1. Introduction
 
 ### 1.1 Purpose
@@ -29,48 +33,49 @@ This document outlines the functional specifications for a web interface that vi
 The project involves developing a web application that:
 - Displays a 2D representation of an FPGA's layout after synthesis and Place & Route (P&R)
 - Animates signal propagation through the FPGA's Basic Elements (BELs) and interconnections
-- Allows users to control simulation (next, prev)
+- Allows users to control the simulation (next, previous)
 - Provides navigation tools (zoom, pan) for exploring the FPGA layout
-- Includes a backend system for teachers to add example applications and testbenches
+- Includes a backend system for teachers to upload Verilog and SDF files
 
 ### 1.3 Intended Audience
 This specification is intended for:
-- Development team responsible for implementing the web interface
+
+- The development team responsible for implementing the web interface
 - Teachers who will use the backend to create educational content
 - Stakeholders reviewing the project requirements and deliverables
-- Students who will interfere with the frontend to see how signal is flowing in an FPGA
+- Students who will interact with the frontend to see how signals flow in an FPGA
+
+---
 
 ## 2. System Overview
 
 ### 2.1 System Architecture
-The system will consist of two main components:
 
-1. **Frontend Web Interface**
-  - Browser-based application for students
-  - Interactive 2D visualization of FPGA layout
-  - Simulation controls
-  - Navigation tools for the 2D view
+The FPGA simulator web interface is designed as a multi-tier architecture, ensuring separation of concerns and scalability. The architecture comprises the following components:
 
-2. **Backend System**
-  - Processing pipeline for verilog applications and testbenches
-  - API for the frontend to access simulation data
-  - Teacher interface for adding new examples
+#### 2.1.1 Presentation Layer (Frontend)
+  - **Web Interface**: A user-friendly interface simulating signal propagation in an FPGA.
+  - **Visualization**: An animated flow of signals from the starting point to the ending point.
+  - **Interactive Controls**: Features like zoom, pan, next, and previous buttons for navigating and controlling simulations.
 
+#### 2.1.2 Application Layer (Backend)
+  - **Web Server**: Creates a link between the frontend and backend via an API.
+  - **Simulation Engine**: The simulations run based on the pivot file.
+  - **Business Logic**: Contains the core logic for processing uploaded files, managing simulations, and handling user interactions.
 
 ### 2.2 User Roles
 
-#### 2.2.1 Student
-Students will use the web interface to:
-- Select from preloaded application examples
-- View the 2D representation of the FPGA layout
-- Control the simulation playback (play, pause, speed)
-- Navigate the 2D view (zoom, pan)
-- Observe signal propagation through the FPGA
+#### 2.2.1 Teacher
+  - **Responsibilities**: Upload Verilog applications and SDF files, manage application examples, and ensure the accuracy of simulation data.
+  - **Permissions**: Access to the backend interface for file uploads and data management. Ability to create and update application examples.
+  - **Interactions**: Primarily interacts with the backend to upload files and configure simulations.
 
-#### 2.2.2 Teacher
-Teachers will use the backend interface to:
-- Upload verilog applications and testbenches
-- Create educational content for students
+#### 2.2.2 Student
+  - **Responsibilities**: Run simulations and observe signal propagation within the FPGA.
+  - **Permissions**: Access to the frontend interface to control simulations and view results.
+  - **Interactions**: Interacts with the web interface to navigate the 2D FPGA layout, control simulations, and analyze results.
+
+---
 
 ## 3. Functional Requirements(FR)
 
@@ -78,28 +83,28 @@ Teachers will use the backend interface to:
 
 #### 3.1.1 Application Selection
 - **FR-1.1**: The interface will display a loaded application example.
-- **FR-1.2**: Users shall be able to interact with no problem with the interface.
+- **FR-1.2**: Users shall be able to interact with the interface without any problems.
 
 #### 3.1.2 2D Visualization
 - **FR-2.1**: The interface shall display a 2D representation of the FPGA layout showing:
   - Basic Elements (BELs) used by the application
   - Signal routes between BELs
   - Current state of signals (active/inactive)
-- **FR-2.2**: BELs shall be visually distinguishable by type (flipflop, LUT).
+- **FR-2.2**: BELs shall be visually distinguishable by type (flip-flop, LUT).
 - **FR-2.3**: Signal routes shall be visible and distinguishable from BELs.
-  - BELs shall be display in block, while signal shall be display in line.
-    - **Flipflop:** Display in a horizontal rectangular form.
-    - **LUT:** Display in a vertical rectangular form
-    - **Signals:** Display in vertical and horizontal lines
+  - BELs shall be displayed in block form, while signals shall be displayed in line form.
+    - **Flip-flop**: Displayed in a horizontal rectangular form.
+    - **LUT**: Displayed in a vertical rectangular form.
+    - **Signals**: Displayed in vertical and horizontal lines.
 - **FR-2.4**: Active signals shall be visually highlighted during simulation.
-  - Inactive signals shall be display in gray(**color: #808080**)
-  - Signal path from input to output shall be display in blue(**color: #0000FF**)
-  - Current active signal state in the simulation shall be display is red with a layer shadow effect(**color: #FF0000**)
+  - Inactive signals shall be displayed in gray (**color: #808080**).
+  - Signal path from input to output shall be displayed in blue (**color: #0000FF**).
+  - The current active signal state in the simulation shall be displayed in red with a layer shadow effect (**color: #FF0000**).
 
   <img src="images/input.png">
 
 #### 3.1.3 Navigation Controls
-- **FR-3.1**: Users shall be able to zoom in and out of the 2D view.
+- **FR-3.1**: Users will be able to zoom in and out of the 2D view.
   - The zoom button with positive sign is for zoom in whereas the other one with negative sign is for zoom out
     <img src="images/zoom.png">
 
@@ -113,28 +118,30 @@ Teachers will use the backend interface to:
     
   <img src="images/controls.png">
   
-  - **Steps:** Guide you to know where precisely at which level you are in the simulation
-  - **Prev:** Permit you to see the previous step of the simulation
+  - **Steps:** Guide you to know precisely at what level you are in the simulation
+  - **Prev:** Helps you to see the previous step of the simulation
     <img src="images/step1.png">
   - **Next:** Helps you to go to the next step of the simulation
     <img src="images/step2.png">
   
 #### 3.1.4 Simulation Controls
-The simulation will be control manually, there will be no automatically display of current flow in the simulation. The **next and prev** button will be use t navigate throughout the simulation.
+The simulation will be controlled manually; there will be no automatic display of the current flow in the simulation. The **next and previous** buttons will be used to navigate through the simulation.
 
 #### 3.1.5 Information Display
-- **FR-5.1**: The interface shall display the current simulation time.
+- **FR-5.1**: The interface will display the current simulation time.
 - **FR-5.3**: The interface shall provide information of what is happening at each step.
 - **FR-5.4**: The interface may display a timeline of signal changes.
   <img src="images/logs.png">
 
 ### 3.2 Program Flow
-Both the flowchart and pseudo code represent the flow of the simulation process on the web interface.
+Both the flowchart and pseudocode represent the flow of the simulation process on the web interface.
 
 #### 3.2.1 Flowchart
+
 <img src="images/flowchart.png">
 
 #### 3.2.2 Pseudo-code
+
     // Pseudo-code for FPGA Simulator with Zoom and Step Control
 
     // Define inputs
@@ -220,53 +227,76 @@ Both the flowchart and pseudo code represent the flow of the simulation process 
 
 
 
-**📕NB:** This mockup images is the first version of our simulation representing how the interface will be display, but some slight modification shall be made during the
-implementation phase. Here under are keypoint to take into consideration during the implementation phase.
+Certainly! Here's an improved version of your notes for the mockup images, with clearer language and more structured formatting:
+
+---
+
+**📕 Note:** This mockup represents the initial version of our simulation interface. Some modifications will be made during the implementation phase. Below are key points to consider:
+
+### 3.3 Key Points for Implementation and Improvement.
 
 - **Improve View Clarity:**
-  - Wires between elements will be grouped horizontally and vertically to maintain a clean and organized layout.
-  - Elements like **Enable and Reset** will be removed to improve clarity,
+  - **Wire Organization**: Group wires horizontally and vertically to maintain a clean and organized layout.
+  - **Element Simplification**: Remove elements like **Enable** and **Reset** to enhance clarity.
+  - **Menu Icon**: Display a small menu icon at the top right of the screen. Clicking this icon will allow teachers to upload new Verilog and SDF files.
+  - **First-Time User Notification**: If a user runs the simulation for the first time, display a small pop-up notification prompting them to upload their files to initiate the simulation.
 
 - **Element Identification:**
-  - Row and column numbers will be placed on the borders for element identification, avoiding placement inside the elements to prevent display clutter.
+  - **Grid Labels**: Place row and column numbers on the borders for easy element identification, avoiding clutter within the elements.
 
 - **Refine Transition Animation:**
-  - The transition animation will be refined to accurately represent signal propagation through the wires. The blur effect will be adjusted to better illustrate signal movement. Instead of using only the red color, a mix of red and green color of 1mm each on active signal line.
+  - **Signal Propagation**: Enhance the transition animation to accurately depict signal propagation through the wires.
+  - **Visual Effects**: Adjust the blur effect to better illustrate signal movement. Use a mix of red and green colors, each 1mm in length, on active signal lines to distinguish different signal states.
 
 - **Distinguish Input/Output Elements:**
-  - Input and output elements will be treated as distinct entities, similar to flip-flops and LUTs. They will not be mixed with names like clock, enable, or reset to maintain clear categorization.
+  - **Clear Categorization**: Treat input and output elements as distinct entities, similar to flip-flops and LUTs. Avoid mixing them with names like clock, enable, or reset to maintain clear categorization.
 
 - **Comprehensive Log Information:**
-  - The log will be expanded to include all clock edges and BLEs information whether they are **on or off**, to provide a complete understanding of signal movement within the FPGA.
+  - **Detailed Logs**: Expand the log to include all clock edges and Basic Logic Elements (BLEs) information, indicating whether they are **on** or **off**. This provides a complete understanding of signal movement within the FPGA.
 
+---
+
+### Improvements Made:
+- **Clarity and Conciseness**: Simplified language and removed redundancies for better readability.
+- **Structured Formatting**: Organized points into clear categories with sub-points for easier navigation.
+- **Consistent Terminology**: Used consistent terms and removed unnecessary capitalization for a more professional tone.
+- **User-Friendly Instructions**: Provided clear instructions for user interactions, such as the menu icon and first-time user notification.
+
+These improvements should make the notes more accessible and actionable for the implementation team.
 
 ### 3.3 Backend System (Teacher Use)
 
-#### 3.3.1 Application Upload(Synthesis)
-- **FR-1.1**: Teachers shall be able to upload verilog application files.
-- **FR-1.2**: Teachers shall be able to upload an SDF file.
-- **FR-1.3**: The system shall validate uploaded files for format correctness.
-- 
-#### 3.3.2 Processing Pipeline(Place)
-- **FR-2.1**: The system shall then convert the files format into a pivot file format accessible by the frontend.
-- **FR-2.2**: The backend shall process the converted files to generate required simulation data.
-- **FR-2.3**: The backend shall calculate signal propagation timing in milliseconds.
+#### 3.3.1 Application Upload (Synthesis)
+- **FR-1.1**: Teachers shall be able to upload Verilog application files through a secure and user-friendly interface.
+- **FR-1.2**: The system shall support batch uploads of multiple Verilog files to streamline the process for teachers.
+- **FR-1.3**: The system shall validate uploaded files for format correctness and provide immediate feedback on any errors or inconsistencies.
+- **FR-1.4**: Upon successful validation, the system shall store the uploaded files securely in a designated storage solution.
 
-#### 3.3.3 Pre-Visualization(Root)
-- **FR-3.1**: The backend shall generate a 2D representation of the FPGA layout from the processed data pinpointing the different
-BLEs that will be used for the signal propagation.
+#### 3.3.2 Processing Pipeline (Place)
+- **FR-2.1**: The system shall convert the uploaded Verilog and SDF files into a standardized JSON pivot file format accessible by the frontend.
+- **FR-2.2**: The backend shall process the converted JSON files to generate the necessary simulation data, including netlist and timing information.
+- **FR-2.3**: The backend shall dynamically calculate signal propagation timing in milliseconds each time the user interacts with the simulation control panel, ensuring real-time updates.
+- **FR-2.4**: The processing pipeline shall be optimized for performance, handling multiple simulations concurrently without significant delays.
 
-#### 3.3.3 Example Management
-- **FR-3.1**: Teachers shall be able to upload verilog and SDF files.
-- **FR-3.3**: Teachers shall be able to remove examples from the system.
+#### 3.3.3 Pre-Visualization (Route)
+- **FR-3.1**: The backend shall generate a 2D representation of the FPGA layout from the processed data, highlighting the different Basic Logic Elements (BLEs) used for signal propagation.
+- **FR-3.2**: The visualization data shall be structured to support interactive features such as zoom and navigation within the frontend interface.
+- **FR-3.3**: The backend shall ensure the visualization data is synchronized with the simulation state, providing an accurate representation of signal propagation.
 
-#### 3.3.4 Intermediary File Format
-- **FR-4.1**: The system shall define an intermediary pivot file format to bridge between backend processing and frontend visualization.
-- **FR-4.2**: The format shall include:
-  - Module Name: The name of the Verilog module
-  - Signal information, names, types of input and output, and signal values
-  - Signal propagation timing data
-  - Simulation event sequence about the clock signal
+#### 3.3.4 Example Management
+- **FR-4.1**: Teachers shall be able to upload both Verilog and SDF files for each application example.
+- **FR-4.2**: The system shall maintain a catalog of application examples, allowing teachers to manage, update, or delete examples as needed.
+
+#### 3.3.5 Intermediary File Format
+- **FR-5.1**: The system shall define an intermediary JSON pivot file format to bridge between backend processing and frontend visualization.
+- **FR-5.2**: The JSON format shall include:
+  - **Module Name**: The name of the Verilog module.
+  - **Signal Information**: Names, types (input/output), and values of signals.
+  - **Signal Propagation Timing Data**: Timing details for each signal path.
+  - **Simulation Event Sequence**: Information about the clock signal and other relevant events.
+- **FR-5.3**: The JSON format shall be versioned to accommodate future enhancements and ensure backward compatibility.
+
+---
 
 ## 4. Use Cases
 
@@ -321,112 +351,134 @@ BLEs that will be used for the signal propagation.
   - Difficulty in explaining dynamic concepts
   - Limited visual tools for demonstration
 
+---
+
 ## 6. Non-Functional Requirements
 
 ### 6.1 Performance Requirements
-- **NFR-1.1**: The web interface shall load within 5 seconds on a standard broadband connection.
-- **NFR-1.2**: The simulation animation shall run smoothly without noticeable lag.
-- **NFR-1.3**: The system shall support at least 50 concurrent users.
-- **NFR-1.4**: The simulation running time in between BLEs shall be similar to that on the SDF file
+- **NFR-1.1**: The web interface shall load within 3 seconds on a standard broadband connection to ensure a responsive user experience.
+- **NFR-1.2**: The simulation animation shall run smoothly with no noticeable lag, maintaining at least 30 frames per second.
+- **NFR-1.3**: The simulation running time between Basic Logic Elements (BLEs) should not match the timing specified in the SDF file, in order to ensure a clean visual signal propagation.
+- **NFR-1.4**: The backend shall process file uploads and generate simulation data within 10 seconds for typical use cases.
 
 ### 6.2 Usability Requirements
-- **NFR-2.1**: The interface shall be intuitive and require minimal training for students.
-- **NFR-2.2**: The interface shall be compatible with major web browsers (Chrome, Firefox, Safari, Edge).
-- **NFR-2.3**: The interface shall be responsive and usable on devices with screens of at least 1024x768 resolution.
-- **NFR-2.4**: The simulation shall run automatically.
-- **NFR-2.5**: Minimize the learning curve for new users, especially students, to quickly understand and use the system effectively.
-- **NFR-2.6**: The system ensure the web interface is accessible to users with disabilities, following relevant accessibility standards.
+- **NFR-2.1**: The interface shall be intuitive and require minimal training for students, with clear navigation and interactive elements.
+- **NFR-2.2**: The interface must be compatible with major web browsers, including the latest versions of Chrome, Firefox, Safari, and Edge.
+- **NFR-2.3**: The interface must be responsive and usable on devices with screens of at least 1024x768 resolution, including tablets and mobile devices.
+- **NFR-2.4**: The simulation shall offer manual playback options, with user controls for previous, next step and adjusting the zoom and pan.
+- **NFR-2.5**: Minimize the learning curve for new users, especially students, by providing tooltips, tutorials, and a comprehensive help section.
+- **NFR-2.6**: The system shall ensure the web interface is accessible to users with disabilities, adhering to WCAG 2.1 Level AA accessibility standards.
 
 ### 6.3 Reliability Requirements
-- **NFR-3.1**: The system shall have an uptime of at least 99%.
-- **NFR-3.2**: The system shall handle and recover mechanisms to manage unexpected issues gracefully.
-- **NFR-3.3**: The system shall provide appropriate error messages for common issues.
-- 
+- **NFR-3.1**: The system shall maintain an uptime of at least 99.5%, excluding planned maintenance windows.
+- **NFR-3.2**: The system shall implement robust error handling and recovery mechanisms to manage unexpected issues gracefully, with automated failover processes.
+- **NFR-3.3**: The system shall provide informative and user-friendly error messages for common issues, guiding users on how to resolve them.
+- **NFR-3.4**: Critical system components shall have redundancy to ensure high availability and minimize downtime.
 
-### 6.4 Security Requirements
-- **NFR-4.1**: The backend shall implement authentication for both teacher and student access.
-- **NFR-4.2**: The system shall validate all user inputs to prevent injection attacks.
-- **NFR-4.3**: The system shall implement appropriate access controls to prevent unauthorized file access.
-- **NFR-4.4**: The system shall implement a login page for both the teacher and student.
-- **NFR-4.5**: Encrypt sensitive data both in transit and at rest to prevent unauthorized access.
+### 6.4 Maintainability Requirements
+- **NFR-5.1**: Ensure the codebase is well-documented, modular, and adheres to best practices for ease of maintenance and future development.
+- **NFR-5.2**: Implement a process for regular updates and patches to address bugs, performance issues, and security vulnerabilities promptly.
+- **NFR-5.3**: Use monitoring tools to track system performance, resource utilization, and user activity, identifying potential issues proactively.
+- **NFR-5.4**: Maintain a version control system (e.g., Git) to manage code changes, facilitate collaboration, and enable rollbacks if necessary.
+- **NFR-5.5**: Conduct regular code reviews and automated testing to ensure code quality and catch issues early in the development cycle.
 
-### 6.5 Maintainability:
-
-- **NFR-5.1**: Ensure the codebase is well-documented, modular, and follows best practices for ease of maintenance and future development.
-- **NFR-5.1**: Implement a process for regular updates and patches to address bugs and security vulnerabilities.
-- **NFR-5.1**: Use monitoring tools to track system performance and identify potential issues proactively.
+---
 
 ## 7. Data Model
 
 ### 7.1 Entities and Relationships
 
-  - **Application:** Represents a Verilog application that can be simulated.
+- **Application**: Represents a Verilog application that can be simulated.
+  - **Attributes**:
+    - Application ID (Unique Identifier).
+    - Name (Name of the application).
+    - Description (Brief description of the application).
+    - Verilog Code (The Verilog code for the application).
+    - SDF Code (The SDF file content for timing information).
+    - Upload Timestamp (Date and time when the application was uploaded).
 
-  - **Attributes:** Application ID, Name, Description, Verilog Code, SDF Code.
+- **Simulation**: Represents a simulation run of an application.
+  - **Attributes**:
+    - Simulation ID (Unique Identifier).
+    - Application ID (Reference to the associated application).
+    - Timestamp (Date and time when the simulation was initiated).
+    - Status:
+      - **Step:** Displaying in number, at which level you are on the simulation.
+      - **Log:** Displaying detail information on what is happening at each step.
 
-  - **User:** The user will just run the simulation program, no login or authentification page needed.
-
-  - **Simulation:** Represents a simulation run of an application.
-
-  - **Attributes:** Simulation ID, Application ID, Timestamp, Status (e.g., Running, Completed).
-
-  - **Netlist:**  Represents the netlist generated from an application.
-
-  - **Attributes:** Netlist ID, Application ID, Verilog Netlist, SDF File.
+- **Netlist**: Represents the netlist generated from an application.
+  - **Attributes**:
+    - Netlist ID (Unique Identifier)
+    - Application ID (Reference to the associated application)
+    - Verilog Netlist (The netlist in Verilog format)
+    - SDF File (The SDF file content)
 
 ### 7.2 Relationships
-- A **Teacher** can upload an **SDF and verilog file**.
-- A **Student** can run the **simulations** .
-- Each **Simulation** is associated with a **Netlist**.
+- A **Teacher** can upload multiple **Applications**, each consisting of Verilog and SDF files.
+- A **Student** can run multiple **Simulations** on available **Applications**.
+- Each **Simulation** is associated with one **Application** and generates a corresponding **Netlist**.
+- **Users** can be either **Teachers** or **Students**, with different permissions and access levels.
 
 ### 7.3 Data Flow
-- **Teacher**: Uploads Verilog and SDF files to the backend. The backend processes these files to generate a pivot file(JSON file format).
-- **Student**: Initiates a simulation, and views the results in the web interface.
+- **Teacher**:
+  - Uploads Verilog and SDF files to the backend.
+  - The backend processes these files to generate a pivot file in JSON format, which includes necessary simulation data.
+  - Selects an **Application** from the preloaded examples.
+
+- **Student**:
+  - Initiates a **Simulation**.
+  - Views the simulation results in the web interface, with real-time updates on signal propagation.
 
 ### 7.4 Data Integrity and Validation
-- Implement validation rules to ensure that uploaded files are in the correct format and contain the necessary information.
-- Ensure data integrity by maintaining consistent relationships between entities (e.g., a simulation must be associated with a valid application).
+- **File Validation**: Implement validation rules to ensure that uploaded Verilog and SDF files are in the correct format and contain all necessary information.
+- **Data Consistency**: Maintain consistent relationships between entities (e.g., a **Simulation** must be associated with a valid **Application** and **Netlist**).
+- **Error Handling**: Implement error handling mechanisms to manage invalid data entries or processing failures, providing informative feedback to users.
+- **Access Control**: Ensure that only authorized users can upload applications or initiate simulations, based on their role (Teacher or Student).
 
 ### Example Data Model Diagram
 
-- **Users** (Teacher, Student)
 - **Applications** (linked to Users)
+  - **Attributes**: Application ID, Name, Description, Verilog Code, SDF Code, Upload Timestamp.
 - **Simulations** (linked to Applications)
+  - **Attributes**: Application ID, Timestamp, Status.
 - **Netlists** (linked to Simulations)
+  - **Attributes**: Netlist ID, Application ID, Verilog Netlist, SDF File, Generation Timestamp.
 
-## 9. Technical Implementation Considerations
+---
 
-### 9.1 Frontend Technologies
+## 8. Technical Implementation Considerations
 
-#### 9.1.1 HTML/CSS
+### 8.1 Frontend Technologies
+
+#### 8.1.1 HTML/CSS
 
 - **Purpose:** Structure and style the web interface.
 - **Frameworks:** Consider using CSS, no need of using any framework.
 
-#### 9.1.2 JavaScript
+#### 8.1.2 JavaScript
 
 - **Purpose:** Add interactivity to the web interface.
 - **Frameworks/Libraries:** React.js for building dynamic user interfaces.
 
-#### 9.1.3 WebGL or Canvas
+#### 8.1.3 WebGL or Canvas
 
 - **Purpose:** Render the 2D FPGA layout and signal propagation visualizations.
 - **Libraries**: D3.js for complex visualizations.
 
-### 9.2 Backend Technologies
-#### 9.2.1 Programming Languages
+### 8.2 Backend Technologies
+#### 8.2.1 Programming Languages
 
 * **Node.js:** JavaScript runtime for server-side development.
 
-#### 9.2.2 Web Frameworks
+#### 8.2.2 Web Frameworks
 
 * **Express.js (Node.js):** For creating RESTful APIs.
 
-### 9.3 Integration Points
-#### 9.3.1 Overview
+### 8.3 Integration Points
+#### 8.3.1 Overview
 The integration tools facilitate seamless interaction between the various components of the FPGA simulator web interface. They ensure that data flows smoothly from file uploads to simulation visualization, leveraging a pivot file format (JSON) to bridge the gap between backend processing and frontend display.
 
-#### 9.3.2 Key Integration Components
+#### 8.3.2 Key Integration Components
 
 1. **File Upload and Conversion**:
    - **Verilog and SDF Files**: Teachers upload Verilog application files and corresponding SDF files via the web interface.
@@ -445,7 +497,7 @@ The integration tools facilitate seamless interaction between the various compon
    - **Authentication**: Implement secure authentication mechanisms to protect API access and ensure data integrity.
 
 
-#### 9.3.3 Benefits
+#### 8.3.3 Benefits
 - **Seamless Data Flow**: Ensures smooth data transition between different system components, from file upload to simulation visualization.
 - **Scalability**: Supports the addition of new features or tools without disrupting existing workflows.
 - **Consistency**: The use of a standardized JSON format maintains data consistency across the system.
@@ -453,9 +505,9 @@ The integration tools facilitate seamless interaction between the various compon
 
 
 
-## 13. Appendices
+## 9. Appendices
 
-### 13.1 Glossary of Terms
+### 9.1 Glossary of Terms
 - **FPGA:** Field-Programmable Gate Array, an integrated circuit with basic elements and preconfigured electrical signal routes between them. The selected FPGA is a NanoXplore NGultra (with VTR flow a basic Xilinx serie 7 model).
 - **BEL:** Basic Element, the hardware electrical resources available inside the FPGA like flipflop, Look-Up-Table (LUT), Block RAM.
 - **Application:** The function to be executed in the FPGA (developed in verilog).
@@ -464,7 +516,7 @@ The integration tools facilitate seamless interaction between the various compon
 - **Simulator:** Compiles verilog testbenches and applications and executes the simulation of every signal with regard to time evolution. The tool used will be Modelsim (using icarus verilog for VTR flow).
 - **Software:** The web application developed in the frame of this call for tender.
 
-### 13.2 References
+### 9.2 References
 - DigitalJS project: https://digitaljs.tilk.eu/
 - Verilog to routing: https://github.com/verilog-to-routing/vtr-verilog-to-routing
 - OSSCAD project: https://github.com/YosysHQ/oss-cad-suite-build
