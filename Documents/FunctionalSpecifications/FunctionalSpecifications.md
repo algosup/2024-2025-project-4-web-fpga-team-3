@@ -10,7 +10,72 @@
 
 ## Table of contents
 
-
+<!-- TOC -->
+* [Functional Specification Document](#functional-specification-document-)
+  * [Table of contents](#table-of-contents)
+  * [Web Interface for FPGA Simulator](#web-interface-for-fpga-simulator)
+  * [1. Introduction](#1-introduction)
+    * [1.1 Purpose](#11-purpose)
+    * [1.2 Project Scope](#12-project-scope)
+    * [1.3 Intended Audience](#13-intended-audience)
+  * [2. System Overview](#2-system-overview)
+    * [2.1 System Architecture](#21-system-architecture)
+      * [2.1.1 Presentation Layer (Frontend)](#211-presentation-layer-frontend)
+      * [2.1.2 Application Layer (Backend)](#212-application-layer-backend)
+    * [2.2 User Roles](#22-user-roles)
+      * [2.2.1 Teacher](#221-teacher)
+      * [2.2.2 Student](#222-student)
+  * [3. Functional Requirements(FR)](#3-functional-requirementsfr)
+    * [3.1 Frontend Web Interface (Student Use)](#31-frontend-web-interface-student-use)
+      * [3.1.1 Application Selection](#311-application-selection)
+      * [3.1.2 2D Visualization](#312-2d-visualization)
+      * [3.1.3 Navigation Controls](#313-navigation-controls)
+      * [3.1.4 Simulation Controls](#314-simulation-controls)
+      * [3.1.5 Information Display](#315-information-display)
+    * [3.2 Program Flow](#32-program-flow)
+      * [3.2.1 Flowchart](#321-flowchart)
+      * [3.2.2 Pseudo-code](#322-pseudo-code)
+    * [3.3 Key Points for Implementation and Improvement.](#33-key-points-for-implementation-and-improvement)
+    * [Improvements Made:](#improvements-made)
+    * [3.3 Backend System (Teacher Use)](#33-backend-system-teacher-use)
+      * [3.3.1 Application Upload (Synthesis)](#331-application-upload-synthesis)
+      * [3.3.2 Processing Pipeline (Place)](#332-processing-pipeline-place)
+      * [3.3.3 Pre-Visualization (Route)](#333-pre-visualization-route)
+      * [3.3.4 Example Management](#334-example-management)
+      * [3.3.5 Intermediary File Format](#335-intermediary-file-format)
+  * [4. Use Cases](#4-use-cases)
+    * [4.1 Use Case: Running a Simulation](#41-use-case-running-a-simulation)
+    * [4.2 Use Case: Uploading a Verilog Application](#42-use-case-uploading-a-verilog-application)
+  * [5. Personas](#5-personas)
+    * [5.1 Persona: Alex (The Student)](#51-persona-alex-the-student)
+    * [5.2 Persona: Dr. Smith (The Teacher)](#52-persona-dr-smith-the-teacher)
+  * [6. Non-Functional Requirements](#6-non-functional-requirements)
+    * [6.1 Performance Requirements](#61-performance-requirements)
+    * [6.2 Usability Requirements](#62-usability-requirements)
+    * [6.3 Reliability Requirements](#63-reliability-requirements)
+    * [6.4 Maintainability Requirements](#64-maintainability-requirements)
+  * [7. Data Model](#7-data-model)
+    * [7.1 Entities and Relationships](#71-entities-and-relationships)
+    * [7.2 Relationships](#72-relationships)
+    * [7.3 Data Flow](#73-data-flow)
+    * [7.4 Data Integrity and Validation](#74-data-integrity-and-validation)
+    * [Example Data Model Diagram](#example-data-model-diagram)
+  * [8. Technical Implementation Considerations](#8-technical-implementation-considerations)
+    * [8.1 Frontend Technologies](#81-frontend-technologies)
+      * [8.1.1 HTML/CSS](#811-htmlcss)
+      * [8.1.2 JavaScript](#812-javascript)
+      * [8.1.3 WebGL or Canvas](#813-webgl-or-canvas)
+    * [8.2 Backend Technologies](#82-backend-technologies)
+      * [8.2.1 Programming Languages](#821-programming-languages)
+      * [8.2.2 Web Frameworks](#822-web-frameworks)
+    * [8.3 Integration Points](#83-integration-points)
+      * [8.3.1 Overview](#831-overview)
+      * [8.3.2 Key Integration Components](#832-key-integration-components)
+      * [8.3.3 Benefits](#833-benefits)
+  * [9. Appendices](#9-appendices)
+    * [9.1 Glossary of Terms](#91-glossary-of-terms)
+    * [9.2 References](#92-references)
+<!-- TOC -->
 
 </details>
 
@@ -19,8 +84,6 @@
 
 ## Web Interface for FPGA Simulator
 </div>
-
-Your text is well-written and clear. Here are a few minor corrections and suggestions to improve clarity and correctness:
 
 ---
 
@@ -226,11 +289,6 @@ Both the flowchart and pseudocode represent the flow of the simulation process o
     }
 
 
-
-Certainly! Here's an improved version of your notes for the mockup images, with clearer language and more structured formatting:
-
----
-
 **📕 Note:** This mockup represents the initial version of our simulation interface. Some modifications will be made during the implementation phase. Below are key points to consider:
 
 ### 3.3 Key Points for Implementation and Improvement.
@@ -435,7 +493,7 @@ These improvements should make the notes more accessible and actionable for the 
 - **Error Handling**: Implement error handling mechanisms to manage invalid data entries or processing failures, providing informative feedback to users.
 - **Access Control**: Ensure that only authorized users can upload applications or initiate simulations, based on their role (Teacher or Student).
 
-### Example Data Model Diagram
+### 7.5 Example Data Model Diagram
 
 - **Applications** (linked to Users)
   - **Attributes**: Application ID, Name, Description, Verilog Code, SDF Code, Upload Timestamp.
@@ -503,18 +561,45 @@ The integration tools facilitate seamless interaction between the various compon
 - **Consistency**: The use of a standardized JSON format maintains data consistency across the system.
 - **Real-time Interaction**: Enhances user experience with real-time updates and interactive visualizations.
 
-
+---
 
 ## 9. Appendices
 
 ### 9.1 Glossary of Terms
-- **FPGA:** Field-Programmable Gate Array, an integrated circuit with basic elements and preconfigured electrical signal routes between them. The selected FPGA is a NanoXplore NGultra (with VTR flow a basic Xilinx serie 7 model).
-- **BEL:** Basic Element, the hardware electrical resources available inside the FPGA like flipflop, Look-Up-Table (LUT), Block RAM.
-- **Application:** The function to be executed in the FPGA (developed in verilog).
-- **Synthesis:** Translation of the application into an electrical equivalent. It creates a netlist. The tool used will be Impulse (or yosys in VTR flow).
-- **P&R:** Place and Route, the packing of the netlist component in the FPGA available BEL (Place) followed by selection of routes for signals between each BEL (Route). The tool used will be Impulse (or VPR for VTR flow).
-- **Simulator:** Compiles verilog testbenches and applications and executes the simulation of every signal with regard to time evolution. The tool used will be Modelsim (using icarus verilog for VTR flow).
-- **Software:** The web application developed in the frame of this call for tender.
+
+- **FPGA (Field-Programmable Gate Array):** An integrated circuit designed to be configured by the customer or designer after manufacturing. It consists of basic elements and preconfigured electrical signal routes. The selected FPGA for this project is a NanoXplore NGultra (with VTR flow a basic Xilinx serie 7 model).
+
+- **BEL (Basic Element):** The fundamental hardware electrical resources available inside the FPGA, such as flip-flops, Look-Up Tables (LUTs), and Block RAM.
+
+- **Application:** The function or design intended to be executed within the FPGA, typically developed using Verilog.
+
+- **Synthesis:** The process of translating the application's high-level description (e.g., Verilog code) into an electrical equivalent, resulting in a netlist. Tools like Impulse or Yosys (in VTR flow) are used for this process.
+
+- **P&R (Place and Route):** The process of placing the netlist components within the FPGA's available BELs (Place) and selecting routes for signals between each BEL (Route). Tools like Impulse or VPR (for VTR flow) are used for this process.
+
+- **Simulator:** A tool that compiles Verilog testbenches and applications, executing the simulation of signal behavior over time. Modelsim (or Icarus Verilog for VTR flow) is used for this purpose.
+
+- **Software:** The web application developed as part of this project, designed to visualize and simulate signal propagation within an FPGA.
+
+- **Verilog:** A hardware description language (HDL) used to model electronic systems. It is used to describe the behavior and structure of digital circuits.
+
+- **SDF (Standard Delay Format):** A file format used to specify timing information for digital circuits, including delays and timing constraints.
+
+- **Netlist:** A description of the connectivity of an electronic design, listing the components and their interconnections. It is generated during the synthesis process.
+
+- **JSON (JavaScript Object Notation):** A lightweight data interchange format used to structure data in a human-readable way. In this project, JSON is used as an intermediary format to bridge backend processing and frontend visualization.
+
+- **Web Interface:** The user-friendly frontend of the software, allowing students to visualize and interact with FPGA simulations.
+
+- **Simulation Engine:** The backend component responsible for running simulations based on the pivot file and user interactions.
+
+- **Backend:** The server-side part of the application, handling file uploads, processing, and managing simulation data.
+
+- **Frontend:** The client-side part of the application, providing the user interface for interacting with the simulation.
+
+- **Pivot File:** A standardized JSON file format used to bridge backend processing and frontend visualization, containing necessary simulation data.
+
+- **VTR Flow:** A set of tools and processes used for FPGA design, including synthesis, place and route, and simulation. It is used as an alternative flow in this project.
 
 ### 9.2 References
 - DigitalJS project: https://digitaljs.tilk.eu/
