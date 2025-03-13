@@ -29,6 +29,7 @@
       - [Backend processing](#backend-processing)
     - [Visualization](#visualization)
       - [Generate the visualization](#generate-the-visualization)
+      - [Signal Propagation Simulation](#signal-propagation-simulation)
   - [Risks and mitigation strategies](#risks-and-mitigation-strategies)
   - [Testing](#testing)
     - [Testing Strategy](#testing-strategy)
@@ -428,6 +429,8 @@ Now that the `.json` file has been structured, the backend must process this dat
 - Edges are drawn between nodes to represent signal connections, with different colors and styles to indicate signal propagation.
 - Simulation can now run step-by-step.
 
+To match the requirement in the first time, the team will use a simple representation of the FPGA structure, with basic shapes for nodes and lines for connections. The team will focus on functionality first, ensuring that the visualization accurately represents the FPGA structure and signal propagation.
+
 The front-end will use D3.js to create the visualization, with interactive components for controlling simulations, exploring signal paths, and analyzing FPGA behavior. The visualization will be updated in real-time as the simulation progresses, allowing users to observe signal propagation and analyze the behavior of the FPGA design.
 
 To avoid confusion regarding cable management, the team will use a color code to differentiate the signals. The color code will be as follows
@@ -456,6 +459,12 @@ To change it, the css will be modified as follows:
 ```
 
 The visualization will be designed to be user-friendly, interactive, and informative, providing a clear and intuitive representation of the FPGA structure and signal propagation, as you might see in the mockup share in the [Functional Specifications](../FunctionalSpecifications/FunctionalSpecifications.md).
+
+#### Signal Propagation Simulation
+
+Signal propagation simulation will be implemented using a time-based animation that shows how signals travel through the FPGA structure over time. The simulation will be controlled by the user, who can go backward, forward, pause, or step through the simulation to observe signal propagation at different stages.
+
+The simulation will be based on the delays extracted from the `.sdf` file, with each signal connection taking a certain amount of time to propagate from one cell to another. The front-end will update the visualization in real-time as the simulation progresses, highlighting signal paths, showing signal values, and providing feedback to the user about the state of the FPGA design.
 
 ## Risks and mitigation strategies
 
