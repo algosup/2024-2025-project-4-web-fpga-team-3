@@ -22,8 +22,12 @@
       - [Frontend](#frontend)
       - [Backend](#backend)
       - [Parser](#parser)
+        - [FPGA Interconnect](#fpga-interconnect)
+        - [LUT_K](#lut_k)
+        - [DFF](#dff)
     - [FPGA Structure Generation](#fpga-structure-generation)
       - [Backend processing](#backend-processing)
+    - [Visualization](#visualization)
       - [Generate the visualization](#generate-the-visualization)
   - [Risks and mitigation strategies](#risks-and-mitigation-strategies)
   - [Testing](#testing)
@@ -273,7 +277,7 @@ The parser will be implemented in JavaScript or Python, depending on the team's 
 
 Here are all the types of cells we might find in the `.sdf` file:
 
-**FPGA Interconnect**
+##### FPGA Interconnect
 
 ```sdf
   (CELL
@@ -296,7 +300,7 @@ The information we need to extract from this cell is the following:
 - The ending point: `lut_\$auto\$rtlil\.cc\:2714\:MuxGate\$175_input_0_3`
 - The delay: `235.697`
 
-**LUT_K**
+##### LUT_K
 
 ```sdf
    (CELL
@@ -320,7 +324,7 @@ The information we need to extract from this cell is the following:
 - The name of the LUT: `lut_\$auto\$rtlil\.cc\:2714\:MuxGate\$139`
 - The delays for each input: `152`, `150`, `150`
 
-**DFF**
+##### DFF
 
 ```sdf
    (CELL
@@ -414,9 +418,11 @@ In the example above, we have four nodes representing a DFF, a LUT, a high const
 
 The front-end will use this graph data to render the FPGA structure, visualize signal propagation, and provide interactive controls for running simulations and observing results.
 
-#### Generate the visualization
+### Visualization
 
 Now that the `.json` file has been structured, the backend must process this data to create a logical representation of the FPGA. The front-end will then use this data to render an interactive visualization of the FPGA structure and signal propagation.
+
+#### Generate the visualization
 
 - Nodes are dynamically placed on a grid based on their type and connections.
 - Edges are drawn between nodes to represent signal connections, with different colors and styles to indicate signal propagation.
