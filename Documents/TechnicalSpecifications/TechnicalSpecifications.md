@@ -25,14 +25,16 @@
         - [FPGA Interconnect](#fpga-interconnect)
         - [LUT_K](#lut_k)
         - [DFF](#dff)
-    - [FPGA Structure Generation](#fpga-structure-generation)
+    - [FPGA structure generation](#fpga-structure-generation)
       - [Backend processing](#backend-processing)
     - [Visualization](#visualization)
       - [Generate the visualization](#generate-the-visualization)
-      - [Signal Propagation Simulation](#signal-propagation-simulation)
+      - [Signal propagation simulation](#signal-propagation-simulation)
   - [Risks and mitigation strategies](#risks-and-mitigation-strategies)
   - [Testing](#testing)
-    - [Testing Strategy](#testing-strategy)
+    - [Testing strategy](#testing-strategy)
+  - [Scalability and performance](#scalability-and-performance)
+  - [Future improvements](#future-improvements)
   - [Glossary](#glossary)
 
 </details>
@@ -379,7 +381,7 @@ Here's a hypothetical example of the JSON object that the parser might generate 
 
 The parser will be designed to handle different types of cells, delays, and connections, ensuring that the data is accurate and consistent for visualization and simulation.
 
-### FPGA Structure Generation
+### FPGA structure generation
 
 This section explains how the JSON data extracted from the .sdf file is used to generate an interactive visualization of the FPGA. The goal is to correctly **place**, **connect**, and **simulate** the different components while allowing user interactions to observe and manipulate signal propagation.
 
@@ -431,6 +433,12 @@ Now that the `.json` file has been structured, the backend must process this dat
 
 To match the requirement in the first time, the team will use a simple representation of the FPGA structure, with basic shapes for nodes and lines for connections. The team will focus on functionality first, ensuring that the visualization accurately represents the FPGA structure and signal propagation.
 
+Placement will be important for the first part, as we need to be readable and easy to understand for all users. As our client is based in Europe, reading from left to right, the team will place the user inputs on the left side and the outputs on the right side. The DFFs and LUTs will be placed in the middle, with the interconnects connecting them.
+
+The first expected version should be simple square with the id of the component in the middle. The edges will be simple lines connecting the components, no color, no thickness, no animation.
+
+#### Signal propagation simulation
+
 The front-end will use D3.js to create the visualization, with interactive components for controlling simulations, exploring signal paths, and analyzing FPGA behavior. The visualization will be updated in real-time as the simulation progresses, allowing users to observe signal propagation and analyze the behavior of the FPGA design.
 
 To avoid confusion regarding cable management, the team will use a color code to differentiate the signals. The color code will be as follows
@@ -460,8 +468,6 @@ To change it, the css will be modified as follows:
 
 The visualization will be designed to be user-friendly, interactive, and informative, providing a clear and intuitive representation of the FPGA structure and signal propagation, as you might see in the mockup share in the [Functional Specifications](../FunctionalSpecifications/FunctionalSpecifications.md).
 
-#### Signal Propagation Simulation
-
 Signal propagation simulation will be implemented using a time-based animation that shows how signals travel through the FPGA structure over time. The simulation will be controlled by the user, who can go backward, forward, pause, or step through the simulation to observe signal propagation at different stages.
 
 The simulation will be based on the delays extracted from the `.sdf` file, with each signal connection taking a certain amount of time to propagate from one cell to another. The front-end will update the visualization in real-time as the simulation progresses, highlighting signal paths, showing signal values, and providing feedback to the user about the state of the FPGA design.
@@ -486,7 +492,7 @@ The testing part of the project will be done using the following tools:
 - **Postman**: For testing the REST API endpoints and verifying data exchange between the front-end and back-end.
 - **Manual Testing**: For exploratory testing, usability testing, and edge case scenarios that may not be covered by automated tests.
 
-### Testing Strategy
+### Testing strategy
 
 The testing strategy will be based on the following principles:
 
@@ -495,6 +501,36 @@ The testing strategy will be based on the following principles:
 - **Test Coverage**: The team will strive to achieve high test coverage, focusing on key features, edge cases, and error scenarios to ensure the reliability and robustness of the application.
 - **Regression Testing**: Regression tests will be run regularly to detect and prevent regressions, ensuring that new changes do not introduce unintended side effects or break existing functionalities.
 - **User-Centric Testing**: Usability testing, accessibility testing, and user feedback will be incorporated into the testing process to validate the user experience and address usability issues early in the development cycle.
+
+## Scalability and performance
+
+The project will be designed to be scalable and performant, allowing it to handle large FPGA designs, complex simulations, and high user traffic. To achieve this, the team will follow best practices for web development, including:
+
+- **Optimized Code**: Writing clean, efficient, and well-structured code to minimize resource usage and improve performance.
+- **Caching**: Implementing caching mechanisms to store and reuse data, reducing the need for repeated computations and improving response times.
+- **Lazy Loading**: Loading components, data, and resources only when needed to reduce initial load times and improve user experience.
+- **Code Splitting**: Splitting the code into smaller modules and loading them on demand to reduce the initial bundle size and improve loading times.
+- **Error Handling**: Implementing robust error handling mechanisms to gracefully handle exceptions, prevent crashes, and provide meaningful feedback to users.
+- **Monitoring and Analytics**: Using monitoring tools and analytics to track performance metrics, identify bottlenecks, and optimize the application for scalability and performance.
+- **Load Testing**: Conducting load tests to simulate high user traffic, measure system performance under stress, and identify areas for improvement.
+- **Scalable Architecture**: Designing a modular, scalable architecture that can be easily extended, modified, and adapted to meet changing requirements and accommodate future growth.
+- **Security**: Implementing security best practices to protect user data, prevent unauthorized access, and ensure the integrity and confidentiality of the application.
+
+By following these best practices and principles, the team aims to create a scalable, performant, and reliable application that can meet the needs of users, handle complex simulations, and provide an engaging and interactive experience for learning FPGA design.
+
+## Future improvements
+
+Here's a list of potential improvements that could be made to the project in the future:
+
+- **Oscilloscope Mode**: Implement an oscilloscope mode that allows users to view waveforms and analyze signal behavior in more detail.
+- **Debugging Tools**: Add debugging tools like breakpoints, variable inspection, and step-by-step execution to help users troubleshoot and analyze FPGA designs.
+- **Waveform Analysis**: Integrate waveform analysis tools that allow users to visualize and analyze signal waveforms, timing diagrams, and other relevant data.
+- **Real-Time Simulation**: Implement real-time simulation of signal propagation with time-based animations, allowing users to observe signal behavior as it happens, rather than step-by-step.
+- **Advanced Features**: Add advanced features like clock domain crossing analysis, timing constraints validation, and power analysis to provide a comprehensive FPGA design and analysis tool.
+- **Collaborative Editing**: Enable collaborative editing and sharing of FPGA designs, simulations, and results, allowing multiple users to work together on the same project.
+- **Cloud Integration**: Integrate with cloud services to provide scalable storage, processing, and collaboration features for users working on large FPGA designs and simulations.
+- **Edition**: Add the possibility to edit the simulation, to add new components, to change the connections, to change the delays, etc.
+- **Export**: Add the possibility to export the simulation, to save it, to share it, etc.
 
 ## Glossary
 
