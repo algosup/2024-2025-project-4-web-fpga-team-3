@@ -30,11 +30,16 @@
     - [Visualization](#visualization)
       - [Generate the visualization](#generate-the-visualization)
       - [Wire management and signal propagation simulation](#wire-management-and-signal-propagation-simulation)
-      - [**1. Wire Management and Routing**](#1-wire-management-and-routing)
+        - [1. Wire Management and Routing](#1-wire-management-and-routing)
         - [2. Signal categorization with color coding](#2-signal-categorization-with-color-coding)
         - [3. Signal Styling with CSS](#3-signal-styling-with-css)
         - [4. Signal Propagation Simulation](#4-signal-propagation-simulation)
-        - [5. Seamless Integration with Functional Specifications](#5-seamless-integration-with-functional-specifications)
+        - [Bézier curve](#bézier-curve)
+      - [**Why Bézier Curves?**](#why-bézier-curves)
+      - [**Implementation Details**](#implementation-details)
+    - [**Breaking Down the Bézier Curve Command**](#breaking-down-the-bézier-curve-command)
+    - [**Dynamic Bézier Curve in D3.js**](#dynamic-bézier-curve-in-d3js)
+    - [**Collision Avoidance Strategy**](#collision-avoidance-strategy)
   - [Risks and mitigation strategies](#risks-and-mitigation-strategies)
   - [Testing](#testing)
     - [Testing strategy](#testing-strategy)
@@ -446,7 +451,7 @@ The first expected version should be simple square with the id of the component 
 
 The front-end will use **D3.js** to create a dynamic visualization of the board allowing users to observe signal propagation and analyze the FPGA design.
 
-#### **1. Wire Management and Routing**
+##### 1. Wire Management and Routing
 
 To ensure **clarity, accuracy, and interactivity** in FPGA wire visualization, the system will implement the following:
 
@@ -509,9 +514,82 @@ The simulation will model real FPGA signal behavior based on delays extracted fr
 
 As signals move, affected wires will animate accordingly, transitioning from off to on states using the defined color and thickness rules. Providing a clear visual representation of signal propagation will enhance user understanding and engagement.
 
-##### 5. Seamless Integration with Functional Specifications
+> [!NOTE]
+> The visualization will be designed to be user-friendly, interactive, and informative, providing a clear and intuitive representation of the FPGA structure and signal propagation, as you might see in the mockup share in the [Functional Specifications](../FunctionalSpecifications/FunctionalSpecifications.md).
 
-This feature set aligns with the overall FPGA visualization system, as outlined in the [Functional Specifications](../FunctionalSpecifications/FunctionalSpecifications.md). The interface will ensure a clear, user-friendly representation of signal flow and propagation delays for enhanced debugging and analysis.
+##### Bézier curve
+
+To prevent **wire congestion and overlapping connections**, the system will use **Bézier curves** for routing. Bézier curves allow for **smooth, visually distinct paths**, making complex FPGA wiring easier to follow.
+
+#### **Why Bézier Curves?**
+
+- They provide a **cleaner** and **more readable** representation of signal paths.
+- Unlike straight lines, Bézier curves help prevent visual clutter when multiple wires are present.
+- They allow **dynamic adjustments**, automatically updating when nodes move.
+
+#### **Implementation Details**
+
+Bézier curves in **SVG** can be created using the `C` (cubic Bézier) or `Q` (quadratic Bézier) command in an `<svg>` `<path>` element.
+
+Example of an **SVG Bézier curve** for routing a wire between two FPGA nodes:
+
+```html
+<svg width="400" height="200">
+  <path
+    d="M 50,100 C 150,50 250,150 350,100"
+    stroke="red"
+    fill="transparent"
+    stroke-width="2"
+  />
+</svg>
+```
+
+<svg width="400" height="200">
+  <path
+    d="M 50,100 C 150,50 250,150 350,100"
+    stroke="red"
+    fill="transparent"
+    stroke-width="2"
+  />
+</svg>
+
+### **Breaking Down the Bézier Curve Command**
+
+```plaintext
+M 50,100    → Move to starting point (x=50, y=100)
+C 150,50    → First control point (x=150, y=50)
+  250,150   → Second control point (x=250, y=150)
+  350,100   → End point (x=350, y=100)
+```
+
+- **Control points** define the curve's shape.
+- The **closer** a control point is to a segment, the more influence it has on the curve.
+
+### **Dynamic Bézier Curve in D3.js**
+
+To generate dynamic routing, D3.js can be used to update Bézier paths **automatically** based on node positions:
+
+```js
+const link = d3
+  .select("svg")
+  .append("path")
+  .attr(
+    "d",
+    `M ${x1},${y1} C ${x1 + 50},${y1 - 50}, ${x2 - 50},${y2 + 50}, ${x2},${y2}`
+  )
+  .attr("stroke", "black")
+  .attr("fill", "none")
+  .attr("stroke-width", 2);
+```
+
+### **Collision Avoidance Strategy**
+
+1. **Dynamic Control Points:**
+   - Adjust **control points dynamically** to curve around obstacles.
+2. **Spacing Constraints:**
+   - Prevent overlapping by checking distances between parallel wires.
+3. **Force-Directed Layouts:**
+   - Use **D3.js force simulations** to push wires apart for better clarity.
 
 ## Risks and mitigation strategies
 
