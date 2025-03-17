@@ -544,14 +544,7 @@ Example of an **SVG Bézier curve** for routing a wire between two FPGA nodes:
 </svg>
 ```
 
-<svg width="400" height="200">
-  <path
-    d="M 50,100 C 150,50 250,150 350,100"
-    stroke="red"
-    fill="transparent"
-    stroke-width="2"
-  />
-</svg>
+![SVG Bézier Curve](./Images/svg.png)
 
 ### **Breaking Down the Bézier Curve Command**
 
