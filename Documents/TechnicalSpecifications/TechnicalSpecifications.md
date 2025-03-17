@@ -23,13 +23,18 @@
       - [Backend](#backend)
       - [Parser](#parser)
         - [FPGA Interconnect](#fpga-interconnect)
-        - [LUT_K](#lut_k)
+        - [LUT\_K](#lut_k)
         - [DFF](#dff)
     - [FPGA structure generation](#fpga-structure-generation)
       - [Backend processing](#backend-processing)
     - [Visualization](#visualization)
       - [Generate the visualization](#generate-the-visualization)
-      - [Signal propagation simulation](#signal-propagation-simulation)
+      - [Wire management and signal propagation simulation](#wire-management-and-signal-propagation-simulation)
+      - [**1. Wire Management and Routing**](#1-wire-management-and-routing)
+        - [2. Signal categorization with color coding](#2-signal-categorization-with-color-coding)
+        - [3. Signal Styling with CSS](#3-signal-styling-with-css)
+        - [4. Signal Propagation Simulation](#4-signal-propagation-simulation)
+        - [5. Seamless Integration with Functional Specifications](#5-seamless-integration-with-functional-specifications)
   - [Risks and mitigation strategies](#risks-and-mitigation-strategies)
   - [Testing](#testing)
     - [Testing strategy](#testing-strategy)
@@ -437,40 +442,76 @@ Placement will be important for the first part, as we need to be readable and ea
 
 The first expected version should be simple square with the id of the component in the middle. The edges will be simple lines connecting the components, no color, no thickness, no animation.
 
-#### Signal propagation simulation
+#### Wire management and signal propagation simulation
 
-The front-end will use D3.js to create the visualization, with interactive components for controlling simulations, exploring signal paths, and analyzing FPGA behavior. The visualization will be updated in real-time as the simulation progresses, allowing users to observe signal propagation and analyze the behavior of the FPGA design.
+The front-end will use **D3.js** to create a dynamic visualization of the board allowing users to observe signal propagation and analyze the FPGA design.
 
-To avoid confusion regarding cable management, the team will use a color code to differentiate the signals. The color code will be as follows
+#### **1. Wire Management and Routing**
 
-- **Red**: For the clock signal.
-- **Green**: For the data signal.
-- **Blue**: For the control signal.
-- **Yellow**: For the reset signal.
-- **Black**: For the other signals.
-- **Gray**: For the signals that are not used.
+To ensure **clarity, accuracy, and interactivity** in FPGA wire visualization, the system will implement the following:
 
-If a signal is off, the color will be the color as above, however, when a signal is on, the color will be brighter and the wire will be thicker.
+- **Dynamic Wire Rendering:**
 
-To change it, the css will be modified as follows:
+  - Connections will be represented using **SVG paths (`<path>`)**, with smooth **curved** or **straight-line routing** for optimal readability.
+  - Wire paths will automatically **adjust** as nodes move, maintaining a clean layout.
+
+- **Automated Routing & Overlap Prevention:**
+
+  - The system will implement **collision-aware routing** to avoid **wire congestion**.
+  - **Spacing algorithms** will ensure clear separation between overlapping signals.
+  - **Grid-based or force-directed layouts** will help position connections logically.
+
+- **Interactive Wire Adjustments:**
+  - The system will **auto-snap wires** to valid positions, ensuring accurate routing.
+  - **Hover effects** will highlight the source and destination of each connection.
+
+##### 2. Signal categorization with color coding
+
+To differentiate signal types and improve readability, a **color-coded system** will be applied:
+
+| Signal Type | Default Color | "On" State (Brighter)        |
+| ----------- | ------------- | ---------------------------- |
+| **Clock**   | 🔴 Red        | 🔴 Brighter Red (Thicker)    |
+| **Data**    | 🟢 Green      | 🟢 Brighter Green (Thicker)  |
+| **Control** | 🔵 Blue       | 🔵 Brighter Blue (Thicker)   |
+| **Reset**   | 🟡 Yellow     | 🟡 Brighter Yellow (Thicker) |
+| **Other**   | ⚫ Black      | ⚫ Brighter Black (Thicker)  |
+| **Unused**  | ⚪ Gray       | /                            |
+
+When a signal is active, the corresponding wire will **increase in brightness and thickness**, making propagation visually distinct.
+
+##### 3. Signal Styling with CSS
+
+To implement this, CSS classes will be used:
 
 ```css
-/* Standard color */
+/* Default state */
 .signal__clock {
   stroke: #ff0000;
 }
 
+/* Active signal */
 .signal__clock--on {
-  stroke: #ff0000;
+  stroke: #ff3333;
   stroke-width: 2;
 }
 ```
 
-The visualization will be designed to be user-friendly, interactive, and informative, providing a clear and intuitive representation of the FPGA structure and signal propagation, as you might see in the mockup share in the [Functional Specifications](../FunctionalSpecifications/FunctionalSpecifications.md).
+This logic will be applied to all signals, ensuring real-time updates in response to simulation data.
 
-Signal propagation simulation will be implemented using a time-based animation that shows how signals travel through the FPGA structure over time. The simulation will be controlled by the user, who can go backward, forward, pause, or step through the simulation to observe signal propagation at different stages.
+##### 4. Signal Propagation Simulation
 
-The simulation will be based on the delays extracted from the `.sdf` file, with each signal connection taking a certain amount of time to propagate from one cell to another. The front-end will update the visualization in real-time as the simulation progresses, highlighting signal paths, showing signal values, and providing feedback to the user about the state of the FPGA design.
+The simulation will model real FPGA signal behavior based on delays extracted from the `.sdf` file. Key features:
+
+- **Time-based animation** to show signals traveling across interconnects.
+- **Step-through controls** to pause, rewind, and fast-forward propagation.
+- **Live updates on signal states**, highlighting active paths and values.
+
+As signals move, affected wires will animate accordingly, transitioning from off to on states using the defined color and thickness rules. Providing a clear visual representation of signal propagation will enhance user understanding and engagement.
+
+##### 5. Seamless Integration with Functional Specifications
+
+This feature set aligns with the overall FPGA visualization system, as outlined in the [Functional Specifications](../FunctionalSpecifications/FunctionalSpecifications.md). The interface will ensure a clear, user-friendly representation of signal flow and propagation delays for enhanced debugging and analysis.
 
 ## Risks and mitigation strategies
 
