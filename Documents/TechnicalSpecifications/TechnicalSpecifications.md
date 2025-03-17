@@ -57,11 +57,11 @@ The purpose of this project is to develop a web-based interface to visualize FPG
 - **Teachers** who upload their FPGA designs and use the tool to teach their students.
 - **Students** who interact with the simulator to observe and analyze FPGA behavior.
 
-The system doesn't have any mandatory framework or library to use, but the team is free to use any of them. The only constraint is that the system must be web-based. It's the reason why the team chose to use the [React](https://reactjs.org/) library for the front-end and the [D3.js](https://d3js.org/) library for the web interface.
+The system doesn't have any mandatory framework or library to use, but the team is free to use any of them. The only constraint is that the system must be web-based. It's the reason why the team chose to use the [React](https://reactjs.org/) library for the front end and the [D3.js](https://d3js.org/) library for the web interface.
 
 ### Objectives
 
-The main objective of this project is to provide an interactive 2D visualization of FPGA structures and signal routing. The system should be able to simulate signal propagation in real time with time-based animations, allowing users to see how signals travel through an FPGA design. Teachers should have the capability to upload Verilog applications and test benches, which students can then use to run and analyze simulations. The interface should be intuitive, engaging, and informative, making it easier for students to grasp the fundamentals of FPGA design and behavior.
+The main objective of this project is to provide an interactive 2D visualization of FPGA structures and signal routing. The system should be able to simulate signal propagation in real-time with time-based animations, allowing users to see how signals travel through an FPGA design. Teachers should have the capability to upload Verilog applications and test benches, which students can then use to run and analyze simulations. The interface should be intuitive, engaging, and informative, making it easier for students to grasp the fundamentals of FPGA design and behavior.
 
 ### Why this project?
 
@@ -72,12 +72,12 @@ FPGAs are widely used in the aerospace industry for various applications, includ
 The project is divided into two main parts:
 
 1. **Front-end**: The web-based interface that users interact with. This includes the visualization of the FPGA structure and signal propagation, as well as the user interface for uploading and running simulations.
-2. **Back-end**: The server-side application that handles file uploads, simulation execution, and communication with the front-end.
+2. **Back-end**: The server-side application that handles file uploads, simulation execution, and communication with the front end.
 
 | Item          | In Scope                                                                                                                                                                                          | Out of Scope                                                                                                                                                                                        |
 | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Front-end** | - Visualization of FPGA structures and signal propagation. <br> - User interface for uploading Verilog applications and testbenches. <br> - Manual simulation control (start, stop, pause, step). | - Advanced features like debugging, and waveform analysis. <br> - Support for complex FPGA architectures and designs. <br> - Real-time simulation of signal propagation with time-based animations. |
-| **Back-end**  | - Handling Verilog file uploads and processing. <br> - Running FPGA simulations and sending results to the front-end. <br> - Providing a REST API for communication with the front-end.           | - Full-scale FPGA synthesis or hardware implementation. <br> - Integration with proprietary FPGA vendor tools.                                                                                      |
+| **Back-end**  | - Handling Verilog file uploads and processing. <br> - Running FPGA simulations and sending results to the front end. <br> - Providing a REST API for communication with the front end.           | - Full-scale FPGA synthesis or hardware implementation. <br> - Integration with proprietary FPGA vendor tools.                                                                                      |
 
 The project will be developed using the following technologies:
 
@@ -90,9 +90,9 @@ The project will be divided into the following tasks:
 
 - **Parsing**: Being able to transform a given `.sdf` file into a JSON object that will be used to generate the FPGA structure.
 - **FPGA Structure Generation**: Creating a 2D representation of the FPGA structure based on the JSON object generated from the `.sdf` file.
-- **Signal Propagation Simulation**: Simulating signal propagation through the FPGA structure and updating the visualization in real time.
+- **Signal Propagation Simulation**: Simulating signal propagation through the FPGA structure and updating the visualization in real-time.
 - **User Interface**: Designing an intuitive and interactive user interface for uploading Verilog applications, controlling simulations, and viewing results.
-- **Back-end Development**: Implementing the server-side application to handle file uploads, simulation execution, and communication with the front-end.
+- **Back-end Development**: Implementing the server-side application to handle file uploads, simulation execution, and communication with the front end.
 - **Integration**: Integrating the front-end and back-end components to create a seamless user experience.
 - **Testing and Debugging**: Testing the system for bugs, performance issues, and usability problems, and fixing them as soon as possible.
 - **Documentation**: Writing technical documentation, user guides, and other relevant documentation for the project.
@@ -186,7 +186,7 @@ The software architecture will be based on the following components:
 - The website, a single-page application built with React, will provide the user interface for interacting with the FPGA simulator.
 - The FPGA simulator, implemented in D3.js and JavaScript, will handle the simulation of signal propagation through the FPGA structure.
 - The parser, written in JavaScript, will convert the `.sdf` file into a JSON object that can be used to generate the FPGA structure.
-- The back-end server, built with Node.js, will handle file uploads, simulation execution, and communication with the front-end.
+- The back-end server, built with Node.js, will handle file uploads, simulation execution, and communication with the front end.
 
 Here's a look at the high-level architecture of the system:
 
@@ -196,7 +196,7 @@ The software architecture of this FPGA visualization web application is structur
 
 The Backend, developed with Node.js, acts as an intermediary between the front-end and the Parser. It receives the uploaded SDF file through the File Upload API and forwards it to the Parsing Service, which is responsible for extracting relevant timing and structural data from the file.
 
-The Parser, implemented in JavaScript or Python, processes the SDF file, extracts information about timing constraints and component connections, and converts it into a JSON format that the front-end can easily interpret. The Backend then returns this JSON data to the Frontend, which uses it to dynamically render the FPGA structure, allowing users to explore signal connections and propagation through an intuitive visualization.
+The Parser, implemented in JavaScript or Python, processes the SDF file, extracts information about timing constraints and component connections, and converts it into a JSON format that the front end can easily interpret. The Backend then returns this JSON data to the Frontend, which uses it to dynamically render the FPGA structure, allowing users to explore signal connections and propagation through an intuitive visualization.
 
 This modular architecture ensures scalability, separation of concerns, and efficient processing of FPGA-related data, making it adaptable for future extensions and improvements.
 
@@ -252,7 +252,7 @@ The project will be structured into the following main directories:
 
 ### Website
 
-The goal of the website is to provide an intuitive and interactive user interface for uploading Verilog applications, running simulations, visualizing FPGA structures and signal propagation.
+The goal of the website is to provide an intuitive and interactive user interface for uploading Verilog applications, running simulations, visualizing FPGA structures, and signal propagation.
 
 #### Frontend
 
@@ -261,25 +261,25 @@ Based on the mockup approved by the customer, the frontend will consist of the f
 - **Main content**: The main content area where the FPGA structure visualization will be displayed. This will include the FPGA grid, signal lines, and interactive components for controlling simulations such as arrows to move backward and forward in time.
 - **Sidebar**: The sidebar area where logs will be displayed.
 - **Header**: The header area with the project name and a button for uploading files.
-- **Footer**: The footer area with copyright information and links to relevant resources.
+- **Footer**: The footer area has copyright information and links to relevant resources.
 - **Upload Form**: A dedicated form for uploading `.sdf` files that will appear when the user clicks the upload button in the header or at the start of the application.
 
-The front-end will be implemented using React, D3.js, and other libraries as needed to create an engaging and interactive user experience. The team will follow best practices for web development, including responsive design, accessibility, and performance optimization, to ensure that the application is user-friendly and accessible to a wide range of users.
+The front end will be implemented using React, D3.js, and other libraries as needed to create an engaging and interactive user experience. The team will follow best practices for web development, including responsive design, accessibility, and performance optimization, to ensure that the application is user-friendly and accessible to a wide range of users.
 
 #### Backend
 
-The backend will be responsible for **handling file uploads**, **running simulations**, and **communicating with the front-end**. It will be implemented using Node.js and Express.js to create a **RESTful API** with which the front-end can interact. The backend will include the following components:
+The backend will be responsible for **handling file uploads**, **running simulations**, and **communicating with the front end**. It will be implemented using Node.js and Express.js to create a **RESTful API** with which the front end can interact. The backend will include the following components:
 
 - **File Upload API**: An API endpoint for uploading `.sdf` files to the server.
 - **Parser Service**: A service for parsing `.sdf` files and extracting relevant data for simulations.
-- **Simulation API**: An API endpoint for running simulations and returning the results to the front-end.
-- **Simulation Service**: A service for simulating signal propagation through the FPGA structure and updating the front-end with the results.
+- **Simulation API**: An API endpoint for running simulations and returning the results to the front end.
+- **Simulation Service**: A service for simulating signal propagation through the FPGA structure and updating the front end with the results.
 
 The most important and complex part of the backend will be the parser service, which will be responsible for parsing `.sdf` files and converting them into a format that the front end can use to generate the FPGA structure visualization. The team will pay specific attention to error handling, data validation, and performance optimization to ensure that the parser service is robust, reliable, and efficient.
 
 #### Parser
 
-The parser will be implemented in JavaScript or Python, depending on the team's expertise and preferences. It will read the `.sdf` file, extract relevant information about the FPGA structure, and convert it into a JSON object that can be easily used by the front-end. The parser will handle different types of cells, delays, and connections, ensuring that the data is accurate and consistent for visualization and simulation.
+The parser will be implemented in JavaScript or Python, depending on the team's expertise and preferences. It will read the `.sdf` file, extract relevant information about the FPGA structure, and convert it into a JSON object that can be easily used by the front end. The parser will handle different types of cells, delays, and connections, ensuring that the data is accurate and consistent for visualization and simulation.
 
 > [!WARNING]
 > Important information to know is that the delay is in picoseconds. In the first lines of the `.sdf` file, you can find the time unit used in the file.
@@ -407,7 +407,7 @@ The steps are the following:
    - Nodes represent an FPGA cell.
    - Edges represent a signal connection between two cells.
 4. Optimize the graph by removing redundant connections and structuring the data for efficient front-end rendering.
-5. Send the optimized graph data to the front-end for visualization.
+5. Send the optimized graph data to the front end for visualization.
 
 Example of a graph structure:
 
@@ -429,11 +429,11 @@ Example of a graph structure:
 
 In the example above, we have four nodes representing a DFF, a LUT, a high constant, and an input. The edges represent signal connections between the nodes, with delays specified for each connection.
 
-The front-end will use this graph data to render the FPGA structure, visualize signal propagation, and provide interactive controls for running simulations and observing results.
+The front end will use this graph data to render the FPGA structure, visualize signal propagation, and provide interactive controls for running simulations and observing results.
 
 ### Visualization
 
-Now that the `.json` file has been structured, the backend must process this data to create a logical representation of the FPGA. The front-end will then use this data to render an interactive visualization of the FPGA structure and signal propagation.
+Now that the `.json` file has been structured, the backend must process this data to create a logical representation of the FPGA. The front end will then use this data to render an interactive visualization of the FPGA structure and signal propagation.
 
 #### Generate the visualization
 
@@ -441,11 +441,11 @@ Now that the `.json` file has been structured, the backend must process this dat
 - Edges are drawn between nodes to represent signal connections, with different colors and styles to indicate signal propagation.
 - Simulation can now run step-by-step.
 
-To match the requirement in the first time, the team will use a simple representation of the FPGA structure, with basic shapes for nodes and lines for connections. The team will focus on functionality first, ensuring that the visualization accurately represents the FPGA structure and signal propagation.
+To match the requirement the first time, the team will use a simple representation of the FPGA structure, with basic shapes for nodes and lines for connections. The team will focus on functionality first, ensuring that the visualization accurately represents the FPGA structure and signal propagation.
 
 Placement will be important for the first part, as we need to be readable and easy to understand for all users. As our client is based in Europe, reading from left to right, the team will place the user inputs on the left side and the outputs on the right side. The DFFs and LUTs will be placed in the middle, with the interconnects connecting them.
 
-The first expected version should be simple square with the id of the component in the middle. The edges will be simple lines connecting the components, no color, no thickness, no animation.
+The first expected version should be a simple square with the ID of the component in the middle. The edges will be simple lines connecting the components, with no color, no thickness, and no animation.
 
 #### Wire management and signal propagation simulation
 
@@ -515,7 +515,7 @@ The simulation will model real FPGA signal behavior based on delays extracted fr
 As signals move, affected wires will animate accordingly, transitioning from off to on states using the defined color and thickness rules. Providing a clear visual representation of signal propagation will enhance user understanding and engagement.
 
 > [!NOTE]
-> The visualization will be designed to be user-friendly, interactive, and informative, providing a clear and intuitive representation of the FPGA structure and signal propagation, as you might see in the mockup share in the [Functional Specifications](../FunctionalSpecifications/FunctionalSpecifications.md).
+> The visualization will be designed to be user-friendly, interactive, and informative, providing a clear and intuitive representation of the FPGA structure and signal propagation, as you might see in the mockup shared in the [Functional Specifications](../FunctionalSpecifications/FunctionalSpecifications.md).
 
 ##### Bézier curve
 
@@ -552,7 +552,7 @@ Example of an **SVG Bézier curve** for routing a wire between two FPGA nodes:
 M 50,100    → Move to starting point (x=50, y=100)
 C 150,50    → First control point (x=150, y=50)
   250,150   → Second control point (x=250, y=150)
-  350,100   → End point (x=350, y=100)
+  350,100   → Endpoint (x=350, y=100)
 ```
 
 - **Control points** define the curve's shape.
@@ -641,8 +641,8 @@ Here's a list of potential improvements that could be made to the project in the
 - **Advanced Features**: Add advanced features like clock domain crossing analysis, timing constraints validation, and power analysis to provide a comprehensive FPGA design and analysis tool.
 - **Collaborative Editing**: Enable collaborative editing and sharing of FPGA designs, simulations, and results, allowing multiple users to work together on the same project.
 - **Cloud Integration**: Integrate with cloud services to provide scalable storage, processing, and collaboration features for users working on large FPGA designs and simulations.
-- **Edition**: Add the possibility to edit the simulation, to add new components, to change the connections, to change the delays, etc.
-- **Export**: Add the possibility to export the simulation, to save it, to share it, etc.
+- **Edition**: Add the possibility to edit the simulation, add new components, change the connections, change the delays, etc.
+- **Export**: Add the possibility to export the simulation, save it, share it, etc.
 
 ## Glossary
 
