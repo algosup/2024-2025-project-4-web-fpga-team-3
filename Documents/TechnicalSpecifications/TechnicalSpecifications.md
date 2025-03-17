@@ -45,6 +45,10 @@
         - [Logs creation](#logs-creation)
         - [Logs display](#logs-display)
       - [Step buttons](#step-buttons)
+      - [Zoom Buttons](#zoom-buttons)
+      - [Panning the Visualization](#panning-the-visualization)
+    - [Explanation:](#explanation)
+      - [Alternative Navigation Controls (Buttons or Slider)](#alternative-navigation-controls-buttons-or-slider)
   - [Risks and mitigation strategies](#risks-and-mitigation-strategies)
   - [Testing](#testing)
     - [Testing strategy](#testing-strategy)
@@ -657,17 +661,21 @@ const first = document.getElementById("start-btn");
 const previous = document.getElementById("previous-btn");
 const next = document.getElementById("next-btn");
 const last = document.getElementById("end-btn");
+const logTable = document.getElementById("log-table");
+const stepValue = document.getElementById("step-value");
 
 let currentStep = 0;
 
 first.addEventListener("click", () => {
   currentStep = 0;
+  stepValue.textContent = currentStep;
   updateLogs(currentStep);
 });
 
 previous.addEventListener("click", () => {
   if (currentStep > 0) {
     currentStep--;
+    stepValue.textContent = currentStep;
     updateLogs(currentStep);
   }
 });
@@ -675,12 +683,14 @@ previous.addEventListener("click", () => {
 next.addEventListener("click", () => {
   if (currentStep < logs.length - 1) {
     currentStep++;
+    stepValue.textContent = currentStep;
     updateLogs(currentStep);
   }
 });
 
 last.addEventListener("click", () => {
   currentStep = logs.length - 1;
+  stepValue.textContent = currentStep;
   updateLogs(currentStep);
 });
 
@@ -701,6 +711,113 @@ function updateLogs(step) {
 ```
 
 As you might see in the pseudo-code above, the logs will be updated based on the step clicked by the user. The user will be able to go back and forth in the simulation to see the logs at different times. If the backward button is pressed, the logs will be updated to show the logs at the previous step. If the forward button is pressed, the logs will be updated to show the logs at the next step.
+
+#### Zoom Buttons
+
+The zoom buttons will allow the user to control the zoom level of the FPGA structure visualization. The zoom buttons will be displayed in the footer of the application and will include the following options:
+
+- **Zoom In**: Increase the zoom level of the visualization.
+- **Zoom Out**: Decrease the zoom level of the visualization.
+
+The zoom buttons will be implemented using HTML buttons with event listeners to handle user interactions. When a zoom button is clicked, the visualization will update to reflect the new zoom level, making it easier for users to explore the FPGA structure and signal propagation.
+
+Here's a hypothetical example of how the zoom buttons might be implemented in the front end:
+
+```js
+const zoomIn = document.getElementById("zoom-in-btn");
+const zoomOut = document.getElementById("zoom-out-btn");
+
+let zoomLevel = 1;
+const maxZoom = 3; // Maximum zoom level
+const minZoom = 0.5; // Minimum zoom level
+
+// Store the visualization element that needs zooming
+const visualization = document.getElementById("fpga-window");
+
+zoomIn.addEventListener("click", () => {
+  if (zoomLevel < maxZoom) {
+    zoomLevel += 0.1;
+    updateZoom(zoomLevel);
+  }
+});
+
+zoomOut.addEventListener("click", () => {
+  if (zoomLevel > minZoom) {
+    zoomLevel -= 0.1;
+    updateZoom(zoomLevel);
+  }
+});
+
+function updateZoom(level) {
+  // Apply the scale transform to the visualization element
+  visualization.style.transform = `scale(${level})`;
+  visualization.style.transformOrigin = "center center"; // Keep the scaling centered
+  console.log(`Zoom Level: ${level}`);
+}
+```
+
+As you might see in the pseudo-code above, the zoom level will be updated based on the zoom button clicked by the user. The user will be able to zoom in and out of the visualization to explore the FPGA structure and signal propagation at different levels of detail.
+
+#### Panning the Visualization
+
+When users zoom in on the FPGA structure, they may need to pan across the visualization to explore different sections of the structure. This can be achieved by allowing the user to drag or use navigation controls such as buttons or a slider.
+
+To implement this, we can add a simple panning feature using mouse dragging and/or arrow buttons. Here's an example of how the panning functionality might be implemented:
+
+```js
+let isPanning = false;
+let startX = 0;
+let startY = 0;
+
+visualization.addEventListener("mousedown", (e) => {
+  isPanning = true;
+  startX = e.clientX;
+  startY = e.clientY;
+});
+
+visualization.addEventListener("mousemove", (e) => {
+  if (isPanning) {
+    const dx = e.clientX - startX;
+    const dy = e.clientY - startY;
+    visualization.style.transform = `scale(${zoomLevel}) translate(${dx}px, ${dy}px)`;
+  }
+});
+
+visualization.addEventListener("mouseup", () => {
+  isPanning = false;
+});
+
+visualization.addEventListener("mouseleave", () => {
+  isPanning = false;
+});
+```
+
+### Explanation:
+
+- **Panning**: The user can click and drag the mouse to move the visualization (translate it) across the screen. When the mouse is pressed down, the `mousedown` event starts the panning, and the `mousemove` event is used to apply the translation based on how far the mouse has moved.
+- **Mouse Up/Leave**: When the user releases the mouse or leaves the visualization area, the panning stops.
+
+#### Alternative Navigation Controls (Buttons or Slider)
+
+In addition to panning via mouse dragging, we could also provide a set of navigation controls (like arrow buttons or a slider) for panning the visualization horizontally and vertically. Here's an example of a horizontal slider that moves the visualization left and right:
+
+```html
+<div id="horizontal-slider">
+  <input type="range" min="0" max="100" value="50" id="slider" />
+</div>
+
+<script>
+  const slider = document.getElementById("slider");
+
+  slider.addEventListener("input", (e) => {
+    const sliderValue = e.target.value;
+    const offset = sliderValue - 50; // Centered at 50
+    visualization.style.transform = `scale(${zoomLevel}) translateX(${offset}px)`;
+  });
+</script>
+```
+
+This code creates a horizontal slider that lets users move the FPGA structure left and right based on the zoom level. You can also implement vertical sliders or arrow buttons for more fine-grained control over panning.
 
 ## Risks and mitigation strategies
 
