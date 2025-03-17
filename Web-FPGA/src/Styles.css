@@ -1,0 +1,176 @@
+:root {
+    --header-height: 3rem;
+    --font-medium: 500;
+  
+    --first-color: #253238;
+    --first-color-light: #47697a;
+    --white-color: #fafaff;
+    --dark-color: #1A3A5F;
+    --text-color: #333;
+    --text-color-white: #fff;
+    --border-table: #47697a5a;
+  
+    --body-font: 'Montserrat', sans-serif;
+    --big-font-size: 6.25rem;
+    --h2-font-size: 1.25rem;
+    --normal-font-size: .938rem;
+    --small-font-size: .813rem;
+  
+    --mb1: .5rem;
+    --mb2: 1rem;
+    --mb3: 1.5rem;
+    --mb4: 2rem;
+}
+
+body {
+    margin: 0;
+    font-family: var(--body-font);
+    font-size: var(--normal-font-size);
+    font-weight: var(--font-medium);
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+.uploadButton {
+    background-color: var(--first-color);
+    color: var(--white-color);
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: var(--font-medium);
+}
+
+.top-bar {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px;
+    background-color: var(--dark-color);
+}
+
+.upload-section {
+    position: relative;
+    left: 5px;
+}
+
+.logo {
+    position: relative;
+    margin: 0 auto;
+    margin-right: 550px;
+    color: var(--white-color);
+    font-size: 3rem;
+    font-weight: var(--font-medium);
+    text-align: center;
+    z-index: 1;
+}
+
+.logs-cube {
+    margin-left: auto;
+    margin-right: 4rem;
+    width: 250px;
+    height: 500px;
+    color: var(--text-black-color);
+    font-weight: var(--font-medium);
+    z-index: 1;
+    background-color: #d3d3d3;
+    box-shadow: 10px 10px 4px rgba(0, 0, 0, 0.5);
+}
+
+.main-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 2rem;
+    margin-top: 2rem;
+    margin-left: 2rem;
+    margin-right: 2rem;
+    margin-bottom: 2rem;
+}
+
+.main-content h2 {
+    font-size: 1.5rem;
+    margin-top: 1rem;
+    font-size: var(--h2-font-size);
+    text-align: center;
+}
+
+.logs-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid var(--border-table);
+}
+
+.logs-table th,
+.logs-table td {
+    border: 1px solid var(--border-table)
+}
+
+.logs-table th {
+    background-color: var(--border-table);
+    color: var(--white-color);
+    padding: 0.5rem;
+    text-align: center;
+}
+
+.logs-table td {
+    padding: 0.5rem;
+}
+
+.log-time {
+    text-align: center;
+}
+
+.log-action {
+    text-align: left;
+    margin-left: 5rem;
+}
+
+.simulation-cube {
+    width: 100%;
+    max-width: 1500px;
+    height: 500px;
+    color: var(--text-color-white);
+    font-weight: var(--font-medium);
+    background-color: var(--first-color);
+    box-shadow: 10px 10px 4px rgba(0, 0, 0, 0.5);
+}
+
+.buttons-zoom {
+    text-align: center;
+}
+
+.zoomButton {
+    background-color: var(--first-color-light);
+    color: var(--white-color);
+    padding: 0.5rem 1rem;
+    margin: 0.3rem;
+    border-radius: 0.25rem;
+    border-color: var(--first-color);
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: var(--font-medium);
+}
+
+.zoomButton:hover {
+    background-color: var(--first-color);
+}
+
+.zoomButton[data-tooltip] {
+    position: relative;
+}
+
+.zoomButton[data-tooltip]:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.75);
+    color: var(--white-color);
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
+    top: -2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    pointer-events: none;
+}

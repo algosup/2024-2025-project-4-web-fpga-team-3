@@ -2,17 +2,63 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Simulation</title>
+    <link rel="stylesheet" href="styleUI.css" />
   </head>
   <body>
-    <div id="root">
-      <input type="file" id="fileInput" accept=".sdf" />
-      <button id="uploadButton">Upload</button>
-      <pre id="result"></pre>
-    </div>
-    <script type="module" src="src/main.jsx"></script>
-    <script type="module" src="src/pages/UploadPage.js"></script>
+    <!-- HEADER AREA -->
+    <header class="top-bar">
+        <div class="container">
+            <div class="upload-section">
+                <input class="uploadButton" type="file" id="fileInput" accept=".sdf" />
+                <button class="uploadButton">Upload</button>
+            </div>
+            <pre id="result"></pre>
+        </div>
+        <script type="module" src="src/main.jsx"></script>
+        <script type="module" src="src/pages/UploadPage.js"></script>
+        <div class="logo">FPGA Simulator</div>
+    </header>
   </body>
+
+
+<section class="main-content">
+    <!-- SIMULATION AREA -->
+    <div class="simulation-cube">
+        <h2>Simulation</h2>
+
+    </div>
+
+    <!-- LOG AREA -->
+    <div class="logs-cube">
+        <h2>Logs</h2>
+        <table class="logs-table">
+            <tr>
+                <th>Time</th>
+                <th>Action</th>
+            </tr>
+            <tr>
+                <td class="log-time">00:20</td>
+                <td class="log-action">Button Pressed</td>
+            </tr>
+            <tr>
+                <td class="log-time">00:25</td>
+                <td class="log-action">Light on</td>
+            </tr>
+        </table>
+    </div>
+</section>
+
+<footer class="buttons-zoom">
+    <button class="zoomButton" data-tooltip="Zoom In" aria-label="Zoom In">
+        <span aria-hidden="true">&#128269;</span>
+    </button>
+    <button class="zoomButton" data-tooltip="Zoom Out" aria-label="Zoom Out">
+        <span aria-hidden="true">&#128270;</span>
+    </button>
+    <button class="zoomButton" data-tooltip="View Reset" aria-label="Reset">
+        <span aria-hidden="true">&#x21BA;</span>
+    </button>
+</footer>
 </html>
