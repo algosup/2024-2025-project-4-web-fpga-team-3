@@ -21,9 +21,10 @@
     - [Website](#website)
       - [Frontend](#frontend)
       - [Backend](#backend)
+        - [File upload](#file-upload)
       - [Parser](#parser)
         - [FPGA Interconnect](#fpga-interconnect)
-        - [LUT\_K](#lut_k)
+        - [LUT_K](#lut_k)
         - [DFF](#dff)
     - [FPGA structure generation](#fpga-structure-generation)
       - [Backend processing](#backend-processing)
@@ -35,11 +36,15 @@
         - [3. Signal Styling with CSS](#3-signal-styling-with-css)
         - [4. Signal Propagation Simulation](#4-signal-propagation-simulation)
         - [Bézier curve](#bézier-curve)
-      - [**Why Bézier Curves?**](#why-bézier-curves)
-      - [**Implementation Details**](#implementation-details)
-    - [**Breaking Down the Bézier Curve Command**](#breaking-down-the-bézier-curve-command)
-    - [**Dynamic Bézier Curve in D3.js**](#dynamic-bézier-curve-in-d3js)
-    - [**Collision Avoidance Strategy**](#collision-avoidance-strategy)
+          - [Why Bézier Curves?](#why-bézier-curves)
+          - [Implementation Details](#implementation-details)
+          - [Breaking Down the Bézier Curve Command](#breaking-down-the-bézier-curve-command)
+          - [Dynamic Bézier Curve in D3.js](#dynamic-bézier-curve-in-d3js)
+          - [Collision Avoidance Strategy](#collision-avoidance-strategy)
+      - [Logs](#logs)
+        - [Logs creation](#logs-creation)
+        - [Logs display](#logs-display)
+      - [Step buttons](#step-buttons)
   - [Risks and mitigation strategies](#risks-and-mitigation-strategies)
   - [Testing](#testing)
     - [Testing strategy](#testing-strategy)
@@ -276,6 +281,16 @@ The backend will be responsible for **handling file uploads**, **running simulat
 - **Simulation Service**: A service for simulating signal propagation through the FPGA structure and updating the front end with the results.
 
 The most important and complex part of the backend will be the parser service, which will be responsible for parsing `.sdf` files and converting them into a format that the front end can use to generate the FPGA structure visualization. The team will pay specific attention to error handling, data validation, and performance optimization to ensure that the parser service is robust, reliable, and efficient.
+
+##### File upload
+
+Uploading the file isn't too complex, but it's important to handle it correctly. The team will use the following steps to handle the file upload:
+
+1. **Interraction**: The user will click on the upload button in the header or at the start of the application.
+2. **File selection**: The user will select the `.sdf` file to upload.
+3. **File upload**: The file will be uploaded to the website
+4. **File processing**: The file will be processed by the backend to extract the relevant data.
+5. **File saving**: The transformed file will be saved in the local cache.
 
 #### Parser
 
@@ -521,13 +536,13 @@ As signals move, affected wires will animate accordingly, transitioning from off
 
 To prevent **wire congestion and overlapping connections**, the system will use **Bézier curves** for routing. Bézier curves allow for **smooth, visually distinct paths**, making complex FPGA wiring easier to follow.
 
-#### **Why Bézier Curves?**
+###### Why Bézier Curves?
 
 - They provide a **cleaner** and **more readable** representation of signal paths.
 - Unlike straight lines, Bézier curves help prevent visual clutter when multiple wires are present.
 - They allow **dynamic adjustments**, automatically updating when nodes move.
 
-#### **Implementation Details**
+###### Implementation Details
 
 Bézier curves in **SVG** can be created using the `C` (cubic Bézier) or `Q` (quadratic Bézier) command in an `<svg>` `<path>` element.
 
@@ -546,7 +561,7 @@ Example of an **SVG Bézier curve** for routing a wire between two FPGA nodes:
 
 ![SVG Bézier Curve](./Images/svg.png)
 
-### **Breaking Down the Bézier Curve Command**
+###### Breaking Down the Bézier Curve Command
 
 ```plaintext
 M 50,100    → Move to starting point (x=50, y=100)
@@ -558,7 +573,7 @@ C 150,50    → First control point (x=150, y=50)
 - **Control points** define the curve's shape.
 - The **closer** a control point is to a segment, the more influence it has on the curve.
 
-### **Dynamic Bézier Curve in D3.js**
+###### Dynamic Bézier Curve in D3.js
 
 To generate dynamic routing, D3.js can be used to update Bézier paths **automatically** based on node positions:
 
@@ -575,7 +590,7 @@ const link = d3
   .attr("stroke-width", 2);
 ```
 
-### **Collision Avoidance Strategy**
+###### Collision Avoidance Strategy
 
 1. **Dynamic Control Points:**
    - Adjust **control points dynamically** to curve around obstacles.
@@ -583,6 +598,109 @@ const link = d3
    - Prevent overlapping by checking distances between parallel wires.
 3. **Force-Directed Layouts:**
    - Use **D3.js force simulations** to push wires apart for better clarity.
+
+#### Logs
+
+One key feature for this project is the ability to display logs to the user. The logs will be displayed in the sidebar of the application and will provide informations on the simulation based on the time and the step.
+
+##### Logs creation
+
+The logs will be created based on the simulation data and user interactions. The logs will include information about the simulation status, signal propagation, and user actions. Each log entry will be timestamped to indicate when it occurred. Each log entry will be saved in an array or object that can be accessed and updated as needed.
+
+To be able to create logs, the team will need to create a function that will look into the `.json` file and extract the relevant information to create the logs. The logs will be created based on the simulation data and user interactions. The logs will include information about the simulation status, signal propagation, and user actions. Each log entry will be timestamped to indicate when it occurred.
+
+Here's a hypothetical example of how the logs might be created in the back end:
+
+```js
+const logs = [];
+
+function logEvent(timestamp, message) {
+  logs.push({ timestamp, message });
+}
+```
+
+The function `logEvent` will be used to create a new log entry with a timestamp and a message. The logs will be stored in an array called `logs`, which can be accessed and updated as needed. This function will be called whenever an event occurs that requires logging, such as the start of the simulation, signal propagation, or user interactions.
+
+##### Logs display
+
+The logs will be displayed in a chronological order, with the oldest logs at the top and the newest logs at the bottom. Each log entry will include the following information:
+
+- **Timestamp**: The time at which the log entry was generated.
+- **Message**: A brief description of the event or action that triggered the log entry.
+
+The logs will be saved in an invisible table, with each row representing a log entry and each column representing a different field (timestamp, message). The logs will be updated based on the steps button clicked by the user.
+
+Here's a hypothetical example of how the logs might be displayed in the sidebar:
+
+```plaintext
+00:00 Simulation started
+00:10 Signal A propagated from LUT1 to DFF1
+00:25 Signal B propagated from Input1 to LUT1
+00:53 Simulation paused
+```
+
+#### Step buttons
+
+The step buttons will allow the user to control the simulation by moving forward or backward in time. The step buttons will be displayed in the header of the application and will include the following options:
+
+- **Start**: Move to the beginning of the simulation.
+- **Previous**: Move back one step in the simulation.
+- **Next**: Move forward one step in the simulation.
+- **End**: Move to the end of the simulation.
+
+The step buttons will be implemented using HTML buttons with event listeners to handle user interactions. When a step button is clicked, the simulation will update the visualization and logs to reflect the current state of the simulation at the selected time.
+
+Here's a hypothetical example of how the step buttons might be implemented in the front end:
+
+```js
+const first = document.getElementById("start-btn");
+const previous = document.getElementById("previous-btn");
+const next = document.getElementById("next-btn");
+const last = document.getElementById("end-btn");
+
+let currentStep = 0;
+
+first.addEventListener("click", () => {
+  currentStep = 0;
+  updateLogs(currentStep);
+});
+
+previous.addEventListener("click", () => {
+  if (currentStep > 0) {
+    currentStep--;
+    updateLogs(currentStep);
+  }
+});
+
+next.addEventListener("click", () => {
+  if (currentStep < logs.length - 1) {
+    currentStep++;
+    updateLogs(currentStep);
+  }
+});
+
+last.addEventListener("click", () => {
+  currentStep = logs.length - 1;
+  updateLogs(currentStep);
+});
+
+function updateLogs(step) {
+  logTable.innerHTML = "";
+  for (let i = 0; i <= step; i++) {
+    const log = logs[i];
+    const row = document.createElement("tr");
+    const timestampCell = document.createElement("td");
+    const messageCell = document.createElement("td");
+    timestampCell.textContent = log.timestamp;
+    messageCell.textContent = log.message;
+    row.appendChild(timestampCell);
+    row.appendChild(messageCell);
+    logTable.appendChild(row);
+  }
+}
+```
+
+As you might see in the pseudo-code above, the logs will be updated based on the step clicked by the user. The user will be able to go back and forth in the simulation to see the logs at different times. If the backward button is pressed, the logs will be updated to show the logs at the previous step. If the forward button is pressed, the logs will be updated to show the logs at the next step.
 
 ## Risks and mitigation strategies
 
@@ -648,6 +766,7 @@ Here's a list of potential improvements that could be made to the project in the
 
 | Term                  | Definition                                                                                                                                               |
 | --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Bézier curve          | A type of curve that is defined by a set of control points and is used in computer graphics and animation to create smooth, flowing shapes.              |
 | CNES                  | Centre National d'Études Spatiales, the French space agency.                                                                                             |
 | Cypress               | An end-to-end testing framework for web applications.                                                                                                    |
 | D3.js                 | A JavaScript library for creating interactive data visualizations.                                                                                       |
@@ -665,4 +784,5 @@ Here's a list of potential improvements that could be made to the project in the
 | React Testing Library | A testing library for React that provides utilities for testing React components.                                                                        |
 | REST API              | Representational State Transfer Application Programming Interface, a set of rules for building web services that adhere to the REST architectural style. |
 | SDF                   | Standard Delay Format, a file format used to specify timing information for digital circuits.                                                            |
+| SVG                   | Scalable Vector Graphics, an XML-based vector image format for two-dimensional graphics.                                                                 |
 | Vite                  | A fast-build tool that provides a modern development environment for front-end projects.                                                                 |
