@@ -217,7 +217,8 @@ You can find here screenshots of the issues template on github.
 
 **Typo Report Template**:
   ![Typo report template](./Images/TypoReportTemplate.png)
-
+ <Br>
+ 
 **Feature Request Template**:
   ![Feature request template](./Images/FeatureRequestTemplate.png)
 
