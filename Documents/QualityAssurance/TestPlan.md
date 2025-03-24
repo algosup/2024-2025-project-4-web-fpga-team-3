@@ -213,24 +213,28 @@ The test plan covers:
 You can find here screenshots of the issues template on github.
 
 **Bug Report Template**:
-  ![Bug report template](./Images/BugReportTemplate.png)
+<br>
+![Bug report template](./Images/BugReportTemplate.png)
 
 **Typo Report Template**:
-  ![Typo report template](./Images/TypoReportTemplate.png)
- <Br>
- 
+<br>
+![Typo report template](./Images/TypoReportTemplate.png)
+
 **Feature Request Template**:
-  ![Feature request template](./Images/FeatureRequestTemplate.png)
+<br>
+![Feature request template](./Images/FeatureRequestTemplate.png)
 
 **General Question Template**:
-  ![General question template](./Images/QuestionTemplate.png)
+<br>
+![General question template](./Images/QuestionTemplate.png)
 
 ##### 6.3.2 Pull-Request Templates
 
 Here are the screenshots of the pull-request template used in the project:
 
 **Pull Request Template**:
-  ![Pull request template](./Images/PullRequestTemplate.png)
+<br>
+![Pull request template](./Images/PullRequestTemplate.png)
 
 ##### 6.3.3 Labels
 
