@@ -214,10 +214,13 @@ You can find here screenshots of the issues template on github.
 
 - **Bug Report Template**:
   ![Bug report template](./Images/BugReportTemplate.png)
+
 - **Typo Report Template**:
   ![Typo report template](./Images/TypoReportTemplate.png)
+
 - **Feature Request Template**:
   ![Feature request template](./Images/FeatureRequestTemplate.png)
+
 - **General Question Template**:
   ![General question template](./Images/QuestionTemplate.png)
 
