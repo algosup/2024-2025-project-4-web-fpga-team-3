@@ -31,7 +31,7 @@
       - [6.2.1 Issue Templates](#621-issue-templates)
     - [6.3 Bug Tracking](#63-bug-tracking)
       - [6.3.1 Issues templates](#631-issues-templates)
-        - [6.3.2 \*\*Pull-Request Templates](#632-pull-request-templates)
+        - [6.3.2 Pull-Request Templates](#632-pull-request-templates)
         - [6.3.3 Labels](#633-labels)
       - [6.4 Bug Database](#64-bug-database)
   - [7. Test Schedule](#7-test-schedule)
@@ -39,8 +39,8 @@
     - [8.1 Test Tools](#81-test-tools)
     - [8.2 Personnel](#82-personnel)
   - [9. Risks and Mitigations](#9-risks-and-mitigations)
-    - [9.1 Performance Risks⚠️](#91-performance-risks️)
-    - [9.2 Data Integrity Risks⚠️](#92-data-integrity-risks️)
+    - [9.1 Performance Risk](#91-performance-risk)
+    - [9.2 Data Integrity Risks](#92-data-integrity-risks)
   - [10. Glossary](#10-glossary)
 
 </details>
@@ -222,7 +222,7 @@ You can find here screenshots of the issues template on github.
 - **General Question Template**:
   <img src=".\Images\QuestionTemplate.png" alt="alt text">
 
-##### 6.3.2 **Pull-Request Templates
+##### 6.3.2 Pull-Request Templates
 
 Here are the screenshots of the pull-request template used in the project:
 
@@ -277,12 +277,12 @@ You will be able to find the all the bugs in Github's issue tab. You will also b
 
 ## 9. Risks and Mitigations
 
-### 9.1 Performance Risks⚠️
+### 9.1 Performance Risk
 
 - **Issue**: High latency with large FPGA visualizations
 - **Mitigation**: Optimize rendering with asynchronous logic and UI throttling
 
-### 9.2 Data Integrity Risks⚠️
+### 9.2 Data Integrity Risks
 
 - **Issue**: Incorrect `.sdf` parsing could produce invalid results
 - **Mitigation**: Implement strict validation rules and schema checks
