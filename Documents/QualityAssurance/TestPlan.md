@@ -211,7 +211,7 @@ The test plan covers:
 #### 6.3.1 Issues templates
 
 You can find here screenshots of the issues template on github.
-
+<br>
 **Bug Report Template**:
   ![Bug report template](./Images/BugReportTemplate.png)
 
