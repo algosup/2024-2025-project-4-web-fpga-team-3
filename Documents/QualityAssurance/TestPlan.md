@@ -211,9 +211,6 @@ The test plan covers:
 #### 6.3.1 Issues templates
 
 You can find here screenshots of the issues template on github.
-<br>
-**Bug Report Template**:
-  ![Bug report template](./Images/BugReportTemplate.png)
 
 **Typo Report Template**:
   ![Typo report template](./Images/TypoReportTemplate.png)
@@ -224,6 +221,9 @@ You can find here screenshots of the issues template on github.
 **General Question Template**:
   ![General question template](./Images/QuestionTemplate.png)
 
+**Bug Report Template**:
+  ![Bug report template](./Images/BugReportTemplate.png)
+  
 ##### 6.3.2 Pull-Request Templates
 
 Here are the screenshots of the pull-request template used in the project:
