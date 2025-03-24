@@ -1,35 +1,113 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import SDFParser from "./services/Parser.js";
+import transformData from "./services/Transform.js";
+import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [file, setFile] = useState(null);
+  const [result, setResult] = useState("");
+  const [error, setError] = useState("");
+
+  const handleFileChange = (event) => {
+    const fileInput = event.target.files[0];
+    setFile(fileInput);
+    setError(""); // Réinitialiser l'erreur lors de la sélection d'un nouveau fichier
+  };
+
+  const handleUpload = async () => {
+    if (!file) {
+      setError("Please select an SDF file.");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = async (event) => {
+      const sdfContent = event.target.result;
+
+      try {
+        // Parser le contenu SDF en JSON
+        const parser = new SDFParser();
+        const parsedJson = parser.parseSDF(sdfContent);
+
+        // Transformer le JSON dans un format organisé
+        const transformedJson = transformData(parsedJson);
+
+        // Afficher le résultat final
+        setResult(JSON.stringify(transformedJson, null, 2));
+      } catch (error) {
+        console.error("Erreur lors du traitement du fichier:", error);
+        setError(
+          "Erreur lors de l'analyse ou de la transformation du fichier."
+        );
+      }
+    };
+
+    reader.readAsText(file);
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+    <div className="app">
+      <header className="top-bar">
+        <div className="logo">FPGA Simulator</div>
+        <div className="upload-section">
+          <input
+            className="uploadButton"
+            type="file"
+            id="fileInput"
+            accept=".sdf"
+            onChange={handleFileChange}
+          />
+          <button className="uploadButton" onClick={handleUpload}>
+            Upload
+          </button>
+        </div>
+      </header>
+
+      <section className="main-content">
+        <div className="simulation-cube">
+          <h2>Simulation</h2>
+          <pre>{result}</pre> {/* Affichage du résultat JSON transformé */}
+        </div>
+
+        <div className="logs-cube">
+          <h2>Logs</h2>
+          <table className="logs-table">
+            <thead>
+              <tr>
+                <th>Time</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <footer className="buttons-zoom">
+        <button
+          className="zoomButton"
+          data-tooltip="Zoom In"
+          aria-label="Zoom In"
+        >
+          <span aria-hidden="true">&#128269;</span>
         </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+        <button
+          className="zoomButton"
+          data-tooltip="View Reset"
+          aria-label="Reset"
+        >
+          <span aria-hidden="true">&#x21BA;</span>
+        </button>
+        <button
+          className="zoomButton"
+          data-tooltip="Zoom Out"
+          aria-label="Zoom Out"
+        >
+          <span aria-hidden="true">&#128270;</span>
+        </button>
+      </footer>
+    </div>
+  );
 }
 
-export default App
+export default App;
