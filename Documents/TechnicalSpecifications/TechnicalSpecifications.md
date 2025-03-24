@@ -70,7 +70,7 @@ The system doesn't have any mandatory framework or library to use, but the team 
 
 ### Objectives
 
-The main objective of this project is to provide an interactive 2D visualization of FPGA structures and signal routing. The system should be able to simulate signal propagation in real-time with time-based animations, allowing users to see how signals travel through an FPGA design. Teachers should have the capability to upload Verilog applications and test benches, which students can then use to run and analyze simulations. The interface should be intuitive, engaging, and informative, making it easier for students to grasp the fundamentals of FPGA design and behavior.
+The main objective of this project is to provide an interactive 2D visualization of FPGA structures and signal routing. The system should be able to simulate signal propagation in real time with time-based animations, allowing users to see how signals travel through an FPGA design. Teachers should have the capability to upload Verilog applications and test benches, which students can then use to run and analyze simulations. The interface should be intuitive, engaging, and informative, making it easier for students to grasp the fundamentals of FPGA design and behavior.
 
 ### Why this project?
 
@@ -99,7 +99,7 @@ The project will be divided into the following tasks:
 
 - **Parsing**: Being able to transform a given `.sdf` file into a JSON object that will be used to generate the FPGA structure.
 - **FPGA Structure Generation**: Creating a 2D representation of the FPGA structure based on the JSON object generated from the `.sdf` file.
-- **Signal Propagation Simulation**: Simulating signal propagation through the FPGA structure and updating the visualization in real-time.
+- **Signal Propagation Simulation**: Simulating signal propagation through the FPGA structure and updating the visualization in real time.
 - **User Interface**: Designing an intuitive and interactive user interface for uploading Verilog applications, controlling simulations, and viewing results.
 - **Back-end Development**: Implementing the server-side application to handle file uploads, simulation execution, and communication with the front end.
 - **Integration**: Integrating the front-end and back-end components to create a seamless user experience.
@@ -290,7 +290,7 @@ The most important and complex part of the backend will be the parser service, w
 
 Uploading the file isn't too complex, but it's important to handle it correctly. The team will use the following steps to handle the file upload:
 
-1. **Interraction**: The user will click on the upload button in the header or at the start of the application.
+1. **Interaction**: The user will click on the upload button in the header or at the start of the application.
 2. **File selection**: The user will select the `.sdf` file to upload.
 3. **File upload**: The file will be uploaded to the website
 4. **File processing**: The file will be processed by the backend to extract the relevant data.
@@ -312,18 +312,18 @@ Here are all the types of cells we might find in the `.sdf` file:
 ##### FPGA Interconnect
 
 ```sdf
-  (CELL
-        (CELLTYPE "fpga_interconnect")
-        (INSTANCE routing_segment_D_output_0_0_to_lut_\$auto\$rtlil\.cc\:2714\:MuxGate\$175_input_0_3)
-        (DELAY
-            (ABSOLUTE
-                (IOPATH datain dataout (235.697:235.697:235.697) (235.697:235.697:235.697))
-            )
-        )
-    )
+ (CELL
+ (CELLTYPE "fpga_interconnect")
+ (INSTANCE routing_segment_D_output_0_0_to_lut_\$auto\$rtlil\.cc\:2714\:MuxGate\$175_input_0_3)
+ (DELAY
+ (ABSOLUTE
+ (IOPATH datain dataout (235.697:235.697:235.697) (235.697:235.697:235.697))
+ )
+ )
+ )
 ```
 
-Those are simply linking two points and provide the delay of this interaction. In the case just above, to go from `segment_D_output_0_0` to `lut_\$auto\$rtlil\.cc\:2714\:MuxGate\$175_input_0_3`, it will take 235.697 picoseconds/ps (10⁻¹² second).
+Those simply link two points and delay this interaction. In the case just above, to go from `segment_D_output_0_0` to `lut_\$auto\$rtlil\.cc\:2714\:MuxGate\$175_input_0_3`, it will take 235.697 picoseconds/ps (10⁻¹² second).
 
 The information we need to extract from this cell is the following:
 
@@ -335,17 +335,17 @@ The information we need to extract from this cell is the following:
 ##### LUT_K
 
 ```sdf
-   (CELL
-     (CELLTYPE "LUT_K")
-     (INSTANCE lut_\$auto\$rtlil\.cc\:2714\:MuxGate\$139)
-     (DELAY
-       (ABSOLUTE
-         (IOPATH in[1] out (152:152:152) (152:152:152))
-         (IOPATH in[2] out (150:150:150) (150:150:150))
-         (IOPATH in[3] out (150:150:150) (150:150:150))
-       )
-     )
-   )
+ (CELL
+ (CELLTYPE "LUT_K")
+ (INSTANCE lut_\$auto\$rtlil\.cc\:2714\:MuxGate\$139)
+ (DELAY
+ (ABSOLUTE
+ (IOPATH in[1] out (152:152:152) (152:152:152))
+ (IOPATH in[2] out (150:150:150) (150:150:150))
+ (IOPATH in[3] out (150:150:150) (150:150:150))
+ )
+ )
+ )
 ```
 
 Those are the LUTs, which are the basic components of the FPGA. They are used to store the logic of the FPGA. In the case just above, the LUT is named `lut_\$auto\$rtlil\.cc\:2714\:MuxGate\$139`.
@@ -359,18 +359,18 @@ The information we need to extract from this cell is the following:
 ##### DFF
 
 ```sdf
-   (CELL
-     (CELLTYPE "DFF")
-     (INSTANCE latch_Q)
-       (DELAY
-         (ABSOLUTE
-           (IOPATH (posedge clock) Q (303:303:303) (303:303:303))
-         )
-     )
-     (TIMINGCHECK
-       (SETUP D (posedge clock) (-46:-46:-46))
-     )
-   )
+ (CELL
+ (CELLTYPE "DFF")
+ (INSTANCE latch_Q)
+ (DELAY
+ (ABSOLUTE
+ (IOPATH (posedge clock) Q (303:303:303) (303:303:303))
+ )
+ )
+ (TIMINGCHECK
+ (SETUP D (posedge clock) (-46:-46:-46))
+ )
+ )
 ```
 
 Those are the DFFs, which are used to store the state of the FPGA. In the case just above, the DFF is named `latch_Q`. The DFF is triggered by the rising edge of the clock.
@@ -570,8 +570,8 @@ Example of an **SVG Bézier curve** for routing a wire between two FPGA nodes:
 ```plaintext
 M 50,100    → Move to starting point (x=50, y=100)
 C 150,50    → First control point (x=150, y=50)
-  250,150   → Second control point (x=250, y=150)
-  350,100   → Endpoint (x=350, y=100)
+ 250,150   → Second control point (x=250, y=150)
+ 350,100   → Endpoint (x=350, y=100)
 ```
 
 - **Control points** define the curve's shape.
@@ -605,7 +605,7 @@ const link = d3
 
 #### Logs
 
-One key feature for this project is the ability to display logs to the user. The logs will be displayed in the sidebar of the application and will provide informations on the simulation based on the time and the step.
+One key feature of this project is the ability to display logs to the user. The logs will be displayed in the sidebar of the application and will provide information on the simulation based on the time and the step.
 
 ##### Logs creation
 
@@ -627,12 +627,12 @@ The function `logEvent` will be used to create a new log entry with a timestamp 
 
 ##### Logs display
 
-The logs will be displayed in a chronological order, with the oldest logs at the top and the newest logs at the bottom. Each log entry will include the following information:
+The logs will be displayed in chronological order, with the oldest logs at the top and the newest logs at the bottom. Each log entry will include the following information:
 
 - **Timestamp**: The time at which the log entry was generated.
 - **Message**: A brief description of the event or action that triggered the log entry.
 
-The logs will be saved in an invisible table, with each row representing a log entry and each column representing a different field (timestamp, message). The logs will be updated based on the steps button clicked by the user.
+The logs will be saved in an invisible table, with each row representing a log entry and each column representing a different field (timestamp, message). The logs will be updated based on the steps button the user clicks.
 
 Here's a hypothetical example of how the logs might be displayed in the sidebar:
 
@@ -710,7 +710,7 @@ function updateLogs(step) {
 }
 ```
 
-As you might see in the pseudo-code above, the logs will be updated based on the step clicked by the user. The user will be able to go back and forth in the simulation to see the logs at different times. If the backward button is pressed, the logs will be updated to show the logs at the previous step. If the forward button is pressed, the logs will be updated to show the logs at the next step.
+As you might see in the pseudo-code above, the logs will be updated based on the steps the user clicks. The user will be able to go back and forth in the simulation to see the logs at different times. If the backward button is pressed, the logs will be updated to show the logs at the previous step. If the forward button is pressed, the logs will be updated to show the logs at the next step.
 
 #### Zoom Buttons
 
@@ -756,7 +756,7 @@ function updateZoom(level) {
 }
 ```
 
-As you might see in the pseudo-code above, the zoom level will be updated based on the zoom button clicked by the user. The user will be able to zoom in and out of the visualization to explore the FPGA structure and signal propagation at different levels of detail.
+As you might see in the pseudo-code above, the zoom level will be updated based on the zoom button the user clicks. The user will be able to zoom in and out of the visualization to explore the FPGA structure and signal propagation at different levels of detail.
 
 #### Panning the Visualization
 
