@@ -27,13 +27,13 @@
       - [6.2.2 Performance Testing](#622-performance-testing)
       - [6.2.3 Algorithm Testing](#623-algorithm-testing)
       - [6.2.4 Edge Case Testing](#624-edge-case-testing)
-    - [6.2 Templates and Labels](#62-templates-and-labels)
-      - [6.2.1 Issue Templates](#621-issue-templates)
-    - [6.3 Bug Tracking](#63-bug-tracking)
-      - [6.3.1 Issues templates](#631-issues-templates)
-        - [6.3.2 Pull-Request Templates](#632-pull-request-templates)
-        - [6.3.3 Labels](#633-labels)
-      - [6.4 Bug Database](#64-bug-database)
+    - [6.3 Templates and Labels](#63-templates-and-labels)
+      - [6.3.1 Issue Templates](#631-issue-templates)
+    - [6.4 Bug Tracking](#64-bug-tracking)
+      - [6.4.1 Issues templates](#641-issues-templates)
+        - [6.4.2 Pull-Request Templates](#642-pull-request-templates)
+        - [6.4.3 Labels](#643-labels)
+      - [6.5 Bug Database](#65-bug-database)
   - [7. Test Schedule](#7-test-schedule)
   - [8. Resources](#8-resources)
     - [8.1 Test Tools](#81-test-tools)
@@ -195,20 +195,20 @@ The test plan covers:
 | **Test Case 21** | Testing with a Huge SDF file as input.                  |
 | **Test Case 22** | Testing with an Unsupported FPGA architecture as input. |
 
-### 6.2 Templates and Labels
+### 6.3 Templates and Labels
 
-#### 6.2.1 Issue Templates
+#### 6.3.1 Issue Templates
 
 - 🐞 **Bug Reports** – Unexpected behavior, crashes, or logic issues
 - ✍️ **Typo Reports** – UI or documentation errors
 - 💡 **Feature Requests** – Suggestions for improvement or new features
 
-### 6.3 Bug Tracking
+### 6.4 Bug Tracking
 
 - Bugs are tracked via **GitHub Issues**
 - Additional logging maintained in **Google Sheets**
 
-#### 6.3.1 Issues templates
+#### 6.4.1 Issues templates
 
 You can find here screenshots of the issues template on github.
 
@@ -228,7 +228,7 @@ You can find here screenshots of the issues template on github.
 <br>
 ![General question template](./Images/QuestionTemplate.png)
 
-##### 6.3.2 Pull-Request Templates
+##### 6.4.2 Pull-Request Templates
 
 Here are the screenshots of the pull-request template used in the project:
 
@@ -236,11 +236,11 @@ Here are the screenshots of the pull-request template used in the project:
 <br>
 ![Pull request template](./Images/PullRequestTemplate.png)
 
-##### 6.3.3 Labels
+##### 6.4.3 Labels
 
 We chose to use labels to categorize issues and pull requests in the project. You can the labels used in the project [here](https://github.com/algosup/2024-2025-project-4-web-fpga-team-3/labels).
 
-#### 6.4 Bug Database
+#### 6.5 Bug Database
 
 You will be able to find the all the bugs in Github's issue tab. You will also be able to see it in a google sheet [here](https://docs.google.com/spreadsheets/d/1dsK4FeX5mcz6ChqdnvgoaYEvavyTkdlcR-_s7nZ1Gl8/edit?gid=1551741727#gid=1551741727).
 
