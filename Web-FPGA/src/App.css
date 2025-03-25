@@ -111,6 +111,48 @@ body {
   padding: 1rem;
 }
 
+.columns-container {
+  display: flex;
+  gap: 20px;
+}
+
+.column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center align the column content */
+}
+
+.column h3 {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.id-cubes-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
+.id-cube {
+  background-color: white;
+  color: black;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  text-align: center;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.75rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-word;
+}
+
 .logs-cube {
   flex: 1;
   background-color: #d3d3d3;
