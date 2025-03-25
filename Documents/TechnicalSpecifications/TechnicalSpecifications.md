@@ -16,6 +16,8 @@
   - [Schedule](#schedule)
   - [Technologies used](#technologies-used)
   - [Software](#software)
+    - [Initial steps](#initial-steps)
+    - [Installation](#installation)
     - [Software architecture](#software-architecture)
     - [File and folder structure](#file-and-folder-structure)
     - [Website](#website)
@@ -24,7 +26,7 @@
         - [File upload](#file-upload)
       - [Parser](#parser)
         - [FPGA Interconnect](#fpga-interconnect)
-        - [LUT_K](#lut_k)
+        - [LUT\_K](#lut_k)
         - [DFF](#dff)
     - [FPGA structure generation](#fpga-structure-generation)
       - [Backend processing](#backend-processing)
@@ -148,6 +150,8 @@ The project will be developed using the following technologies:
 
 ## Software
 
+### Initial steps
+
 The software will be implemented by using React. To do so, here are the initial steps:
 
 1. In your cmd, go to the repository and enter the following commands
@@ -187,6 +191,24 @@ npm run dev
 ```bash
 npm run build
 ```
+
+### Installation
+
+If, instead, you want to contribute to the project, you can clone the repository and install the dependencies by running the following commands:
+
+```bash
+git clone https://github.com/algosup/2024-2025-project-4-web-fpga-team-3.git
+cd 2024-2025-project-4-web-fpga-team-3
+npm install
+```
+
+To run the project, you can use the following command:
+
+```bash
+npm run dev
+```
+
+You will be able to access the project at the following address: `http://localhost:XXXX`, where `XXXX` is the port number.
 
 ### Software architecture
 
@@ -274,6 +296,15 @@ Based on the mockup approved by the customer, the frontend will consist of the f
 - **Upload Form**: A dedicated form for uploading `.sdf` files that will appear when the user clicks the upload button in the header or at the start of the application.
 
 The front end will be implemented using React, D3.js, and other libraries as needed to create an engaging and interactive user experience. The team will follow best practices for web development, including responsive design, accessibility, and performance optimization, to ensure that the application is user-friendly and accessible to a wide range of users.
+
+To ensure the best practices are followed, the team will use the following rules:
+
+- **Test before implementing**: Before implementing a new feature, the team will test it in simple code (html, css, js) to ensure it works as expected. Once it's done, the team will implement it in the project, in jsx and css.
+- **Code review**: Before merging a pull request, the team will review the code to ensure it follows the best practices and the project's guidelines.
+- **Testing**: The team will test the project on different devices and browsers to ensure it's responsive and accessible to all users.
+- **Performance**: The team will optimize the project to ensure it loads quickly and runs smoothly on all devices.
+
+For more details on the practices to follow, please refer to the [following article](https://www.geeksforgeeks.org/web-development-best-practices/).
 
 #### Backend
 
@@ -861,7 +892,6 @@ The project will be designed to be scalable and performant, allowing it to handl
 - **Monitoring and Analytics**: Using monitoring tools and analytics to track performance metrics, identify bottlenecks, and optimize the application for scalability and performance.
 - **Load Testing**: Conducting load tests to simulate high user traffic, measure system performance under stress, and identify areas for improvement.
 - **Scalable Architecture**: Designing a modular, scalable architecture that can be easily extended, modified, and adapted to meet changing requirements and accommodate future growth.
-- **Security**: Implementing security best practices to protect user data, prevent unauthorized access, and ensure the integrity and confidentiality of the application.
 
 By following these best practices and principles, the team aims to create a scalable, performant, and reliable application that can meet the needs of users, handle complex simulations, and provide an engaging and interactive experience for learning FPGA design.
 
