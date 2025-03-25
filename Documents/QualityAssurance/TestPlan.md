@@ -27,8 +27,8 @@
       - [6.2.2 Performance Testing](#622-performance-testing)
       - [6.2.3 Algorithm Testing](#623-algorithm-testing)
       - [6.2.4 Edge Case Testing](#624-edge-case-testing)
-    - [6.2 Templates and Labels](#62-templates-and-labels)
-      - [6.2.1 Issue Templates](#621-issue-templates)
+    - [6.3 Templates and Labels](#63-templates-and-labels)
+      - [6.3.1 Issue Templates](#631-issue-templates)
     - [6.3 Bug Tracking](#63-bug-tracking)
       - [6.3.1 Issues templates](#631-issues-templates)
         - [6.3.2 Pull-Request Templates](#632-pull-request-templates)
@@ -195,9 +195,9 @@ The test plan covers:
 | **Test Case 21** | Testing with a Huge SDF file as input.                  |
 | **Test Case 22** | Testing with an Unsupported FPGA architecture as input. |
 
-### 6.2 Templates and Labels
+### 6.3 Templates and Labels
 
-#### 6.2.1 Issue Templates
+#### 6.3.1 Issue Templates
 
 - 🐞 **Bug Reports** – Unexpected behavior, crashes, or logic issues
 - ✍️ **Typo Reports** – UI or documentation errors
