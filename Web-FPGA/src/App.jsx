@@ -1,17 +1,18 @@
 import { useState } from "react";
 import SDFParser from "./services/Parser.js";
 import transformData from "./services/Transform.js";
-// import Simulation from "./services/Simulator.js";
 import "./App.css";
 
 function App() {
   const [file, setFile] = useState(null);
+  const [fileUploaded, setFileUploaded] = useState(false);
   const [result, setResult] = useState([]);
   const [error, setError] = useState("");
 
   const handleFileChange = (event) => {
     const fileInput = event.target.files[0];
     setFile(fileInput);
+    setFileUploaded(false);
     setError(""); // Reset error when a new file is selected
   };
 
@@ -34,19 +35,26 @@ function App() {
         const transformedJson = transformData(parsedJson);
 
         // Debugging: Log the transformed JSON
-        console.log('Transformed JSON:', transformedJson);
+        console.log("Transformed JSON:", transformedJson);
 
         // Store the transformed JSON in localStorage
-        localStorage.setItem('transformedJson', JSON.stringify(transformedJson));
+        localStorage.setItem(
+          "transformedJson",
+          JSON.stringify(transformedJson)
+        );
 
         // Debugging: Verify the item is stored in localStorage
-        console.log('Stored JSON in localStorage:', localStorage.getItem('transformedJson'));
+        console.log(
+          "Stored JSON in localStorage:",
+          localStorage.getItem("transformedJson")
+        );
 
         // Display final JSON result
         setResult(transformedJson.nodes);
+        setFileUploaded(true);
       } catch (error) {
-        console.error('Error processing file:', error);
-        setError('Error parsing or transforming the file.');
+        console.error("Error processing file:", error);
+        setError("Error parsing or transforming the file.");
       }
     };
 
@@ -64,8 +72,17 @@ function App() {
 
   return (
     <div className="app">
-      <header className="top-bar">
+      <header className={`top-bar ${fileUploaded ? "shifted" : ""}`}>
         <div className="logo">FPGA Simulator</div>
+        {fileUploaded && (
+          <div className="simulation-controls">
+            <button>⏪</button>
+            <button>◀️</button>
+            <span>X</span>
+            <button>▶️</button>
+            <button>⏩</button>
+          </div>
+        )}
         <div className="upload-section">
           <input
             className="uploadButton"
