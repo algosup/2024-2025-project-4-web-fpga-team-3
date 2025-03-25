@@ -10,11 +10,6 @@ document.getElementById('uploadButton').addEventListener('click', async () => {
   const fileInput = document.getElementById('fileInput');
   const file = fileInput.files[0];
 
-  if (!file) {
-    alert('Please select an SDF file.');
-    return;
-  }
-
   const reader = new FileReader();
   reader.onload = async (event) => {
     const sdfContent = event.target.result;

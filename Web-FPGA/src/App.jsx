@@ -11,7 +11,7 @@ function App() {
   const handleFileChange = (event) => {
     const fileInput = event.target.files[0];
     setFile(fileInput);
-    setError(""); // Réinitialiser l'erreur lors de la sélection d'un nouveau fichier
+    setError(""); // Reset error when a new file is selected
   };
 
   const handleUpload = async () => {
@@ -25,20 +25,27 @@ function App() {
       const sdfContent = event.target.result;
 
       try {
-        // Parser le contenu SDF en JSON
+        // Parse SDF into JSON
         const parser = new SDFParser();
         const parsedJson = parser.parseSDF(sdfContent);
 
-        // Transformer le JSON dans un format organisé
+        // Transform JSON into organized format
         const transformedJson = transformData(parsedJson);
 
-        // Afficher le résultat final
+        // Debugging: Log the transformed JSON
+        console.log('Transformed JSON:', transformedJson);
+
+        // Store the transformed JSON in localStorage
+        localStorage.setItem('transformedJson', JSON.stringify(transformedJson));
+
+        // Debugging: Verify the item is stored in localStorage
+        console.log('Stored JSON in localStorage:', localStorage.getItem('transformedJson'));
+
+        // Display final JSON result
         setResult(JSON.stringify(transformedJson, null, 2));
       } catch (error) {
-        console.error("Erreur lors du traitement du fichier:", error);
-        setError(
-          "Erreur lors de l'analyse ou de la transformation du fichier."
-        );
+        console.error('Error processing file:', error);
+        setError('Error parsing or transforming the file.');
       }
     };
 
@@ -66,7 +73,7 @@ function App() {
       <section className="main-content">
         <div className="simulation-cube">
           <h2>Simulation</h2>
-          <pre>{result}</pre> {/* Affichage du résultat JSON transformé */}
+          <pre>{result}</pre> {/* Display the transformed JSON result */}
         </div>
 
         <div className="logs-cube">
