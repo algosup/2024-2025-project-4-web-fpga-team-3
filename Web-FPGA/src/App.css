@@ -93,9 +93,9 @@ body {
 
 /* Simulation control buttons - Text in white and no background */
 .simulation-controls button {
-  background-color: transparent; /* No background */
-  color: var(--white-color); /* Text color white */
-  border: 1px solid var(--white-color); /* White border */
+  background-color: transparent;
+  color: var(--white-color);
+  border: 1px solid var(--white-color);
   padding: 0.5rem 1rem;
   cursor: pointer;
   font-size: 1rem;
@@ -105,13 +105,13 @@ body {
 
 /* Add a hover effect to the simulation buttons */
 .simulation-controls button:hover {
-  background-color: var(--first-color-light); /* Hover background color */
-  color: var(--white-color); /* Ensure text stays white on hover */
+  background-color: var(--first-color-light);
+  color: var(--white-color);
 }
 
 /* For the hover tooltip, leave the black background for the text */
 .simulation-controls button[data-tooltip]:hover::after {
-  background-color: rgba(0, 0, 0, 0.75); /* Tooltip background remains black */
+  background-color: rgba(0, 0, 0, 0.75);
 }
 
 .top-bar.shifted {
@@ -196,10 +196,8 @@ body {
 }
 
 .id-cube {
-  background-color: rgb(255, 255, 255);
   color: black;
   padding: 10px;
-  border: 1px solid #ccc;
   border-radius: 5px;
   text-align: center;
   width: 100px;
@@ -207,7 +205,8 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 0.75rem;
+  font-weight: bold;
+  font-size: 0.80rem;
   overflow: hidden;
   text-overflow: ellipsis;
   word-break: break-word;
