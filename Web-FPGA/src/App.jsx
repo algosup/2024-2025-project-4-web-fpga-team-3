@@ -50,12 +50,16 @@ function App() {
 	useEffect(() => {
 		const colors = {};
 		result.forEach(node => {
-			if (node.id.toLowerCase().includes("lut")) {
+			if (node.id.toLowerCase().includes("lut")) { // Check for "lut" in cell instance
 				colors[`${node.type}-${node.id}`] = "#FF0000"; // Red color for "lut"
       }
-      if (node.id.toLowerCase().includes("dff")) {
-        colors[`${node.type}-${node.id}`] = "#008000"; // Green color for "lut"
-			}
+      if (node.id.toLowerCase().includes("dff")) { // Check for "dff" in cell instance
+        colors[`${node.type}-${node.id}`] = "#008000"; // Green color for "dff"
+	  }	
+		  else { if (node.id.toLowerCase().includes("latch")) { // If dff is not present, then check for "latch"
+			colors[`${node.type}-${node.id}`] = "#008000"; // Green color for "latch" (dff)
+	}
+		}
 		});
 		setCubeColors(colors);
 	}, [result]);
