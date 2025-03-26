@@ -107,13 +107,12 @@ class SDFParser {
   cleanInstanceName(name) {
     if (!name) return "Unknown";
 
-    // Convert DFF/Latch names like "latch_\$sdff\~0\^Q\~0" → "latch_Q"
+    name = name.replace(/^routing_segment_/, "");
+
     name = name.replace(/latch_\$sdff\~\d+\^Q\~\d+/, "latch_Q");
 
-    // Convert LUT names like "lut_\$auto\$rtlil\.cc\:2714\:MuxGate\$171_input_0_2" → "lut_171_input_0_2"
     name = name.replace(/lut_.*?\$(\d+)/, "lut_$1");
 
-    // Remove remaining special characters ($, \, ~, ^, :)
     name = name.replace(/[\\$~^:]/g, "");
 
     return name;
