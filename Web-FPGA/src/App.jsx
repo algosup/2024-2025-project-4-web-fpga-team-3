@@ -106,7 +106,7 @@ function App() {
                 <h3>{type}</h3>
                 <div className={`id-cubes-container -${idx + 1}`}>
                 {groupedNodes[type].map((node, nodeIdx) => (
-                  <div key={nodeIdx} className={`id-cube -${nodeIdx + 1}`}>
+                  <div key={nodeIdx} className={`id-cube -${nodeIdx + 1}`} id={node.id}>
                   {node.id}
                   </div>
                   ))}
