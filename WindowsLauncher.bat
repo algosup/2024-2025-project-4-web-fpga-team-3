@@ -2,7 +2,7 @@
 cd /d "..\2024-2025-project-4-web-fpga-team-3\Web-FPGA"
 
 echo ========================================
-echo Installing dependencies...
+echo  🟢 Installing dependencies...
 echo ========================================
 REM Open npm install in a separate window and keep it open
 start cmd /k "npm install && echo Dependencies installed successfully. || echo Error during npm install! "
@@ -10,14 +10,14 @@ start cmd /k "npm install && echo Dependencies installed successfully. || echo E
 REM Wait before starting the dev server
 timeout /t 3 >nul
 
-echo Starting Web-FPGA simulation...
+echo ✅ Starting Web-FPGA simulation...
 REM Open npm run dev in a separate window and keep it open
 start cmd /k "npm run dev || (echo Error during npm run dev)"
 
 REM Display server info directly
 timeout /t 5 >nul
 echo ========================================
-echo Server should be available at:
-echo http://localhost:5173
+echo 🌐 Server should be available at:
+echo 	    http://localhost:5173
 echo ========================================
 pause

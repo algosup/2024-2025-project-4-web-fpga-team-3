@@ -1,7 +1,6 @@
-cd $(dirname $0)..2024-2025-project-4-web-fpga-team-3Web-FPGA  {
-	echo ❌ Error Cannot navigate to the project directory.
+cd "$(dirname "$0")..\2024-2025-project-4-web-fpga-team-3\Web-FPGA"	
+echo ❌ Error Cannot navigate to the project directory.
 	exit 1
-}
 
 echo ========================================
 echo 🟢 Installing dependencies...
@@ -18,7 +17,7 @@ else
 fi
 
 echo ========================================
-echo 🚀 Starting Web-FPGA simulation...
+echo ✅ Starting Web-FPGA simulation...
 echo ========================================
 
 # Start npm dev server in the background
