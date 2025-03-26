@@ -101,16 +101,16 @@ function App() {
         <div className="simulation-cube">
           <h2>Simulation</h2>
           <div className="columns-container">
-            {Object.keys(groupedNodes).map((type, index) => (
-              <div key={index} className="column">
+            {Object.keys(groupedNodes).map((type, idx) => (
+              <div key={idx} className="column">
                 <h3>{type}</h3>
-                <div className="id-cubes-container">
-                  {groupedNodes[type].map((node, idx) => (
-                    <div key={idx} className="id-cube">
-                      {node.id}
-                    </div>
+                <div className={`id-cubes-container -${idx + 1}`}>
+                {groupedNodes[type].map((node, nodeIdx) => (
+                  <div key={nodeIdx} className={`id-cube -${nodeIdx + 1}`}>
+                  {node.id}
+                  </div>
                   ))}
-                </div>
+              </div>
               </div>
             ))}
           </div>
@@ -130,7 +130,7 @@ function App() {
         </div>
       </section>
 
-      <footer className="buttons-zoom">
+      {/* <footer className="buttons-zoom">
         <button
           className="zoomButton"
           data-tooltip="Zoom In"
@@ -152,7 +152,7 @@ function App() {
         >
           <span aria-hidden="true">&#128270;</span>
         </button>
-      </footer>
+      </footer> */}
     </div>
   );
 }
