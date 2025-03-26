@@ -104,22 +104,49 @@ function App() {
       const targetRect = targetEl.getBoundingClientRect();
       const parentRect = simulationCubeRef.current.getBoundingClientRect();
 
-      // Calculate positions for drawing the edge
-      let sourceX = sourceRect.right - parentRect.left;
+      let sourceX = sourceRect.right - parentRect.left + 10;
       let sourceY = sourceRect.top + sourceRect.height / 2 - parentRect.top;
-      let targetX = targetRect.left - parentRect.left;
+      let targetX = targetRect.left - parentRect.left - 10;
       let targetY = targetRect.top + targetRect.height / 2 - parentRect.top;
 
-      let midX = (sourceX + targetX) / 2;
-      let midY = sourceY;
+      const down = sourceRect.height / 2 + 10;
+      const middleY = sourceY + down;
 
-      // Path data to create a line between source and target nodes
-      const pathData = `
-        M ${sourceX},${sourceY}
-        H ${midX} 
-        V ${targetY} 
-        H ${targetX}
-      `;
+      const up = targetRect.height / 2 + 10;
+      const middleTargetY = targetY - up;
+
+      let forwardX;
+      let backwardX;
+
+      let tempX = sourceX;
+      if (sourceX > targetX) {
+        tempX -= 20;
+        forwardX = tempX - sourceRect.width;
+      } else {
+        tempX += 20;
+        forwardX = tempX + sourceRect.width;
+      }
+
+      let tempX2 = targetX;
+      if (sourceX > targetX) {
+        tempX2 += 20;
+        backwardX = tempX2 + targetRect.width;
+      } else {
+        tempX2 -= 20;
+        backwardX = tempX2 - targetRect.width;
+      }
+
+      const adjustedTargetY = targetY - targetRect.height / 2 - 10;
+
+      const finalTargetX = targetX + targetRect.width + 20;
+      let pathData = `
+                M ${sourceX} ${sourceY}
+                L ${sourceX} ${middleY}
+                L ${forwardX} ${middleY}
+                L ${backwardX} ${middleTargetY}
+                L ${targetX} ${middleTargetY}
+                L ${targetX} ${targetY}
+                `;
 
       // Draw the edge path
       svg
