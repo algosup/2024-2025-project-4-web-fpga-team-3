@@ -105,12 +105,16 @@ function App() {
               <div key={idx} className="column">
                 <h3>{type}</h3>
                 <div className={`id-cubes-container -${idx + 1}`}>
-                {groupedNodes[type].map((node, nodeIdx) => (
-                  <div key={nodeIdx} className={`id-cube -${nodeIdx + 1}`} id={node.id}>
-                  {node.id}
-                  </div>
+                  {groupedNodes[type].map((node, nodeIdx) => (
+                    <div
+                      key={nodeIdx}
+                      className={`id-cube -${nodeIdx + 1}`}
+                      id={node.id}
+                    >
+                      {node.id}
+                    </div>
                   ))}
-              </div>
+                </div>
               </div>
             ))}
           </div>
@@ -130,7 +134,7 @@ function App() {
         </div>
       </section>
 
-      {/* <footer className="buttons-zoom">
+      <footer className="buttons-zoom">
         <button
           className="zoomButton"
           data-tooltip="Zoom In"
@@ -152,7 +156,7 @@ function App() {
         >
           <span aria-hidden="true">&#128270;</span>
         </button>
-      </footer> */}
+      </footer>
     </div>
   );
 }
