@@ -65,9 +65,19 @@ class SDFParser {
           currentCell.start = instanceValues.start;
           currentCell.end = instanceValues.end;
         }
-      }
+      } else if (line.startsWith("(INSTANCE")) {
+        const instanceValues = this.extractInstanceValue(line);
 
-      // Extract delay
+        currentCell.start = instanceValues.start;
+        currentCell.end = instanceValues.end;
+
+        console.log(
+          "Parsed Instance -> Start:",
+          currentCell.start,
+          "End:",
+          currentCell.end
+        );
+      } // Extract delay
       else if (line.startsWith("(IOPATH")) {
         const delayValues = this.extractDelayValues(line);
         if (currentCell) {
@@ -93,15 +103,36 @@ class SDFParser {
     return match ? match[1] : null;
   }
 
-  // Extract start and end signals, what comes before _to_ will go in start and what comes after _to_ will go in end, if there is no _to_, everything stay in start
+  // Clean instance names by removing special characters and simplifying names
+  cleanInstanceName(name) {
+    if (!name) return "Unknown";
+
+    // Convert DFF/Latch names like "latch_\$sdff\~0\^Q\~0" → "latch_Q"
+    name = name.replace(/latch_\$sdff\~\d+\^Q\~\d+/, "latch_Q");
+
+    // Convert LUT names like "lut_\$auto\$rtlil\.cc\:2714\:MuxGate\$171_input_0_2" → "lut_171_input_0_2"
+    name = name.replace(/lut_.*?\$(\d+)/, "lut_$1");
+
+    // Remove remaining special characters ($, \, ~, ^, :)
+    name = name.replace(/[\\$~^:]/g, "");
+
+    return name;
+  }
+
+  // Extract start and end signals, ensuring proper routing segment formatting
   extractInstanceValue(line) {
     const match = line.match(/\(INSTANCE\s+([^\s\)]+)\)/);
     if (match) {
-      const parts = match[1].split("_to_");
-      return {
-        start: parts[0],
-        end: parts.length > 1 ? parts.slice(1).join("_to_") : "",
-      };
+      let instanceName = match[1];
+
+      if (instanceName.includes("_to_")) {
+        const parts = instanceName.split("_to_");
+        return {
+          start: this.cleanInstanceName(parts[0]),
+          end: this.cleanInstanceName(parts.slice(1).join("_to_")),
+        };
+      }
+      return { start: this.cleanInstanceName(instanceName), end: "" };
     }
     return { start: null, end: null };
   }
