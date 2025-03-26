@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import SDFParser from "./services/Parser.js";
 import transformData from "./services/Transform.js";
+import { enablePanning } from "./services/Simulator.js";
 import "./App.css";
 
 function App() {
@@ -8,6 +9,7 @@ function App() {
   const [fileUploaded, setFileUploaded] = useState(false);
   const [result, setResult] = useState([]);
   const [error, setError] = useState("");
+  const simulationCubeRef = useRef(null);
 
   const handleFileChange = (event) => {
     const fileInput = event.target.files[0];
@@ -70,6 +72,11 @@ function App() {
     return acc;
   }, {});
 
+  useEffect(() => {
+    const cleanup = enablePanning(simulationCubeRef);
+    return cleanup;
+  }, []);
+
   return (
     <div className="app">
       <header className={`top-bar ${fileUploaded ? "shifted" : ""}`}>
@@ -98,7 +105,7 @@ function App() {
       </header>
 
       <section className="main-content">
-        <div className="simulation-cube">
+        <div className="simulation-cube" ref={simulationCubeRef}>
           <h2>Simulation</h2>
           <div className="columns-container">
             {Object.keys(groupedNodes).map((type, idx) => (

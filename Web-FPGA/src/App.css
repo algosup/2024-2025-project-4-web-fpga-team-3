@@ -164,6 +164,11 @@ body {
   font-weight: var(--font-medium);
   box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.5);
   padding: 1rem;
+  overflow: hidden;
+  max-height: 100%;
+  width: 100%;
+  white-space: nowrap;
+  position: relative;
 }
 
 .columns-container {
