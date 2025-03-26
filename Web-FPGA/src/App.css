@@ -191,7 +191,7 @@ body {
 }
 
 .id-cube {
-  background-color: white;
+  background-color: rgb(255, 255, 255);
   color: black;
   padding: 10px;
   border: 1px solid #ccc;
