@@ -44,9 +44,12 @@ function App() {
           JSON.stringify(transformedJson)
         );
 
-        // Make sure we extract 'nodes' and 'edges' properly from transformedJson
-        const nodes = transformedJson.nodes || []; // Ensure nodes is always an array
-        const edges = transformedJson.edges || []; // Ensure edges is always an array
+        // Ensure we extract 'nodes' and 'edges' properly
+        const nodes = transformedJson.nodes || [];
+        const edges = transformedJson.edges || [];
+
+        console.log("Nodes:", nodes);
+        console.log("Edges:", edges);
 
         setResult({ nodes, edges });
         setFileUploaded(true);
@@ -80,12 +83,19 @@ function App() {
     svg.selectAll("*").remove(); // Clear previous paths
 
     result.edges.forEach(({ source, target }) => {
-      // Extract base node IDs
+      if (!target) {
+        console.warn(`Skipping edge: source=${source}, target=`);
+        return; // Skip this edge if target is empty
+      }
+
+      console.log(`Creating edge between: ${source} and ${target}`);
+
       const sourceBaseId = source.replace(/_output_.*/, "");
       const targetBaseId = target.replace(/_input_.*/, "");
 
       const sourceEl = document.getElementById(sourceBaseId);
       const targetEl = document.getElementById(targetBaseId);
+
       if (!sourceEl || !targetEl) {
         console.error(`Missing element: ${sourceBaseId}, ${targetBaseId}`);
         return;
@@ -96,6 +106,7 @@ function App() {
       const targetRect = targetEl.getBoundingClientRect();
       const parentRect = simulationCubeRef.current.getBoundingClientRect();
 
+      // Get the position of the source and target elements relative to the parent container
       let starterX = sourceRect.right - parentRect.left;
       let sourceX = sourceRect.right - parentRect.left + 10;
       let sourceY = sourceRect.top + sourceRect.height / 2 - parentRect.top;
@@ -104,43 +115,56 @@ function App() {
       let targetX = targetRect.left - parentRect.left - 10;
       let targetY = targetRect.top + targetRect.height / 2 - parentRect.top;
 
-      const down = sourceRect.height / 2 + 10;
-      const middleY = sourceY + down;
+      // Add a 20px gap between elements in the same column to help the path placement
+      const columnGap = 20; // The gap between boxes in the same column
 
-      const up = targetRect.height / 2 + 10;
-      const middleTargetY = targetY - up;
+      // Calculate the vertical curve height to make the connection visually pleasant
+      const distance = Math.abs(sourceX - targetX); // Distance between X coordinates
+      const curveHeight = Math.max(distance / 4, 50); // Adjust curve height
 
-      let forwardX;
-      let backwardX;
+      // Calculate the vertical offset (half the height of the box + 20 pixels) before moving left/right
+      const verticalOffset = Math.max(
+        sourceRect.height / 2 + 20,
+        targetRect.height / 2 + 20
+      ); // Adjust with 20px added
 
-      let tempX = sourceX;
-      if (sourceX > targetX) {
-        tempX -= 20;
-        forwardX = tempX - sourceRect.width;
+      // Logic to handle different cases for path creation
+      let pathData = "";
+
+      if (sourceX < targetX) {
+        // Source is to the left of the target (standard left-to-right case)
+        pathData = `
+    M ${starterX} ${sourceY}
+    L ${starterX} ${sourceY - verticalOffset}   // Move up from source
+    C ${sourceX + distance / 2} ${sourceY - verticalOffset} ${
+          targetX - distance / 2
+        } ${sourceY - verticalOffset} ${endingX} ${targetY}
+  `;
+      } else if (sourceX === targetX) {
+        // Source and target are on the same vertical line
+        // Use the gap to position the curve properly
+        pathData = `
+    M ${starterX} ${sourceY}
+    L ${starterX} ${sourceY - verticalOffset}  // Move up from source
+    L ${endingX} ${sourceY - verticalOffset}   // Move up to the target Y
+    L ${endingX} ${targetY}                    // Connect to target Y
+  `;
       } else {
-        tempX += 20;
-        forwardX = tempX + sourceRect.width;
+        // Source is to the right of the target (reverse logic)
+        // Subtract the width of the source box to position it correctly at the right edge
+        sourceX = sourceRect.right - parentRect.left - sourceRect.width;
+
+        // Use the gap to adjust the path
+        pathData = `
+    M ${starterX} ${sourceY}
+    L ${starterX} ${sourceY - verticalOffset}   // Move up from source
+    C ${sourceX - distance / 2} ${sourceY - verticalOffset} ${
+          targetX + distance / 2
+        } ${sourceY - verticalOffset} ${endingX} ${targetY}
+  `;
       }
 
-      let tempX2 = targetX;
-      if (sourceX > targetX) {
-        tempX2 += 20;
-        backwardX = tempX2 + targetRect.width;
-      } else {
-        tempX2 -= 20;
-        backwardX = tempX2 - targetRect.width;
-      }
-
-      let pathData = `
-                M ${starterX} ${sourceY}
-                L ${sourceX} ${sourceY}
-                L ${sourceX} ${middleY}
-                L ${forwardX} ${middleY}
-                L ${backwardX} ${middleTargetY}
-                L ${targetX} ${middleTargetY}
-                L ${targetX} ${targetY}
-                L ${endingX} ${targetY}
-                `;
+      console.log("Edge path data:", pathData); // Log path data
 
       // Create the path
       const edge = svg
@@ -203,7 +227,7 @@ function App() {
     // Step 4: Enable panning
     const cleanup = enablePanning(simulationCubeRef);
     return cleanup;
-  }, [result, isAnimating]); // Re-run when nodes/edges or animation state changes
+  }, [result, isAnimating]);
 
   const groupedNodes = result.nodes.reduce((acc, node) => {
     if (!acc[node.type]) {
@@ -225,7 +249,6 @@ function App() {
             <button onClick={() => setIsAnimating((prev) => !prev)}>
               {isAnimating ? "⏸️" : "▶️"}
             </button>
-
             <button>⏩</button>
           </div>
         )}
@@ -263,7 +286,7 @@ function App() {
                     <div
                       key={nodeIdx}
                       className={`id-cube -${nodeIdx + 1}`}
-                      id={node.id}
+                      id={node.id} // Set the full ID here
                       style={{
                         backgroundColor:
                           cubeColors[`${type}-${node.id}`] || "white",
@@ -277,6 +300,7 @@ function App() {
             ))}
           </div>
         </div>
+
         <div className="logs-cube">
           <h2>Logs</h2>
           <table className="logs-table">
@@ -290,30 +314,6 @@ function App() {
           </table>
         </div>
       </section>
-
-      <footer className="buttons-zoom">
-        <button
-          className="zoomButton"
-          data-tooltip="Zoom In"
-          aria-label="Zoom In"
-        >
-          <span aria-hidden="true">&#128269;</span>
-        </button>
-        <button
-          className="zoomButton"
-          data-tooltip="View Reset"
-          aria-label="Reset"
-        >
-          <span aria-hidden="true">&#x21BA;</span>
-        </button>
-        <button
-          className="zoomButton"
-          data-tooltip="Zoom Out"
-          aria-label="Zoom Out"
-        >
-          <span aria-hidden="true">&#128270;</span>
-        </button>
-      </footer>
     </div>
   );
 }

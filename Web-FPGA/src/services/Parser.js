@@ -47,37 +47,19 @@ class SDFParser {
       // Extract instance
       else if (line.startsWith("(INSTANCE")) {
         const instanceValues = this.extractInstanceValue(line);
-        var cellName = "";
-        // take the type before the '_' and the digits in the end after the '$' and make it the current cell start
-        if (instanceValues.start.startsWith("lut")) {
-          // Case 1: Standard LUT with a numeric ID at the end after "$"
-          let match = instanceValues.start.match(/^(.*?)_.*\$(\d+)$/);
 
-          // Case 2: Special LUT with a text suffix (e.g., lut_gnd)
-          if (!match) {
-            match = instanceValues.start.match(/^(.*?)_(\w+)$/);
-          }
-
-          if (match) {
-            currentCell.start = `${match[1]}_${match[2]}`;
-          }
-        } else {
+        // Handle instance parsing for "start" and "end" values
+        if (instanceValues.start && instanceValues.end) {
           currentCell.start = instanceValues.start;
           currentCell.end = instanceValues.end;
+        } else {
+          // Assign a default value if "end" is missing
+          currentCell.start = instanceValues.start;
+          currentCell.end = instanceValues.end || "unknown_target";
         }
-      } else if (line.startsWith("(INSTANCE")) {
-        const instanceValues = this.extractInstanceValue(line);
+      }
 
-        currentCell.start = instanceValues.start;
-        currentCell.end = instanceValues.end;
-
-        console.log(
-          "Parsed Instance -> Start:",
-          currentCell.start,
-          "End:",
-          currentCell.end
-        );
-      } // Extract delay
+      // Extract delay
       else if (line.startsWith("(IOPATH")) {
         const delayValues = this.extractDelayValues(line);
         if (currentCell) {
@@ -131,7 +113,11 @@ class SDFParser {
           end: this.cleanInstanceName(parts.slice(1).join("_to_")),
         };
       }
-      return { start: this.cleanInstanceName(instanceName), end: "" };
+      // Default case where the target might be missing
+      return {
+        start: this.cleanInstanceName(instanceName),
+        end: "unknown_target",
+      };
     }
     return { start: null, end: null };
   }
