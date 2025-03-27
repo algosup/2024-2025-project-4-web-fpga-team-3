@@ -101,6 +101,12 @@ function App() {
         return;
       }
 
+      // Assuming all boxes are 100x100, so width and height are fixed
+      const boxSize = 100;
+      const boxHalf = boxSize / 2;
+      const boxWidth = boxSize; // Width of the box is 100px
+      const columnGap = 20; // Add a gap between columns
+
       // Get positions relative to simulation container
       const sourceRect = sourceEl.getBoundingClientRect();
       const targetRect = targetEl.getBoundingClientRect();
@@ -115,53 +121,37 @@ function App() {
       let targetX = targetRect.left - parentRect.left - 10;
       let targetY = targetRect.top + targetRect.height / 2 - parentRect.top;
 
-      // Add a 20px gap between elements in the same column to help the path placement
-      const columnGap = 20; // The gap between boxes in the same column
-
-      // Calculate the vertical curve height to make the connection visually pleasant
-      const distance = Math.abs(sourceX - targetX); // Distance between X coordinates
-      const curveHeight = Math.max(distance / 4, 50); // Adjust curve height
-
-      // Calculate the vertical offset (half the height of the box + 20 pixels) before moving left/right
-      const verticalOffset = Math.max(
-        sourceRect.height / 2 + 20,
-        targetRect.height / 2 + 20
-      ); // Adjust with 20px added
-
       // Logic to handle different cases for path creation
       let pathData = "";
 
-      if (sourceX < targetX) {
-        // Source is to the left of the target (standard left-to-right case)
+      // Case 1: Source → Target (on the right, next column)
+      if (starterX < endingX) {
         pathData = `
     M ${starterX} ${sourceY}
-    L ${starterX} ${sourceY - verticalOffset}   // Move up from source
-    C ${sourceX + distance / 2} ${sourceY - verticalOffset} ${
-          targetX - distance / 2
-        } ${sourceY - verticalOffset} ${endingX} ${targetY}
+    C ${sourceX + boxWidth} ${sourceY} ${
+          targetX - boxWidth
+        } ${sourceY} ${endingX} ${targetY}
   `;
-      } else if (sourceX === targetX) {
-        // Source and target are on the same vertical line
-        // Use the gap to position the curve properly
-        pathData = `
-    M ${starterX} ${sourceY}
-    L ${starterX} ${sourceY - verticalOffset}  // Move up from source
-    L ${endingX} ${sourceY - verticalOffset}   // Move up to the target Y
-    L ${endingX} ${targetY}                    // Connect to target Y
-  `;
-      } else {
-        // Source is to the right of the target (reverse logic)
-        // Subtract the width of the source box to position it correctly at the right edge
-        sourceX = sourceRect.right - parentRect.left - sourceRect.width;
+      }
 
-        // Use the gap to adjust the path
+      // Case 2: Source = Target (same column) // Case 2: Source = Target (same column)
+      else if (starterX - endingX === boxSize) {
+        // Control points for the cubic Bezier curve
+        const controlPointX1 = endingX - boxWidth / 1.5; // Use a wider control to smooth the curve
+        const controlPointX2 = endingX - boxWidth / 2; // Move the curve further outward to avoid sharp turns
+
+        // Control point Y's (Lift the curve upwards)
+        const controlPointY1 = sourceY + boxHalf + columnGap / 2 + 40; // Raise control point for smoother curve
+        const controlPointY2 = targetY + boxHalf + columnGap / 2 + 40; // Raise control point for smoother curve
+
+        // Path data with cubic Bezier curve for smooth transition
         pathData = `
-    M ${starterX} ${sourceY}
-    L ${starterX} ${sourceY - verticalOffset}   // Move up from source
-    C ${sourceX - distance / 2} ${sourceY - verticalOffset} ${
-          targetX + distance / 2
-        } ${sourceY - verticalOffset} ${endingX} ${targetY}
-  `;
+          M ${starterX} ${sourceY}
+          L ${sourceX} ${sourceY}
+          L ${sourceX} ${sourceY + boxHalf + columnGap / 2} 
+          L ${targetX} ${sourceY + boxHalf + columnGap / 2}
+          C ${controlPointX1} ${controlPointY1} ${controlPointX2} ${controlPointY2} ${endingX} ${targetY}
+        `;
       }
 
       console.log("Edge path data:", pathData); // Log path data
@@ -314,6 +304,30 @@ function App() {
           </table>
         </div>
       </section>
+
+      <footer className="buttons-zoom">
+        <button
+          className="zoomButton"
+          data-tooltip="Zoom In"
+          aria-label="Zoom In"
+        >
+          <span aria-hidden="true">&#128269;</span>
+        </button>
+        <button
+          className="zoomButton"
+          data-tooltip="View Reset"
+          aria-label="Reset"
+        >
+          <span aria-hidden="true">&#x21BA;</span>
+        </button>
+        <button
+          className="zoomButton"
+          data-tooltip="Zoom Out"
+          aria-label="Zoom Out"
+        >
+          <span aria-hidden="true">&#128270;</span>
+        </button>
+      </footer>
     </div>
   );
 }
