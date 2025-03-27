@@ -5,7 +5,6 @@ import { enablePanning } from "./services/Simulator.js";
 import * as d3 from "d3";
 import "./App.css";
 
-
 function App() {
   const [file, setFile] = useState(null);
   const [fileUploaded, setFileUploaded] = useState(false);
@@ -248,7 +247,7 @@ function App() {
     const cleanup = enablePanning(simulationCubeRef, svgRef);
     return cleanup;
   }, [result, isAnimating]);
-  
+
   const groupedNodes = result.nodes.reduce((acc, node) => {
     if (!acc[node.type]) {
       acc[node.type] = [];
@@ -287,19 +286,29 @@ function App() {
       </header>
 
       <section className="main-content">
-      <div
-      className="simulation-cube"
-      ref={simulationCubeRef}
-      style={{ transform: `scale(${zoomLevel})`, transformOrigin: "center" }}
-      >
-      <h2>Simulation</h2>
+        <div
+          className="simulation-cube"
+          ref={simulationCubeRef}
+          style={{
+            transform: `scale(${zoomLevel})`,
+            transformOrigin: "center",
+          }}
+        >
+          <h2>Simulation</h2>
 
-      <svg ref={svgRef} className="connections-layer" width="100%" height="100%">
-        <g transform={`scale(${zoomLevel})`} style={{ transformOrigin: "center" }}>
-          {/* The wires will be drawn here */}
-        </g>
-      </svg>
-
+          <svg
+            ref={svgRef}
+            className="connections-layer"
+            width="100%"
+            height="100%"
+          >
+            <g
+              transform={`scale(${zoomLevel})`}
+              style={{ transformOrigin: "center" }}
+            >
+              {/* The wires will be drawn here */}
+            </g>
+          </svg>
 
           <div className="columns-container">
             {Object.keys(groupedNodes).map((type, idx) => (
@@ -340,44 +349,44 @@ function App() {
       </section>
 
       <footer className="buttons-zoom">
-      <button
-        className="zoomButton"
-        onClick={() => setZoomLevel((prev) => Math.min(prev * 1.2, 1.3))}
-        data-tooltip="Zoom In"
-        aria-label="Zoom In"
-      >
-        {"+"}
-      </button>
+        <button
+          className="zoomButton"
+          data-tooltip="Zoom Out"
+          aria-label="Zoom Out"
+          onClick={() => setZoomLevel((prev) => Math.max(prev * 0.8, 0.8))}
+        >
+          <span aria-hidden="true">&#128270;</span>
+        </button>
+        <button
+          className="zoomButton"
+          data-tooltip="View Reset"
+          aria-label="Reset"
+          onClick={() => {
+            setZoomLevel(1); // Reset zoom level to 1
 
-      <button
-        className="zoomButton"
-        onClick={() => setZoomLevel((prev) => Math.max(prev * 0.8, 0.8))}
-        data-tooltip="Zoom Out"
-        aria-label="Zoom Out"
-      >
-        {"-"}
-      </button>
+            const simulationCube = d3.select(simulationCubeRef.current);
+            const svg = d3.select(svgRef.current);
+            const columnsContainer =
+              simulationCube.select(".columns-container");
 
-      <button
-        className="zoomButton"
-        onClick={() => {
-          setZoomLevel(1); // Reset zoom level to 1
+            // Reset panning offsets
+            simulationCube.style("transform", "translate(0px, 0px)");
+            svg.style("transform", "translate(0px, 0px)");
+            columnsContainer.style("transform", "translate(0px, 0px)");
+          }}
+        >
+          <span aria-hidden="true">&#x21BA;</span>
+        </button>
 
-          const simulationCube = d3.select(simulationCubeRef.current);
-          const svg = d3.select(svgRef.current);
-          const columnsContainer = simulationCube.select(".columns-container");
-
-          // Reset panning offsets
-          simulationCube.style("transform", "translate(0px, 0px)");
-          svg.style("transform", "translate(0px, 0px)");
-          columnsContainer.style("transform", "translate(0px, 0px)");
-        }}
-        data-tooltip="Reset Zoom"
-        aria-label="Reset Zoom"
-      >
-        {"Reset"}
-      </button>
-    </footer>
+        <button
+          className="zoomButton"
+          data-tooltip="Zoom In"
+          aria-label="Zoom In"
+          onClick={() => setZoomLevel((prev) => Math.min(prev * 1.2, 1.3))}
+        >
+          <span aria-hidden="true">&#128269;</span>
+        </button>
+      </footer>
     </div>
   );
 }
