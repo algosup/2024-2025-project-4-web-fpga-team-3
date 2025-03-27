@@ -11,6 +11,7 @@ function App() {
   const [result, setResult] = useState({ nodes: [], edges: [] });
   const [error, setError] = useState("");
   const [cubeColors, setCubeColors] = useState({});
+  const [isAnimating, setIsAnimating] = useState(false);
   const simulationCubeRef = useRef(null);
   const svgRef = useRef(null);
 
@@ -63,38 +64,34 @@ function App() {
     const colors = {};
     result.nodes.forEach((node) => {
       if (node.id.toLowerCase().includes("lut")) {
-        colors[`${node.type}-${node.id}`] = "#d3d3d3"; // Gray for "lut"
+        colors[`${node.type}-${node.id}`] = "#d3d3d3"; // Gray for LUT
       }
-      if (node.id.toLowerCase().includes("dff")) {
-        colors[`${node.type}-${node.id}`] = "#47697a"; // Green for "dff"
-      } else if (node.id.toLowerCase().includes("latch")) {
-        colors[`${node.type}-${node.id}`] = "#47697a"; // Green for "latch"
+      if (
+        node.id.toLowerCase().includes("dff") ||
+        node.id.toLowerCase().includes("latch")
+      ) {
+        colors[`${node.type}-${node.id}`] = "#47697a"; // Green for DFF/Latch
       }
     });
     setCubeColors(colors);
 
-    // Step 2: Draw edges once nodes are processed
+    // Step 2: Draw edges
     const svg = d3.select(svgRef.current);
-    svg.selectAll("*").remove(); // Clear any previous connections
+    svg.selectAll("*").remove(); // Clear previous paths
 
-    // Step 3: Loop over edges and draw paths
     result.edges.forEach(({ source, target }) => {
-      // Extract base node IDs from source/target (remove output/input parts)
+      // Extract base node IDs (remove output/input parts)
       const sourceBaseId = source.replace(/_output_.*/, "");
       const targetBaseId = target.replace(/_input_.*/, "");
 
-      // Ensure the source and target elements exist
       const sourceEl = document.getElementById(sourceBaseId);
       const targetEl = document.getElementById(targetBaseId);
-
       if (!sourceEl || !targetEl) {
-        console.error(
-          `Source or target element not found: ${sourceBaseId}, ${targetBaseId}`
-        );
+        console.error(`Missing element: ${sourceBaseId}, ${targetBaseId}`);
         return;
       }
 
-      // Get the bounding rectangles of source and target
+      // Get positions relative to simulation container
       const sourceRect = sourceEl.getBoundingClientRect();
       const targetRect = targetEl.getBoundingClientRect();
       const parentRect = simulationCubeRef.current.getBoundingClientRect();
@@ -149,18 +146,41 @@ function App() {
                 `;
 
       // Draw the edge path
-      svg
+      svg;
+      // Create the path
+      const edge = svg
         .append("path")
         .attr("d", pathData)
         .attr("fill", "none")
         .attr("stroke", "red")
         .attr("stroke-width", 2);
+
+      // Step 3: Apply animation when isAnimating is true
+      const animateStroke = () => {
+        if (!isAnimating) return; // Stop animation when `isAnimating` is false
+
+        edge
+          .transition()
+          .duration(1000)
+          .ease(d3.easeLinear)
+          .attr("stroke-width", 6)
+          .attr("stroke", "rgb(255, 100, 100)")
+          .transition()
+          .duration(500)
+          .attr("stroke-width", 2)
+          .attr("stroke", "red")
+          .on("end", animateStroke); // Restart animation
+      };
+
+      if (isAnimating) {
+        animateStroke(); // Start animation if `isAnimating` is true
+      }
     });
 
-    // Step 4: Handle panning
+    // Step 4: Enable panning
     const cleanup = enablePanning(simulationCubeRef);
     return cleanup;
-  }, [result]);
+  }, [result, isAnimating]); // Re-run when nodes/edges or animation state changes
 
   const groupedNodes = result.nodes.reduce((acc, node) => {
     if (!acc[node.type]) {
@@ -179,7 +199,10 @@ function App() {
             <button>⏪</button>
             <button>◀️</button>
             <span>X</span>
-            <button>▶️</button>
+            <button onClick={() => setIsAnimating((prev) => !prev)}>
+              {isAnimating ? "⏸️" : "▶️"}
+            </button>
+
             <button>⏩</button>
           </div>
         )}
