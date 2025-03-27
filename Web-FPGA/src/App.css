@@ -155,6 +155,8 @@ body {
   padding-left: 0.5rem;
   padding-right: 0.5rem;
   gap: 0.5rem;
+  position: relative; /* Add this */
+  z-index: 1;
 }
 
 .connections-layer {
@@ -227,6 +229,8 @@ body {
   background-color: #d3d3d3;
   box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.5);
   padding: 1rem;
+  position: relative; /* Add this */
+  z-index: 2;
 }
 
 .simulation-cube h2,

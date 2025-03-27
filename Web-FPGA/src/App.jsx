@@ -5,6 +5,7 @@ import { enablePanning } from "./services/Simulator.js";
 import * as d3 from "d3";
 import "./App.css";
 
+
 function App() {
   const [file, setFile] = useState(null);
   const [fileUploaded, setFileUploaded] = useState(false);
@@ -14,6 +15,7 @@ function App() {
   const [isAnimating, setIsAnimating] = useState(false);
   const simulationCubeRef = useRef(null);
   const svgRef = useRef(null);
+  const [zoomLevel, setZoomLevel] = useState(1);
 
   const handleFileChange = (event) => {
     const fileInput = event.target.files[0];
@@ -243,10 +245,10 @@ function App() {
     });
 
     // Step 4: Enable panning
-    const cleanup = enablePanning(simulationCubeRef);
+    const cleanup = enablePanning(simulationCubeRef, svgRef);
     return cleanup;
   }, [result, isAnimating]);
-
+  
   const groupedNodes = result.nodes.reduce((acc, node) => {
     if (!acc[node.type]) {
       acc[node.type] = [];
@@ -285,15 +287,19 @@ function App() {
       </header>
 
       <section className="main-content">
-        <div className="simulation-cube" ref={simulationCubeRef}>
-          <h2>Simulation</h2>
+      <div
+      className="simulation-cube"
+      ref={simulationCubeRef}
+      style={{ transform: `scale(${zoomLevel})`, transformOrigin: "center" }}
+      >
+      <h2>Simulation</h2>
 
-          <svg
-            ref={svgRef}
-            className="connections-layer"
-            width="100%" // Adding width and height for SVG
-            height="100%"
-          ></svg>
+      <svg ref={svgRef} className="connections-layer" width="100%" height="100%">
+        <g transform={`scale(${zoomLevel})`} style={{ transformOrigin: "center" }}>
+          {/* The wires will be drawn here */}
+        </g>
+      </svg>
+
 
           <div className="columns-container">
             {Object.keys(groupedNodes).map((type, idx) => (
@@ -334,28 +340,44 @@ function App() {
       </section>
 
       <footer className="buttons-zoom">
-        <button
-          className="zoomButton"
-          data-tooltip="Zoom In"
-          aria-label="Zoom In"
-        >
-          <span aria-hidden="true">&#128269;</span>
-        </button>
-        <button
-          className="zoomButton"
-          data-tooltip="View Reset"
-          aria-label="Reset"
-        >
-          <span aria-hidden="true">&#x21BA;</span>
-        </button>
-        <button
-          className="zoomButton"
-          data-tooltip="Zoom Out"
-          aria-label="Zoom Out"
-        >
-          <span aria-hidden="true">&#128270;</span>
-        </button>
-      </footer>
+      <button
+        className="zoomButton"
+        onClick={() => setZoomLevel((prev) => Math.min(prev * 1.2, 1.3))}
+        data-tooltip="Zoom In"
+        aria-label="Zoom In"
+      >
+        {"+"}
+      </button>
+
+      <button
+        className="zoomButton"
+        onClick={() => setZoomLevel((prev) => Math.max(prev * 0.8, 0.8))}
+        data-tooltip="Zoom Out"
+        aria-label="Zoom Out"
+      >
+        {"-"}
+      </button>
+
+      <button
+        className="zoomButton"
+        onClick={() => {
+          setZoomLevel(1); // Reset zoom level to 1
+
+          const simulationCube = d3.select(simulationCubeRef.current);
+          const svg = d3.select(svgRef.current);
+          const columnsContainer = simulationCube.select(".columns-container");
+
+          // Reset panning offsets
+          simulationCube.style("transform", "translate(0px, 0px)");
+          svg.style("transform", "translate(0px, 0px)");
+          columnsContainer.style("transform", "translate(0px, 0px)");
+        }}
+        data-tooltip="Reset Zoom"
+        aria-label="Reset Zoom"
+      >
+        {"Reset"}
+      </button>
+    </footer>
     </div>
   );
 }
