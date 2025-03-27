@@ -193,7 +193,8 @@ function App() {
       const electron = svg
         .append("circle")
         .attr("r", 5)
-        .attr("fill", Math.random() > 0.5 ? "blue" : "yellow");
+        .attr("fill", Math.random() > 0.5 ? "blue" : "yellow")
+        .attr("opacity", 0);
 
       // Get total length of the path
       const pathLength = edge.node().getTotalLength();
@@ -219,6 +220,8 @@ function App() {
         if (!isAnimating) return;
 
         electron
+          .attr("opacity", 1)
+          .raise()
           .transition()
           .duration(2000) // Adjust speed of electron movement
           .ease(d3.easeLinear)
