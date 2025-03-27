@@ -222,6 +222,21 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
   word-break: break-word;
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.id-cube.clock-node {
+  border-color: #ffd700;
+  background-color: rgba(255, 215, 0, 0.1);
+}
+
+.connections-layer path {
+  transition: all 0.3s ease;
+}
+
+.connections-layer path[stroke="#ffd700"] {
+  filter: drop-shadow(0 0 2px rgba(255, 215, 0, 0.5));
 }
 
 .logs-cube {

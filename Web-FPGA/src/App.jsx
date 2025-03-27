@@ -67,29 +67,27 @@ function App() {
     // Step 1: Define and apply colors for nodes
     const colors = {};
     result.nodes.forEach((node) => {
-      if (node.id.toLowerCase().includes("lut")) {
+      if (node.type === 'LUT' || node.id.toLowerCase().includes("lut")) {
         colors[`${node.type}-${node.id}`] = "#d3d3d3"; // Gray for LUT
       }
-      if (
-        node.id.toLowerCase().includes("dff") ||
-        node.id.toLowerCase().includes("latch")
-      ) {
-        colors[`${node.type}-${node.id}`] = "#47697a"; // Green for DFF/Latch
+      if (node.type === 'DFF' || node.id.toLowerCase().includes("dff")) {
+        colors[`${node.type}-${node.id}`] = "#47697a"; // Blue for DFF
+      }
+      if (node.type === 'CLOCK' || node.id.toLowerCase().includes("clk")) {
+        colors[`${node.type}-${node.id}`] = "#ffd700"; // Gold for clock
       }
     });
     setCubeColors(colors);
 
     // Step 2: Draw edges
     const svg = d3.select(svgRef.current);
-    svg.selectAll("*").remove(); // Clear previous paths
+    svg.selectAll("*").remove();
 
-    result.edges.forEach(({ source, target }) => {
+    result.edges.forEach(({ source, target, isClock }) => {
       if (!target) {
         console.warn(`Skipping edge: source=${source}, target=`);
-        return; // Skip this edge if target is empty
+        return;
       }
-
-      console.log(`Creating edge between: ${source} and ${target}`);
 
       const sourceBaseId = source.replace(/_output_.*/, "");
       const targetBaseId = target.replace(/_input_.*/, "");
@@ -102,16 +100,16 @@ function App() {
         return;
       }
 
+      // Get positions relative to simulation container
+      const sourceRect = sourceEl.getBoundingClientRect();
+      const targetRect = targetEl.getBoundingClientRect();
+      const parentRect = simulationCubeRef.current.getBoundingClientRect();
+
       // Assuming all boxes are 100x100, so width and height are fixed
       const boxSize = 100;
       const boxHalf = boxSize / 2;
       const boxWidth = boxSize; // Width of the box is 100px
       const columnGap = 20; // Add a gap between columns
-
-      // Get positions relative to simulation container
-      const sourceRect = sourceEl.getBoundingClientRect();
-      const targetRect = targetEl.getBoundingClientRect();
-      const parentRect = simulationCubeRef.current.getBoundingClientRect();
 
       // Get the position of the source and target elements relative to the parent container
       let starterX = sourceRect.right - parentRect.left;
@@ -128,13 +126,12 @@ function App() {
       // Case 1: Source → Target (on the right, next column)
       if (starterX < endingX) {
         pathData = `
-    M ${starterX} ${sourceY}
-    C ${sourceX + boxWidth} ${sourceY} ${
-          targetX - boxWidth
-        } ${sourceY} ${endingX} ${targetY}
-  `;
+          M ${starterX} ${sourceY}
+          C ${sourceX + boxWidth} ${sourceY} ${
+                targetX - boxWidth
+              } ${sourceY} ${endingX} ${targetY}
+        `;
       }
-
       // Case 2: Source = Target (same column) // Case 2: Source = Target (same column)
       else if (starterX - endingX === boxSize) {
         // Control points for the cubic Bezier curve
@@ -155,7 +152,6 @@ function App() {
           L ${endingX} ${targetY}
         `;
       }
-
       // Case 3: Source ← Target (on the left, previous column)
       else if (starterX - endingX !== boxSize) {
         // Control points for the cubic Bezier curve
@@ -167,87 +163,87 @@ function App() {
         const controlPointY2 = targetY + boxHalf + columnGap / 2; // Raise control point for smoother curve
 
         pathData = `
-    M ${starterX} ${sourceY}
-    L ${sourceX} ${sourceY}
-    L ${sourceX} ${sourceY - boxHalf - columnGap / 4} 
-    L ${sourceX - boxSize - 20} ${sourceY - boxHalf - columnGap / 4}
-    C ${controlPointX2} ${controlPointY2} ${controlPointX1} ${controlPointY1} ${
-          targetX + boxSize + 10
-        } ${targetY - boxHalf - columnGap / 4}
-    L ${targetX} ${targetY - boxHalf - columnGap / 4}
-    L ${targetX} ${targetY}
-    L ${endingX} ${targetY}
-  `;
+          M ${starterX} ${sourceY}
+          L ${sourceX} ${sourceY}
+          L ${sourceX} ${sourceY - boxHalf - columnGap / 4} 
+          L ${sourceX - boxSize - 20} ${sourceY - boxHalf - columnGap / 4}
+          C ${controlPointX2} ${controlPointY2} ${controlPointX1} ${controlPointY1} ${
+                targetX + boxSize + 10
+              } ${targetY - boxHalf - columnGap / 4}
+          L ${targetX} ${targetY - boxHalf - columnGap / 4}
+          L ${targetX} ${targetY}
+          L ${endingX} ${targetY}
+        `;
       }
 
       console.log("Edge path data:", pathData); // Log path data
 
-      // Create the path
-      const edge = svg
-        .append("path")
-        .attr("d", pathData)
-        .attr("fill", "none")
-        .attr("stroke", "red")
-        .attr("stroke-width", 2);
-
-      // Create a small moving electron
-      const electron = svg
-        .append("circle")
-        .attr("r", 5)
-        .attr("fill", Math.random() > 0.5 ? "blue" : "yellow")
-        .attr("opacity", 0);
-
-      // Get total length of the path
-      const pathLength = edge.node().getTotalLength();
-
-      // Step 3: Apply animation when isAnimating is true
-      const animateStroke = () => {
-        if (!isAnimating) return;
-
-        edge
-          .transition()
-          .duration(1000)
-          .ease(d3.easeLinear)
-          .attr("stroke-width", 6)
-          .attr("stroke", "rgb(255, 100, 100)")
-          .transition()
-          .duration(500)
-          .attr("stroke-width", 2)
-          .attr("stroke", "red")
-          .on("end", animateStroke);
-      };
-
-      const animateElectron = () => {
-        if (!isAnimating) return;
-
-        electron
-          .attr("opacity", 1)
-          .raise()
-          .transition()
-          .duration(2000) // Adjust speed of electron movement
-          .ease(d3.easeLinear)
-          .attrTween("transform", function () {
-            return function (t) {
-              const { x, y } = edge.node().getPointAtLength(t * pathLength);
-              return `translate(${x},${y})`;
-            };
-          })
-          .on("end", () => {
-            animateElectron(); // Restart animation
-          });
-      };
-
-      if (isAnimating) {
-        animateStroke();
-        animateElectron();
-      }
+            // Create the path
+            const edge = svg
+            .append("path")
+            .attr("d", pathData)
+            .attr("fill", "none")
+            .attr("stroke", "red")
+            .attr("stroke-width", 2);
+    
+          // Create a small moving electron
+          const electron = svg
+            .append("circle")
+            .attr("r", 5)
+            .attr("fill", Math.random() > 0.5 ? "blue" : "yellow")
+            .attr("opacity", 0);
+    
+          // Get total length of the path
+          const pathLength = edge.node().getTotalLength();
+    
+          // Step 3: Apply animation when isAnimating is true
+          const animateStroke = () => {
+            if (!isAnimating) return;
+    
+            edge
+              .transition()
+              .duration(1000)
+              .ease(d3.easeLinear)
+              .attr("stroke-width", 6)
+              .attr("stroke", "rgb(255, 100, 100)")
+              .transition()
+              .duration(500)
+              .attr("stroke-width", 2)
+              .attr("stroke", "red")
+              .on("end", animateStroke);
+          };
+    
+          const animateElectron = () => {
+            if (!isAnimating) return;
+    
+            electron
+              .attr("opacity", 1)
+              .raise()
+              .transition()
+              .duration(2000) // Adjust speed of electron movement
+              .ease(d3.easeLinear)
+              .attrTween("transform", function () {
+                return function (t) {
+                  const { x, y } = edge.node().getPointAtLength(t * pathLength);
+                  return `translate(${x},${y})`;
+                };
+              })
+              .on("end", () => {
+                animateElectron(); // Restart animation
+              });
+          };
+    
+          if (isAnimating) {
+            animateStroke();
+            animateElectron();
+          }
     });
 
-    // Step 4: Enable panning
     const cleanup = enablePanning(simulationCubeRef, svgRef);
     return cleanup;
   }, [result, isAnimating]);
 
+  // Sort nodes to ensure CLOCK type appears after DFF
   const groupedNodes = result.nodes.reduce((acc, node) => {
     if (!acc[node.type]) {
       acc[node.type] = [];
@@ -255,6 +251,9 @@ function App() {
     acc[node.type].push(node);
     return acc;
   }, {});
+
+  // Ensure proper ordering of columns (LUT, DFF, CLOCK)
+  const orderedTypes = ['LUT', 'DFF', 'CLOCK'].filter(type => groupedNodes[type]);
 
   return (
     <div className="app">
@@ -286,7 +285,7 @@ function App() {
       </header>
 
       <section className="main-content">
-        <div
+      <div
           className="simulation-cube"
           ref={simulationCubeRef}
           style={{
@@ -309,20 +308,20 @@ function App() {
               {/* The wires will be drawn here */}
             </g>
           </svg>
+          <svg ref={svgRef} className="connections-layer" width="100%" height="100%"></svg>
 
           <div className="columns-container">
-            {Object.keys(groupedNodes).map((type, idx) => (
-              <div key={idx} className="column">
+            {orderedTypes.map((type, idx) => (
+              <div key={type} className="column">
                 <h3>{type}</h3>
                 <div className={`id-cubes-container -${idx + 1}`}>
                   {groupedNodes[type].map((node, nodeIdx) => (
                     <div
-                      key={nodeIdx}
-                      className={`id-cube -${nodeIdx + 1}`}
-                      id={node.id} // Set the full ID here
+                      key={`${node.id}-${nodeIdx}`}
+                      className={`id-cube ${type.toLowerCase()}-node`}
+                      id={node.id}
                       style={{
-                        backgroundColor:
-                          cubeColors[`${type}-${node.id}`] || "white",
+                        backgroundColor: cubeColors[`${type}-${node.id}`] || "white"
                       }}
                     >
                       {node.id}
