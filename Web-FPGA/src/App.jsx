@@ -77,11 +77,6 @@ function App() {
     const svg = d3.select(svgRef.current);
     svg.selectAll("*").remove(); // Clear any previous connections
 
-    if (!Array.isArray(result.edges) || result.edges.length === 0) {
-      console.error("No edges found!");
-      return;
-    }
-
     // Step 3: Loop over edges and draw paths
     result.edges.forEach(({ source, target }) => {
       // Extract base node IDs from source/target (remove output/input parts)
@@ -104,8 +99,11 @@ function App() {
       const targetRect = targetEl.getBoundingClientRect();
       const parentRect = simulationCubeRef.current.getBoundingClientRect();
 
+      let starterX = sourceRect.right - parentRect.left;
       let sourceX = sourceRect.right - parentRect.left + 10;
       let sourceY = sourceRect.top + sourceRect.height / 2 - parentRect.top;
+
+      let endingX = targetRect.left - parentRect.left;
       let targetX = targetRect.left - parentRect.left - 10;
       let targetY = targetRect.top + targetRect.height / 2 - parentRect.top;
 
@@ -140,12 +138,14 @@ function App() {
 
       const finalTargetX = targetX + targetRect.width + 20;
       let pathData = `
-                M ${sourceX} ${sourceY}
+                M ${starterX} ${sourceY}
+                L ${sourceX} ${sourceY}
                 L ${sourceX} ${middleY}
                 L ${forwardX} ${middleY}
                 L ${backwardX} ${middleTargetY}
                 L ${targetX} ${middleTargetY}
                 L ${targetX} ${targetY}
+                L ${endingX} ${targetY}
                 `;
 
       // Draw the edge path
