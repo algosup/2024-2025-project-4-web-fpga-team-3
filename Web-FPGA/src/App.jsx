@@ -80,7 +80,7 @@ function App() {
     svg.selectAll("*").remove(); // Clear previous paths
 
     result.edges.forEach(({ source, target }) => {
-      // Extract base node IDs (remove output/input parts)
+      // Extract base node IDs
       const sourceBaseId = source.replace(/_output_.*/, "");
       const targetBaseId = target.replace(/_input_.*/, "");
 
@@ -131,9 +131,6 @@ function App() {
         backwardX = tempX2 - targetRect.width;
       }
 
-      const adjustedTargetY = targetY - targetRect.height / 2 - 10;
-
-      const finalTargetX = targetX + targetRect.width + 20;
       let pathData = `
                 M ${starterX} ${sourceY}
                 L ${sourceX} ${sourceY}
@@ -145,8 +142,6 @@ function App() {
                 L ${endingX} ${targetY}
                 `;
 
-      // Draw the edge path
-      svg;
       // Create the path
       const edge = svg
         .append("path")
@@ -155,9 +150,18 @@ function App() {
         .attr("stroke", "red")
         .attr("stroke-width", 2);
 
+      // Create a small moving electron
+      const electron = svg
+        .append("circle")
+        .attr("r", 5)
+        .attr("fill", Math.random() > 0.5 ? "blue" : "yellow");
+
+      // Get total length of the path
+      const pathLength = edge.node().getTotalLength();
+
       // Step 3: Apply animation when isAnimating is true
       const animateStroke = () => {
-        if (!isAnimating) return; // Stop animation when `isAnimating` is false
+        if (!isAnimating) return;
 
         edge
           .transition()
@@ -169,11 +173,30 @@ function App() {
           .duration(500)
           .attr("stroke-width", 2)
           .attr("stroke", "red")
-          .on("end", animateStroke); // Restart animation
+          .on("end", animateStroke);
+      };
+
+      const animateElectron = () => {
+        if (!isAnimating) return;
+
+        electron
+          .transition()
+          .duration(2000) // Adjust speed of electron movement
+          .ease(d3.easeLinear)
+          .attrTween("transform", function () {
+            return function (t) {
+              const { x, y } = edge.node().getPointAtLength(t * pathLength);
+              return `translate(${x},${y})`;
+            };
+          })
+          .on("end", () => {
+            animateElectron(); // Restart animation
+          });
       };
 
       if (isAnimating) {
-        animateStroke(); // Start animation if `isAnimating` is true
+        animateStroke();
+        animateElectron();
       }
     });
 
