@@ -137,21 +137,46 @@ function App() {
       // Case 2: Source = Target (same column) // Case 2: Source = Target (same column)
       else if (starterX - endingX === boxSize) {
         // Control points for the cubic Bezier curve
-        const controlPointX1 = endingX - boxWidth / 1.5; // Use a wider control to smooth the curve
+        const controlPointX1 = endingX - boxWidth / 0.5; // Use a wider control to smooth the curve
         const controlPointX2 = endingX - boxWidth / 2; // Move the curve further outward to avoid sharp turns
 
         // Control point Y's (Lift the curve upwards)
-        const controlPointY1 = sourceY + boxHalf + columnGap / 2 + 40; // Raise control point for smoother curve
-        const controlPointY2 = targetY + boxHalf + columnGap / 2 + 40; // Raise control point for smoother curve
+        const controlPointY1 = targetY + boxHalf + columnGap / 2 - 125; // Raise control point for smoother curve
+        const controlPointY2 = targetY + boxHalf + columnGap / 2; // Raise control point for smoother curve
 
         // Path data with cubic Bezier curve for smooth transition
         pathData = `
           M ${starterX} ${sourceY}
           L ${sourceX} ${sourceY}
-          L ${sourceX} ${sourceY + boxHalf + columnGap / 2} 
-          L ${targetX} ${sourceY + boxHalf + columnGap / 2}
-          C ${controlPointX1} ${controlPointY1} ${controlPointX2} ${controlPointY2} ${endingX} ${targetY}
+          L ${sourceX} ${sourceY + boxHalf + columnGap / 4}
+          L ${targetX} ${sourceY + boxHalf + columnGap / 4}
+          L ${targetX} ${targetY}
+          L ${endingX} ${targetY}
         `;
+      }
+
+      // Case 3: Source ← Target (on the left, previous column)
+      else if (starterX - endingX !== boxSize) {
+        // Control points for the cubic Bezier curve
+        const controlPointX1 = endingX + boxWidth / 0.5; // Use a wider control to smooth the curve
+        const controlPointX2 = endingX + boxWidth / 2; // Move the curve further outward to avoid sharp turns
+
+        // Control point Y's (Lift the curve upwards)
+        const controlPointY1 = targetY + boxHalf + columnGap / 2 - 125; // Raise control point for smoother curve
+        const controlPointY2 = targetY + boxHalf + columnGap / 2; // Raise control point for smoother curve
+
+        pathData = `
+    M ${starterX} ${sourceY}
+    L ${sourceX} ${sourceY}
+    L ${sourceX} ${sourceY - boxHalf - columnGap / 4} 
+    L ${sourceX - boxSize - 20} ${sourceY - boxHalf - columnGap / 4}
+    C ${controlPointX2} ${controlPointY2} ${controlPointX1} ${controlPointY1} ${
+          targetX + boxSize + 10
+        } ${targetY - boxHalf - columnGap / 4}
+    L ${targetX} ${targetY - boxHalf - columnGap / 4}
+    L ${targetX} ${targetY}
+    L ${endingX} ${targetY}
+  `;
       }
 
       console.log("Edge path data:", pathData); // Log path data
