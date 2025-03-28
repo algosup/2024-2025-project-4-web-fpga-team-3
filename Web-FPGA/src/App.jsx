@@ -253,7 +253,7 @@ function App() {
   }, {});
 
   // Ensure proper ordering of columns (LUT, DFF, CLOCK)
-  const orderedTypes = ['LUT', 'DFF', 'CLOCK'].filter(type => groupedNodes[type]);
+  const orderedTypes = ['CLOCK', 'LUT', 'DFF'].filter(type => groupedNodes[type]);
 
   return (
     <div className="app">
@@ -313,7 +313,7 @@ function App() {
           <div className="columns-container">
             {orderedTypes.map((type, idx) => (
               <div key={type} className="column">
-                <h3>{type}</h3>
+                {type !== "CLOCK" && <h3>{type}</h3>} {/* Add a header for each column except CLOCK */}
                 <div className={`id-cubes-container -${idx + 1}`}>
                   {groupedNodes[type].map((node, nodeIdx) => (
                     <div
