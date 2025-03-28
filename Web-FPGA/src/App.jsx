@@ -144,7 +144,6 @@ function App() {
       // Assuming all boxes are 100x100, so width and height are fixed
       const boxSize = 100;
       const boxHalf = boxSize / 2;
-      const boxWidth = boxSize; // Width of the box is 100px
       const columnGap = 20; // Add a gap between columns
 
       // Get the position of the source and target elements relative to the parent container
@@ -165,22 +164,14 @@ function App() {
           M ${starterX} ${sourceY}
           L ${sourceX} ${sourceY}
           L ${sourceX} ${sourceY - boxHalf - columnGap / 4}
-          L ${targetX} ${sourceY - boxHalf - columnGap / 4}
+          L ${targetX - 20} ${sourceY - boxHalf - columnGap / 4}
+          L ${targetX - 20} ${targetY}
           L ${targetX} ${targetY}
           L ${endingX} ${targetY}
         `;
       }
-      // Case 2: Source = Target (same column) // Case 2: Source = Target (same column)
-      else if (starterX - endingX === boxSize) {
-        // Control points for the cubic Bezier curve
-        const controlPointX1 = endingX - boxWidth / 0.5; // Use a wider control to smooth the curve
-        const controlPointX2 = endingX - boxWidth / 2; // Move the curve further outward to avoid sharp turns
-
-        // Control point Y's (Lift the curve upwards)
-        const controlPointY1 = targetY + boxHalf + columnGap / 2 - 125; // Raise control point for smoother curve
-        const controlPointY2 = targetY + boxHalf + columnGap / 2; // Raise control point for smoother curve
-
-        // Path data with cubic Bezier curve for smooth transition
+      // Case 2 Source ← Target (on the left, previous column)
+      else if (starterX - endingX !== boxSize) {
         pathData = `
           M ${starterX} ${sourceY}
           L ${sourceX} ${sourceY}
@@ -190,23 +181,13 @@ function App() {
           L ${endingX} ${targetY}
         `;
       }
-      // Case 3: Source ← Target (on the left, previous column)
-      else if (starterX - endingX !== boxSize) {
-        // Control points for the cubic Bezier curve
-        const controlPointX1 = endingX + boxWidth / 0.5; // Use a wider control to smooth the curve
-        const controlPointX2 = endingX + boxWidth / 2; // Move the curve further outward to avoid sharp turns
-
-        // Control point Y's (Lift the curve upwards)
-        const controlPointY1 = targetY + boxHalf + columnGap / 2 - 125; // Raise control point for smoother curve
-        const controlPointY2 = targetY + boxHalf + columnGap / 2; // Raise control point for smoother curve
-
+      // Case 3: Source and Target are in the same column
+      else {
         pathData = `
           M ${starterX} ${sourceY}
           L ${sourceX} ${sourceY}
-          L ${sourceX} ${sourceY + boxHalf + columnGap / 4} 
-          L ${sourceX - boxSize - 20} ${sourceY + boxHalf + columnGap / 4}
-          L ${targetX + boxSize + 10} ${targetY + boxHalf + columnGap / 4}
-          L ${targetX} ${targetY + boxHalf + columnGap / 4}
+          L ${sourceX} ${sourceY + boxHalf + columnGap / 4}
+          L ${targetX} ${sourceY + boxHalf + columnGap / 4}
           L ${targetX} ${targetY}
           L ${endingX} ${targetY}
         `;
