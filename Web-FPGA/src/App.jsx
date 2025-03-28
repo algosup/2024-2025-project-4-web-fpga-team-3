@@ -414,13 +414,14 @@ function App() {
 
             const simulationCube = d3.select(simulationCubeRef.current);
             const svg = d3.select(svgRef.current);
-            const columnsContainer =
-              simulationCube.select(".columns-container");
+            const columnsContainer = simulationCube.select(".columns-container");
+            const title = simulationCube.select("h2"); // Select the title element
 
             // Reset panning offsets
             simulationCube.style("transform", "translate(0px, 0px)");
             svg.style("transform", "translate(0px, 0px)");
             columnsContainer.style("transform", "translate(0px, 0px)");
+            title.style("transform", "translate(0px, 0px)"); // Reset the title's transform
           }}
         >
           <span aria-hidden="true">&#x21BA;</span>
