@@ -76,6 +76,9 @@ function App() {
       if (node.type === "CLOCK" || node.id.toLowerCase().includes("clk")) {
         colors[`${node.type}-${node.id}`] = "#ffd700"; // Gold for clock
       }
+      if (node.type === "Q_COLUMN" || node.id.toLowerCase().includes("Q")) {
+        colors[`${node.type}-${node.id}`] = "#ffd700"; // Gold for clock
+      }
     });
     setCubeColors(colors);
 
@@ -253,7 +256,7 @@ function App() {
   }, {});
 
   // Ensure proper ordering of columns (LUT, DFF, CLOCK)
-  const orderedTypes = ["CLOCK", "LUT", "DFF"].filter(
+  const orderedTypes = ["CLOCK", "DFF", "LUT"].filter(
     (type) => groupedNodes[type]
   );
 
@@ -320,8 +323,7 @@ function App() {
           <div className="columns-container">
             {orderedTypes.map((type, idx) => (
               <div key={type} className="column">
-                {type !== "CLOCK" && <h3>{type}</h3>}{" "}
-                {/* Add a header for each column except CLOCK */}
+                {type !== "CLOCK" && <h3>{type}</h3>} {/* Add a header for each column except CLOCK */}
                 <div className={`id-cubes-container -${idx + 1}`}>
                   {groupedNodes[type].map((node, nodeIdx) => (
                     <div
@@ -329,16 +331,54 @@ function App() {
                       className={`id-cube ${type.toLowerCase()}-node`}
                       id={node.id}
                       style={{
-                        backgroundColor:
-                          cubeColors[`${type}-${node.id}`] || "white",
+                        backgroundColor: cubeColors[`${type}-${node.id}`] || "white",
                       }}
                     >
                       {node.id}
                     </div>
                   ))}
+                  {/* Add D and reset boxes specifically for the CLOCK column */}
+                  {type === "CLOCK" && (
+                    <>
+                      <div
+                        className="id-cube clock-node"
+                        id="D"
+                        style={{
+                          backgroundColor: cubeColors["CLOCK-clk"] || "white", // Use the same color as the clk box
+                        }}
+                      >
+                        D
+                      </div>
+                      <div
+                        className="id-cube clock-node"
+                        id="async_reset"
+                        style={{
+                          backgroundColor: cubeColors["CLOCK-clk"] || "white", // Use the same color as the clk box
+                        }}
+                      >
+                        Reset
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
             ))}
+            {/* Add the Q_COLUMN only if a clock node exists */}
+            {fileUploaded && result.nodes.some((node) => node.type === "CLOCK") && (
+              <div className="column">
+                <div className="id-cubes-container">
+                  <div
+                    className="id-cube q-node"
+                    id="Q"
+                    style={{
+                      backgroundColor: cubeColors["CLOCK-clk"] || "white", // Use the same color as the clk box
+                    }}
+                  >
+                    Q
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
 

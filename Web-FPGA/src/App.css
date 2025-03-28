@@ -205,6 +205,8 @@ body {
   flex-direction: column;
   gap: 20px;
   align-items: center;
+  justify-content: center;
+  height: 100%;
 }
 
 .id-cube {
