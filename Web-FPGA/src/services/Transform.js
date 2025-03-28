@@ -7,7 +7,7 @@
 function transformData(signalsData) {
     const transformedData = {
         nodes: [],
-        edges: []
+        edges: [],
     };
 
     // First pass: identify clock signals and their connections
@@ -29,7 +29,7 @@ function transformData(signalsData) {
                 transformedData.edges.push({
                     source: clockId, // Use the simplified clock ID
                     target: cell.end,
-                    delay: cell.delays,
+                    delay: cell.delay,
                     isClock: true
                 });
             } 

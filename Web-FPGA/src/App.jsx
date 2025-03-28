@@ -21,6 +21,9 @@ function App() {
     setFile(fileInput);
     setFileUploaded(false);
     setError("");
+    setResult({ nodes: [], edges: [] }); // Reset the result state
+    setCubeColors({}); // Reset the cube colors
+    setIsAnimating(false); // Stop any ongoing animations
   };
 
   const handleUpload = async () => {
@@ -347,17 +350,8 @@ function App() {
                           backgroundColor: cubeColors["CLOCK-clk"] || "white", // Use the same color as the clk box
                         }}
                       >
-                        D
-                      </div>
-                      <div
-                        className="id-cube clock-node"
-                        id="async_reset"
-                        style={{
-                          backgroundColor: cubeColors["CLOCK-clk"] || "white", // Use the same color as the clk box
-                        }}
-                      >
-                        Reset
-                      </div>
+                        Input
+                      </div> 
                     </>
                   )}
                 </div>
@@ -374,7 +368,7 @@ function App() {
                       backgroundColor: cubeColors["CLOCK-clk"] || "white", // Use the same color as the clk box
                     }}
                   >
-                    Q
+                    Output
                   </div>
                 </div>
               </div>
