@@ -49,7 +49,18 @@ function App() {
 		alert(`Error: ${errorMsg}`);
 		return;
 	}
+  const hasDelayFile = fileText.includes('(DELAYFILE');
+	const hasCell = fileText.includes('(CELL');
+	const hasDelay = fileText.includes('(DELAY');
 
+	if (!hasDelayFile || !hasCell || !hasDelay) {
+		const errorMsg = "Invalid SDF structure. Required SDF blocks not found.";
+		setError(errorMsg);
+		alert(`Error: ${errorMsg}`);
+		return;
+	}
+
+  
     const reader = new FileReader();
     reader.onload = async (event) => {
       const sdfContent = event.target.result;
