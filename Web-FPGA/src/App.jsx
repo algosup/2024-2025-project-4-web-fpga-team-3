@@ -67,13 +67,13 @@ function App() {
     // Step 1: Define and apply colors for nodes
     const colors = {};
     result.nodes.forEach((node) => {
-      if (node.type === 'LUT' || node.id.toLowerCase().includes("lut")) {
+      if (node.type === "LUT" || node.id.toLowerCase().includes("lut")) {
         colors[`${node.type}-${node.id}`] = "#d3d3d3"; // Gray for LUT
       }
-      if (node.type === 'DFF' || node.id.toLowerCase().includes("dff")) {
+      if (node.type === "DFF" || node.id.toLowerCase().includes("dff")) {
         colors[`${node.type}-${node.id}`] = "#47697a"; // Blue for DFF
       }
-      if (node.type === 'CLOCK' || node.id.toLowerCase().includes("clk")) {
+      if (node.type === "CLOCK" || node.id.toLowerCase().includes("clk")) {
         colors[`${node.type}-${node.id}`] = "#ffd700"; // Gold for clock
       }
     });
@@ -89,8 +89,8 @@ function App() {
         return;
       }
 
-      const sourceBaseId = source.replace(/_output_.*/, "");
-      const targetBaseId = target.replace(/_input_.*/, "");
+      const sourceBaseId = source.replace(/_(output|clock|input)_\d+_\d+$/, "");
+      const targetBaseId = target.replace(/_(output|clock|input)_\d+_\d+$/, "");
 
       const sourceEl = document.getElementById(sourceBaseId);
       const targetEl = document.getElementById(targetBaseId);
@@ -128,8 +128,8 @@ function App() {
         pathData = `
           M ${starterX} ${sourceY}
           C ${sourceX + boxWidth} ${sourceY} ${
-                targetX - boxWidth
-              } ${sourceY} ${endingX} ${targetY}
+          targetX - boxWidth
+        } ${sourceY} ${endingX} ${targetY}
         `;
       }
       // Case 2: Source = Target (same column) // Case 2: Source = Target (same column)
@@ -168,8 +168,8 @@ function App() {
           L ${sourceX} ${sourceY - boxHalf - columnGap / 4} 
           L ${sourceX - boxSize - 20} ${sourceY - boxHalf - columnGap / 4}
           C ${controlPointX2} ${controlPointY2} ${controlPointX1} ${controlPointY1} ${
-                targetX + boxSize + 10
-              } ${targetY - boxHalf - columnGap / 4}
+          targetX + boxSize + 10
+        } ${targetY - boxHalf - columnGap / 4}
           L ${targetX} ${targetY - boxHalf - columnGap / 4}
           L ${targetX} ${targetY}
           L ${endingX} ${targetY}
@@ -178,65 +178,65 @@ function App() {
 
       console.log("Edge path data:", pathData); // Log path data
 
-            // Create the path
-            const edge = svg
-            .append("path")
-            .attr("d", pathData)
-            .attr("fill", "none")
-            .attr("stroke", "red")
-            .attr("stroke-width", 2);
-    
-          // Create a small moving electron
-          const electron = svg
-            .append("circle")
-            .attr("r", 5)
-            .attr("fill", Math.random() > 0.5 ? "blue" : "yellow")
-            .attr("opacity", 0);
-    
-          // Get total length of the path
-          const pathLength = edge.node().getTotalLength();
-    
-          // Step 3: Apply animation when isAnimating is true
-          const animateStroke = () => {
-            if (!isAnimating) return;
-    
-            edge
-              .transition()
-              .duration(1000)
-              .ease(d3.easeLinear)
-              .attr("stroke-width", 6)
-              .attr("stroke", "rgb(255, 100, 100)")
-              .transition()
-              .duration(500)
-              .attr("stroke-width", 2)
-              .attr("stroke", "red")
-              .on("end", animateStroke);
-          };
-    
-          const animateElectron = () => {
-            if (!isAnimating) return;
-    
-            electron
-              .attr("opacity", 1)
-              .raise()
-              .transition()
-              .duration(2000) // Adjust speed of electron movement
-              .ease(d3.easeLinear)
-              .attrTween("transform", function () {
-                return function (t) {
-                  const { x, y } = edge.node().getPointAtLength(t * pathLength);
-                  return `translate(${x},${y})`;
-                };
-              })
-              .on("end", () => {
-                animateElectron(); // Restart animation
-              });
-          };
-    
-          if (isAnimating) {
-            animateStroke();
-            animateElectron();
-          }
+      // Create the path
+      const edge = svg
+        .append("path")
+        .attr("d", pathData)
+        .attr("fill", "none")
+        .attr("stroke", "red")
+        .attr("stroke-width", 2);
+
+      // Create a small moving electron
+      const electron = svg
+        .append("circle")
+        .attr("r", 5)
+        .attr("fill", Math.random() > 0.5 ? "blue" : "yellow")
+        .attr("opacity", 0);
+
+      // Get total length of the path
+      const pathLength = edge.node().getTotalLength();
+
+      // Step 3: Apply animation when isAnimating is true
+      const animateStroke = () => {
+        if (!isAnimating) return;
+
+        edge
+          .transition()
+          .duration(1000)
+          .ease(d3.easeLinear)
+          .attr("stroke-width", 6)
+          .attr("stroke", "rgb(255, 100, 100)")
+          .transition()
+          .duration(500)
+          .attr("stroke-width", 2)
+          .attr("stroke", "red")
+          .on("end", animateStroke);
+      };
+
+      const animateElectron = () => {
+        if (!isAnimating) return;
+
+        electron
+          .attr("opacity", 1)
+          .raise()
+          .transition()
+          .duration(2000) // Adjust speed of electron movement
+          .ease(d3.easeLinear)
+          .attrTween("transform", function () {
+            return function (t) {
+              const { x, y } = edge.node().getPointAtLength(t * pathLength);
+              return `translate(${x},${y})`;
+            };
+          })
+          .on("end", () => {
+            animateElectron(); // Restart animation
+          });
+      };
+
+      if (isAnimating) {
+        animateStroke();
+        animateElectron();
+      }
     });
 
     const cleanup = enablePanning(simulationCubeRef, svgRef);
@@ -253,7 +253,9 @@ function App() {
   }, {});
 
   // Ensure proper ordering of columns (LUT, DFF, CLOCK)
-  const orderedTypes = ['CLOCK', 'LUT', 'DFF'].filter(type => groupedNodes[type]);
+  const orderedTypes = ["CLOCK", "LUT", "DFF"].filter(
+    (type) => groupedNodes[type]
+  );
 
   return (
     <div className="app">
@@ -285,7 +287,7 @@ function App() {
       </header>
 
       <section className="main-content">
-      <div
+        <div
           className="simulation-cube"
           ref={simulationCubeRef}
           style={{
@@ -308,12 +310,18 @@ function App() {
               {/* The wires will be drawn here */}
             </g>
           </svg>
-          <svg ref={svgRef} className="connections-layer" width="100%" height="100%"></svg>
+          <svg
+            ref={svgRef}
+            className="connections-layer"
+            width="100%"
+            height="100%"
+          ></svg>
 
           <div className="columns-container">
             {orderedTypes.map((type, idx) => (
               <div key={type} className="column">
-                {type !== "CLOCK" && <h3>{type}</h3>} {/* Add a header for each column except CLOCK */}
+                {type !== "CLOCK" && <h3>{type}</h3>}{" "}
+                {/* Add a header for each column except CLOCK */}
                 <div className={`id-cubes-container -${idx + 1}`}>
                   {groupedNodes[type].map((node, nodeIdx) => (
                     <div
@@ -321,7 +329,8 @@ function App() {
                       className={`id-cube ${type.toLowerCase()}-node`}
                       id={node.id}
                       style={{
-                        backgroundColor: cubeColors[`${type}-${node.id}`] || "white"
+                        backgroundColor:
+                          cubeColors[`${type}-${node.id}`] || "white",
                       }}
                     >
                       {node.id}
