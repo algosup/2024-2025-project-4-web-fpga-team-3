@@ -8,6 +8,7 @@ export function enablePanning(simulationCubeRef, svgRef) {
   const simulationCube = d3.select(simulationCubeRef.current);
   const content = simulationCube.select(".columns-container"); // Target the content inside the simulation-cube
   const svg = d3.select(svgRef.current); // Target the SVG element for wires
+  const title = simulationCube.select("h2"); // Target the simulation title
 
   let isPanning = false;
   let startX, startY;
@@ -31,9 +32,10 @@ export function enablePanning(simulationCubeRef, svgRef) {
     currentX += deltaX;
     currentY += deltaY;
 
-    // Apply the translation using CSS transform to both content and SVG
+    // Apply the translation using CSS transform to content, SVG, and title
     content.style("transform", `translate(${currentX}px, ${currentY}px)`);
     svg.style("transform", `translate(${currentX}px, ${currentY}px)`);
+    title.style("transform", `translate(${currentX}px, ${currentY}px)`);
 
     // Update the starting point for the next movement
     startX = event.clientX;
