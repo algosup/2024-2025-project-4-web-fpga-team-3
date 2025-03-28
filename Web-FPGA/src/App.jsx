@@ -355,7 +355,11 @@ function App() {
           <div className="columns-container">
             {orderedTypes.map((type, idx) => (
               <div key={type} className="column">
-                {type !== "CLOCK" && <h3>{type}</h3>} {/* Add a header for each column except CLOCK */}
+                {type === "CLOCK" ? (
+                  <h3>DATA IN</h3> // Add a "DATA IN" title for the CLOCK column
+                ) : (
+                  <h3>{type}</h3> // Add a header for other columns
+                )}
                 <div className={`id-cubes-container -${idx + 1}`}>
                   {groupedNodes[type].map((node, nodeIdx) => (
                     <div
@@ -389,6 +393,7 @@ function App() {
             {/* Add the Q_COLUMN only if a clock node exists */}
             {fileUploaded && result.nodes.some((node) => node.type === "CLOCK") && (
               <div className="column">
+                <h3>DATA OUT</h3>
                 <div className="id-cubes-container">
                   <div
                     className="id-cube q-node"
