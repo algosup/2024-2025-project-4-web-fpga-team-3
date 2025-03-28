@@ -29,38 +29,39 @@ function App() {
   const handleUpload = async () => {
     if (!file) {
       const errorMsg = "Please select an SDF file."; // Check if a file is selected
-		setError(errorMsg);
-		alert(`Error: ${errorMsg}`);
-		return;
+      setError(errorMsg);
+      alert(`Error: ${errorMsg}`);
+      return;
     }
 
     const fileName = file.name.toLowerCase(); // Check the file name
-	if (!fileName.endsWith('.sdf')) { // Check if the file is an SDF file
-		const errorMsg = "Invalid file type. Please upload an SDF file.";
-		setError(errorMsg);
-		alert(`Error: ${errorMsg}`);
-		return;
-	}
+    if (!fileName.endsWith(".sdf")) {
+      // Check if the file is an SDF file
+      const errorMsg = "Invalid file type. Please upload an SDF file.";
+      setError(errorMsg);
+      alert(`Error: ${errorMsg}`);
+      return;
+    }
 
-  const fileText = await file.text(); // Read the file content 
-	if (fileText.trim() === "") { // Check if the file is empty
-		const errorMsg = "The selected .sdf file is empty.";
-		setError(errorMsg);
-		alert(`Error: ${errorMsg}`);
-		return;
-	}
-  const hasDelayFile = fileText.includes('(DELAYFILE');
-	const hasCell = fileText.includes('(CELL');
-	const hasDelay = fileText.includes('(DELAY');
+    const fileText = await file.text(); // Read the file content
+    if (fileText.trim() === "") {
+      // Check if the file is empty
+      const errorMsg = "The selected .sdf file is empty.";
+      setError(errorMsg);
+      alert(`Error: ${errorMsg}`);
+      return;
+    }
+    const hasDelayFile = fileText.includes("(DELAYFILE");
+    const hasCell = fileText.includes("(CELL");
+    const hasDelay = fileText.includes("(DELAY");
 
-	if (!hasDelayFile || !hasCell || !hasDelay) {
-		const errorMsg = "Invalid SDF structure. Required SDF blocks not found.";
-		setError(errorMsg);
-		alert(`Error: ${errorMsg}`);
-		return;
-	}
+    if (!hasDelayFile || !hasCell || !hasDelay) {
+      const errorMsg = "Invalid SDF structure. Required SDF blocks not found.";
+      setError(errorMsg);
+      alert(`Error: ${errorMsg}`);
+      return;
+    }
 
-  
     const reader = new FileReader();
     reader.onload = async (event) => {
       const sdfContent = event.target.result;
@@ -152,7 +153,7 @@ function App() {
       let sourceY = sourceRect.top + sourceRect.height / 2 - parentRect.top;
 
       let endingX = targetRect.left - parentRect.left;
-      let targetX = targetRect.left - parentRect.left - 10;
+      let targetX = targetRect.left - parentRect.left - 15;
       let targetY = targetRect.top + targetRect.height / 2 - parentRect.top;
 
       // Logic to handle different cases for path creation
@@ -162,9 +163,11 @@ function App() {
       if (starterX < endingX) {
         pathData = `
           M ${starterX} ${sourceY}
-          C ${sourceX + boxWidth} ${sourceY} ${
-          targetX - boxWidth
-        } ${sourceY} ${endingX} ${targetY}
+          L ${sourceX} ${sourceY}
+          L ${sourceX} ${sourceY - boxHalf - columnGap / 4}
+          L ${targetX} ${sourceY - boxHalf - columnGap / 4}
+          L ${targetX} ${targetY}
+          L ${endingX} ${targetY}
         `;
       }
       // Case 2: Source = Target (same column) // Case 2: Source = Target (same column)
@@ -200,12 +203,10 @@ function App() {
         pathData = `
           M ${starterX} ${sourceY}
           L ${sourceX} ${sourceY}
-          L ${sourceX} ${sourceY - boxHalf - columnGap / 4} 
-          L ${sourceX - boxSize - 20} ${sourceY - boxHalf - columnGap / 4}
-          C ${controlPointX2} ${controlPointY2} ${controlPointX1} ${controlPointY1} ${
-          targetX + boxSize + 10
-        } ${targetY - boxHalf - columnGap / 4}
-          L ${targetX} ${targetY - boxHalf - columnGap / 4}
+          L ${sourceX} ${sourceY + boxHalf + columnGap / 4} 
+          L ${sourceX - boxSize - 20} ${sourceY + boxHalf + columnGap / 4}
+          L ${targetX + boxSize + 10} ${targetY + boxHalf + columnGap / 4}
+          L ${targetX} ${targetY + boxHalf + columnGap / 4}
           L ${targetX} ${targetY}
           L ${endingX} ${targetY}
         `;
@@ -298,13 +299,13 @@ function App() {
         <div className="logo">FPGA Simulator</div>
         {fileUploaded && (
           <div className="simulation-controls">
-            <button>⏪</button>
+            {/* <button>⏪</button>
             <button>◀️</button>
-            <span>X</span>
+            <span>X</span> */}
             <button onClick={() => setIsAnimating((prev) => !prev)}>
               {isAnimating ? "⏸️" : "▶️"}
             </button>
-            <button>⏩</button>
+            {/* <button>⏩</button> */}
           </div>
         )}
         <div className="upload-section">
@@ -367,7 +368,8 @@ function App() {
                       className={`id-cube ${type.toLowerCase()}-node`}
                       id={node.id}
                       style={{
-                        backgroundColor: cubeColors[`${type}-${node.id}`] || "white",
+                        backgroundColor:
+                          cubeColors[`${type}-${node.id}`] || "white",
                       }}
                     >
                       {node.id}
@@ -384,33 +386,35 @@ function App() {
                         }}
                       >
                         Input
-                      </div> 
+                      </div>
                     </>
                   )}
                 </div>
               </div>
             ))}
             {/* Add the Q_COLUMN only if a clock node exists */}
-            {fileUploaded && result.nodes.some((node) => node.type === "CLOCK") && (
-              <div className="column">
-                <h3>DATA OUT</h3>
-                <div className="id-cubes-container">
-                  <div
-                    className="id-cube q-node"
-                    id="Q"
-                    style={{
-                      backgroundColor: cubeColors["CLOCK-clk"] || "white", // Use the same color as the clk box
-                    }}
-                  >
-                    Output
+            {fileUploaded &&
+              result.nodes.some((node) => node.type === "CLOCK") && (
+                <div className="column">
+                  <h3>DATA OUT</h3>
+                  <div className="id-cubes-container">
+                    <div
+                      className="id-cube q-node"
+                      id="Q"
+                      style={{
+                        backgroundColor: cubeColors["CLOCK-clk"] || "white", // Use the same color as the clk box
+                      }}
+                    >
+                      Output
+                    </div>
                   </div>
                 </div>
-              </div>
-            )}
+              )}
           </div>
         </div>
 
-        <div className="logs-cube">
+        {/* TODO: fix the logs */}
+        {/* <div className="logs-cube">
           <h2>Logs</h2>
           <table className="logs-table">
             <thead>
@@ -421,7 +425,7 @@ function App() {
             </thead>
             <tbody></tbody>
           </table>
-        </div>
+        </div> */}
       </section>
 
       <footer className="buttons-zoom">
@@ -442,7 +446,8 @@ function App() {
 
             const simulationCube = d3.select(simulationCubeRef.current);
             const svg = d3.select(svgRef.current);
-            const columnsContainer = simulationCube.select(".columns-container");
+            const columnsContainer =
+              simulationCube.select(".columns-container");
             const title = simulationCube.select("h2"); // Select the title element
 
             // Reset panning offsets
