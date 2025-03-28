@@ -28,9 +28,27 @@ function App() {
 
   const handleUpload = async () => {
     if (!file) {
-      setError("Please select an SDF file.");
-      return;
+      const errorMsg = "Please select an SDF file."; // Check if a file is selected
+		setError(errorMsg);
+		alert(`Error: ${errorMsg}`);
+		return;
     }
+
+    const fileName = file.name.toLowerCase(); // Check the file name
+	if (!fileName.endsWith('.sdf')) { // Check if the file is an SDF file
+		const errorMsg = "Invalid file type. Please upload an SDF file.";
+		setError(errorMsg);
+		alert(`Error: ${errorMsg}`);
+		return;
+	}
+
+  const fileText = await file.text(); // Read the file content 
+	if (fileText.trim() === "") { // Check if the file is empty
+		const errorMsg = "The selected .sdf file is empty.";
+		setError(errorMsg);
+		alert(`Error: ${errorMsg}`);
+		return;
+	}
 
     const reader = new FileReader();
     reader.onload = async (event) => {
