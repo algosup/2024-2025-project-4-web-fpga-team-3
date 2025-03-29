@@ -270,7 +270,7 @@ function App() {
   }, {});
 
   // Ensure proper ordering of columns (LUT, DFF, CLOCK)
-  const orderedTypes = ["CLOCK", "DFF", "LUT"].filter(
+  const orderedTypes = ["CLOCK", "LUT", "DFF"].filter(
     (type) => groupedNodes[type]
   );
 
