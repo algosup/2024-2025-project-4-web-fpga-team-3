@@ -32,5 +32,7 @@ echo "🌐 Server should be available at:"
 echo "http://localhost:5173"
 echo "========================================"
 
+open "http://localhost:5173"
+
 # Keep the main window open
 read -p "✅ Press [Enter] to close this window."
