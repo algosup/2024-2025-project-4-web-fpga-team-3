@@ -241,7 +241,7 @@ function App() {
           .attr("opacity", 1)
           .raise()
           .transition()
-          .duration(2000) // Adjust speed of electron movement
+          .duration(3000) // Adjust speed of electron movement
           .ease(d3.easeLinear)
           .attrTween("transform", function () {
             return function (t) {
