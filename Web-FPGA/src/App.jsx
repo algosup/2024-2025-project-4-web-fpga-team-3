@@ -28,15 +28,14 @@ function App() {
 
   const handleUpload = async () => {
     const now = new Date().toLocaleTimeString();
-	  const action = "🧹 Board reset — New simulation rendered";
-	  setLogs((prevLogs) => [...prevLogs, { time: now, action }]);
+    // Clear previous logs
+    setLogs([]);
     if (!file) {
       const errorMsg = "Please select an SDF file."; // Check if a file is selected
       setError(errorMsg);
       alert(`Error: ${errorMsg}`);
       return;
     }
-    
 
     const fileName = file.name.toLowerCase(); // Check the file name
     if (!fileName.endsWith(".sdf")) {
@@ -281,10 +280,10 @@ function App() {
   const [logs, setLogs] = useState([]);
 
   const handleClick = (buttonName) => {
-	const now = new Date().toLocaleTimeString();
-	const action = `Button ${buttonName} Clicked`;
-	setLogs((prevLogs) => [...prevLogs, { time: now, action }]);
-};
+    const now = new Date().toLocaleTimeString();
+    const action = `Button ${buttonName} Clicked`;
+    setLogs((prevLogs) => [...prevLogs, { time: now, action }]);
+  };
 
   return (
     <div className="app">
@@ -296,18 +295,20 @@ function App() {
             <button>◀️</button>
             <span>X</span> */}
             <button
-	onClick={() => {
-		const newState = !isAnimating;
-		setIsAnimating(newState);
+              onClick={() => {
+                const newState = !isAnimating;
+                setIsAnimating(newState);
 
-		const now = new Date().toLocaleTimeString();
-		const action = newState ? "▶️ Animation Started" : "⏸️ Animation Paused";
+                const now = new Date().toLocaleTimeString();
+                const action = newState
+                  ? "▶️ Animation Started"
+                  : "⏸️ Animation Paused";
 
-		setLogs((prevLogs) => [...prevLogs, { time: now, action }]);
-	}}
->
-	{isAnimating ? "⏸️" : "▶️"}
-</button>
+                setLogs((prevLogs) => [...prevLogs, { time: now, action }]);
+              }}
+            >
+              {isAnimating ? "⏸️" : "▶️"}
+            </button>
             {/* <button>⏩</button> */}
           </div>
         )}
@@ -415,7 +416,7 @@ function App() {
               )}
           </div>
         </div>
-         <div className="logs-cube">
+        <div className="logs-cube">
           <h2>Logs</h2>
           <table className="logs-table">
             <thead>
@@ -425,12 +426,12 @@ function App() {
               </tr>
             </thead>
             <tbody>
-            {logs.map((log, index) => (
-							<tr key={index}>
-								<td>{log.time}</td>
-								<td>{log.action}</td>
-							</tr>
-						))}
+              {logs.map((log, index) => (
+                <tr key={index}>
+                  <td>{log.time}</td>
+                  <td>{log.action}</td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
@@ -478,7 +479,6 @@ function App() {
         </button>
       </footer>
     </div>
-    
   );
 }
 
