@@ -20,4 +20,5 @@ echo ========================================
 echo 🌐 Server should be available at:
 echo 	    http://localhost:5173
 echo ========================================
+start "" http://localhost:5173
 pause
