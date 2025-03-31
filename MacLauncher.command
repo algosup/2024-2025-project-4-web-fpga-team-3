@@ -28,6 +28,7 @@ echo "========================================"
 echo ":globe_with_meridians: Server should be available at"
 echo "http://localhost:5173"
 echo "========================================"
+open "http://localhost:5173"
 echo "Press Ctrl+C to stop the server."
 # Wait for the npm run dev process
 wait $NPM_PID
