@@ -30,6 +30,9 @@ function App() {
     const now = new Date().toLocaleTimeString();
     // Clear previous logs
     setLogs([]);
+    // Add log for file upload
+    const action = `File ${file ? file.name : "No file"} uploaded`;
+    setLogs((prevLogs) => [...prevLogs, { time: now, action }]);
     if (!file) {
       const errorMsg = "Please select an SDF file."; // Check if a file is selected
       setError(errorMsg);
