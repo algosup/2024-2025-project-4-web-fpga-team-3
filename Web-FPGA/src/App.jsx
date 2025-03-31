@@ -27,12 +27,16 @@ function App() {
   };
 
   const handleUpload = async () => {
+    const now = new Date().toLocaleTimeString();
+	  const action = "🧹 Board reset — New simulation rendered";
+	  setLogs((prevLogs) => [...prevLogs, { time: now, action }]);
     if (!file) {
       const errorMsg = "Please select an SDF file."; // Check if a file is selected
       setError(errorMsg);
       alert(`Error: ${errorMsg}`);
       return;
     }
+    
 
     const fileName = file.name.toLowerCase(); // Check the file name
     if (!fileName.endsWith(".sdf")) {
@@ -274,6 +278,14 @@ function App() {
     (type) => groupedNodes[type]
   );
 
+  const [logs, setLogs] = useState([]);
+
+  const handleClick = (buttonName) => {
+	const now = new Date().toLocaleTimeString();
+	const action = `Button ${buttonName} Clicked`;
+	setLogs((prevLogs) => [...prevLogs, { time: now, action }]);
+};
+
   return (
     <div className="app">
       <header className={`top-bar ${fileUploaded ? "shifted" : ""}`}>
@@ -283,9 +295,19 @@ function App() {
             {/* <button>⏪</button>
             <button>◀️</button>
             <span>X</span> */}
-            <button onClick={() => setIsAnimating((prev) => !prev)}>
-              {isAnimating ? "⏸️" : "▶️"}
-            </button>
+            <button
+	onClick={() => {
+		const newState = !isAnimating;
+		setIsAnimating(newState);
+
+		const now = new Date().toLocaleTimeString();
+		const action = newState ? "▶️ Animation Started" : "⏸️ Animation Paused";
+
+		setLogs((prevLogs) => [...prevLogs, { time: now, action }]);
+	}}
+>
+	{isAnimating ? "⏸️" : "▶️"}
+</button>
             {/* <button>⏩</button> */}
           </div>
         )}
@@ -393,9 +415,7 @@ function App() {
               )}
           </div>
         </div>
-
-        {/* TODO: fix the logs */}
-        {/* <div className="logs-cube">
+         <div className="logs-cube">
           <h2>Logs</h2>
           <table className="logs-table">
             <thead>
@@ -404,9 +424,16 @@ function App() {
                 <th>Action</th>
               </tr>
             </thead>
-            <tbody></tbody>
+            <tbody>
+            {logs.map((log, index) => (
+							<tr key={index}>
+								<td>{log.time}</td>
+								<td>{log.action}</td>
+							</tr>
+						))}
+            </tbody>
           </table>
-        </div> */}
+        </div>
       </section>
 
       <footer className="buttons-zoom">
@@ -451,6 +478,7 @@ function App() {
         </button>
       </footer>
     </div>
+    
   );
 }
 
