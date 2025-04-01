@@ -320,7 +320,7 @@ function App() {
             className="uploadButton"
             type="file"
             id="fileInput"
-            accept=".sdf"
+            // accept=".sdf"
             onChange={handleFileChange}
           />
           <button className="uploadButton" onClick={handleUpload}>
