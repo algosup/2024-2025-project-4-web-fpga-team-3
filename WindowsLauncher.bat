@@ -1,5 +1,5 @@
 @echo off
-cd /d "..\2024-2025-project-4-web-fpga-team-3\Web-FPGA"
+cd /d "..\Web-FPGA"
 
 echo ========================================
 echo  🟢 Installing dependencies...
