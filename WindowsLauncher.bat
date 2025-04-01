@@ -13,8 +13,8 @@ timeout /t 3 >nul
 echo ✅ Starting Web-FPGA simulation...
 REM Open npm run dev in a separate window and keep it open
 start cmd /k "npm run dev || (echo Error during npm run dev)"
-start cmd /k "npm audit fix || (echo Fixing npm bug)"
-start cmd /k "npm run dev || (echo Error during npm dev, please refers to the user manual)"
+start cmd "npm audit fix || (echo Fixing npm bug)"
+start cmd "npm run dev || (echo Error during npm dev, please refers to the user manual)"
 
 REM Display server info directly
 timeout /t 5 >nul
