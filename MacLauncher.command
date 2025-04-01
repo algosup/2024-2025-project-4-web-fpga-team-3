@@ -1,6 +1,6 @@
 #!/bin/bash
 # Navigate to the project directory
-cd "$(dirname "$0")/../2024-2025-project-4-web-fpga-team-3/Web-FPGA" || {
+cd "$(dirname "$0")/Web-FPGA" || {
   echo ":x: Error: Cannot navigate to the project directory."
   exit 1
 }
