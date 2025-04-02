@@ -1,5 +1,9 @@
 #!/bin/bash
-
+# Navigate to the project directory
+cd "$(dirname "$0")/Web-FPGA" || {
+  echo ":x: Error: Cannot navigate to the project directory."
+  exit 1
+}
 echo "========================================"
 echo ":large_green_circle: Installing dependencies..."
 echo "========================================"

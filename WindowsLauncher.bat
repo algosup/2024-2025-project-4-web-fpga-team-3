@@ -1,4 +1,5 @@
 @echo off
+cd /d "./Web-FPGA"
 
 echo ========================================
 echo  🟢 Installing dependencies...
