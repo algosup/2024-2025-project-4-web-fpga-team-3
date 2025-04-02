@@ -1,12 +1,5 @@
 #!/bin/bash
 
-# Navigate to your project directory
-cd "$(dirname "$0")/Web-FPGA" || {
-	echo "❌ Failed to navigate to project directory."
-	read -p "Press [Enter] to exit."
-	exit 1
-}
-
 echo "========================================"
 echo "🟢 Installing dependencies..."
 echo "========================================"
